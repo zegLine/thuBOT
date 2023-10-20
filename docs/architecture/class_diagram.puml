@@ -1,0 +1,28 @@
+@startuml ThuBot
+    class Question {
+        String question_text
+        String[] related_keywords
+        QuestionResponse[] getPossibleResponses()
+    }
+
+    class Response {
+        String response_text
+    }
+
+    class QuestionResponse {
+        Question q
+        Response r
+        float probability
+    }
+
+    class QuestionSuggestions {
+        Question base_question
+        Question[] possible_next_questions
+
+        {static} Question[] getPossibleQuestions(Question)
+    }
+
+    Question --* QuestionResponse : has
+    Response --* QuestionResponse : forms
+    Question -- QuestionSuggestions
+@enduml
