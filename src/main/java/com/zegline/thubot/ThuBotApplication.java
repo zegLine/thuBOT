@@ -10,4 +10,6 @@ public class ThuBotApplication {
 		SpringApplication.run(ThuBotApplication.class, args);
 	}
 
+	
+
 }
