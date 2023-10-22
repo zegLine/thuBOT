@@ -22,7 +22,13 @@
         {static} Question[] getPossibleQuestions(Question)
     }
 
+    class UserInput {
+        String input
+        Question[] matchQuestion()
+    }
+
     Question --* QuestionResponse : has
     Response --* QuestionResponse : forms
     Question -- QuestionSuggestions
+    Question -- UserInput
 @enduml
