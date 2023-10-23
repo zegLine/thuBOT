@@ -3,6 +3,7 @@ package com.zegline.thubot.core.model;
 import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,8 @@ public class Question {
 
     @Id
     @GeneratedValue(generator="questionid-generator")
-    @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator")
+    @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator",
+    parameters = { @Parameter(name = "prefix", value = "QN") })
     @Column(name = "id")
     private String id;
 
