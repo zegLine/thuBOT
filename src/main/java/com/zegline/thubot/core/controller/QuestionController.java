@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +21,7 @@ import com.zegline.thubot.core.repository.QuestionRepository;
 import com.zegline.thubot.core.repository.QuestionResponseRepository;
 
 @RestController
+@RequestMapping("/question")
 public class QuestionController {
 
 	@Autowired
@@ -27,8 +30,8 @@ public class QuestionController {
 	@Autowired
 	private QuestionResponseRepository qrr;
 
-    @GetMapping("/questions")
-	public ResponseEntity<Object> question(@RequestParam(value = "id") long id) {
+    @GetMapping("/get/{id}")
+	public ResponseEntity<Object> question(@PathVariable("id") long id) {
 		Optional<Question> oq = qr.findById(id);
 		if (!oq.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"question not found");
@@ -46,7 +49,7 @@ public class QuestionController {
 		return re;
 	}
 
-	@GetMapping("/questions/create")
+	@GetMapping("/create")
 	public Question question(@RequestParam(value = "question") String question_input) {
 		Question q = new Question(question_input);
 		qr.save(q);
