@@ -2,10 +2,11 @@ package com.zegline.thubot.core.model;
 
 import java.util.Set;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -13,8 +14,10 @@ import jakarta.persistence.OneToMany;
 public class Question {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(generator="questionid-generator")
+    @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator")
+    @Column(name = "id")
+    private String id;
 
     @Column(name = "question_text")
     private String question_text;

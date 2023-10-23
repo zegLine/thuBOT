@@ -1,6 +1,7 @@
 package com.zegline.thubot.core.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,26 +32,33 @@ public class QuestionController {
 	private QuestionResponseRepository qrr;
 
     @GetMapping("/get/{id}")
-	public ResponseEntity<Object> question(@PathVariable("id") long id) {
+	public ResponseEntity<Object> question_get(@PathVariable("id") String id) {
+		// Check for question existence
 		Optional<Question> oq = qr.findById(id);
 		if (!oq.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"question not found");
 		}
 		Question q = oq.get();
-		QuestionResponse qr = qrr.findByQuestion(q).get(0);
-		Response r = qr.getResponse();
 
+		// Put the question in the map
 		Map<String, Object> map = new HashMap<>();
 		map.put("question", q);
-		map.put("response", r);
 
+		// If there is a response defined, put it in the map
+		List<QuestionResponse> qr = qrr.findByQuestion(q);
+		if (!qr.isEmpty()) {
+			Response r = qr.get(0).getResponse();
+			map.put("response", r);
+		}
+		
+		// Return map as response
 		ResponseEntity<Object> re = new ResponseEntity<Object>(map, null, 200);
 
 		return re;
 	}
 
 	@GetMapping("/create")
-	public Question question(@RequestParam(value = "question") String question_input) {
+	public Question question_create(@RequestParam(value = "question") String question_input) {
 		Question q = new Question(question_input);
 		qr.save(q);
 		return q;

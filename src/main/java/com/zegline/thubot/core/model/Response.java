@@ -31,5 +31,9 @@ public class Response {
     public String getResponseText() {
         return response_text;
     }
+
+    public void setResponseText(String rt) {
+        response_text = rt;
+    }
     
 }
