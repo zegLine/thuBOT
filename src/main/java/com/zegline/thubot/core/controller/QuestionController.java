@@ -1,4 +1,4 @@
-package com.zegline.thubot.core;
+package com.zegline.thubot.core.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.zegline.thubot.core.model.Question;
+import com.zegline.thubot.core.model.QuestionResponse;
+import com.zegline.thubot.core.model.Response;
+import com.zegline.thubot.core.repository.QuestionRepository;
+import com.zegline.thubot.core.repository.QuestionResponseRepository;
 
 @RestController
 public class QuestionController {

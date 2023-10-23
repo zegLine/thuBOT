@@ -1,4 +1,4 @@
-package com.zegline.thubot.core;
+package com.zegline.thubot.core.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
