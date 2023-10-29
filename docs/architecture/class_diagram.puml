@@ -1,34 +1,60 @@
 @startuml ThuBot
-    class Question {
-        String question_text
-        String[] related_keywords
-        QuestionResponse[] getPossibleResponses()
-    }
 
-    class Response {
-        String response_text
-    }
+class Question {
+    String question_text
+    String[] related_keywords
+    QuestionResponse[] getPossibleResponses()
+}
 
-    class QuestionResponse {
-        Question q
-        Response r
-        float probability
-    }
+class Response {
+    String response_text
+}
 
-    class QuestionSuggestions {
-        Question base_question
-        Question[] possible_next_questions
+class QuestionResponse {
+    Question q
+    Response r
+    float probability
+}
 
-        {static} Question[] getPossibleQuestions(Question)
-    }
+class QuestionSuggestions {
+    Question base_question
+    Question[] possible_next_questions
+    {static} Question[] getPossibleQuestions(Question)
+}
 
-    class UserInput {
-        String input
-        Question[] matchQuestion()
-    }
+class UserInput {
+    String input
+    Question[] matchQuestion()
+}
 
-    Question --* QuestionResponse : has
-    Response --* QuestionResponse : forms
-    Question -- QuestionSuggestions
-    Question -- UserInput
+class Database {
+    Question[] questions
+    Response[] responses
+}
+
+class Chatbot {
+    void askQuestion()
+    Response getResponse(UserInput)
+}
+
+class OpenAIAPI {
+    Question matchQuestion(UserInput)
+}
+
+class User {
+    String name
+    String userId
+    void ask(Chatbot)
+}
+
+Question --* QuestionResponse : has
+Response --* QuestionResponse : forms
+Question -- QuestionSuggestions
+Question -- UserInput
+Chatbot -- UserInput
+Chatbot -- OpenAIAPI
+Database -- Question
+Database -- Response
+User -- Chatbot
+
 @enduml

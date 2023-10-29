@@ -2,6 +2,18 @@
 
 So far, there is only a backend API implemented using Spring Boot.
 
+## Main architecture
+![Class diagram](docs/generated/class_diagram.png)
+
+There are two key concepts important for the Bot:
+- Question
+- User Input
+
+The Bot stores question / response pairs using predefined questions about different topics in *Question* objects and associate them with *Response* objects using the *QuestionResponse* entity.
+User inputs are first validated, and then transformed into a valid Question entity.
+
+![Alt text](docs/generated/input_sequence.png)
+
 ## Requirements
 
 Technology Stack (so far):
