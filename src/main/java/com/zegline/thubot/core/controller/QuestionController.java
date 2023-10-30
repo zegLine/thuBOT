@@ -22,7 +22,7 @@ import com.zegline.thubot.core.repository.QuestionRepository;
 import com.zegline.thubot.core.repository.QuestionResponseRepository;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/api/question")
 public class QuestionController {
 
 	@Autowired
