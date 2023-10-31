@@ -27,7 +27,8 @@ Technology Stack (so far):
 
 ## Running the backend
 
-Use `gradle` in order to build the project. The root directory has a `build.gradle` file which has the necessary scripts in order to build the app along with its dependencies.
+Use `maven` in order to build the project. The root directory has a `pom.xml` file which has the necessary configuration in order to build the app along with its dependencies.
+Open the terminal and run `mvn spring-boot:run`
 
 ### IntelIJ Idea
 
@@ -35,8 +36,8 @@ Use `gradle` in order to build the project. The root directory has a `build.grad
 
 ### VSCode
 
- Install the `Extenstion Pack for Java` extension pack in VS Code. This will bring all the necessary tools.
- Afterwards, reload VS Code and open the repository. There should be a pop-up asking if the project should use `maven` or `gradle`. Choose `gradle`. The build should be running in the background, and you can check its status by clicking th icon in the bottom right corner. (look up `vscode gradle integration` for more info and debugging)
+Install the `Extenstion Pack for Java` extension pack in VS Code. This will bring all the necessary tools.
+Afterward, reload VS Code and open the repository. There should be a pop-up asking if the project should use `maven` or `gradle`. Choose `maven`. The build should be running in the background, and you can check its status by clicking th icon in the bottom right corner. (look up `vscode maven integration` for more info and debugging)
 
 Before running the code, you have to adjust the configurtion in the `application.properties` file inside `src/main/resources`. Most importantly adjust the config according to the following example:
 
