@@ -48,4 +48,6 @@ The easiest option is to download MySQL Server for Win, Mac or Linux and run the
 
 ## PlantUML and Diagrams
 
-Useful docs for PlantUML (Use case diagram for requirements specification): https://plantuml.com/use-case-diagram
+Useful docs for PlantUML: https://plantuml.com/
+
+Create your diagrams (if needed) in the `docs/` folder as .puml files, and afterwards export them as PNG files to `docs/generated/`
