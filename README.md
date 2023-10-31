@@ -39,17 +39,9 @@ Open the terminal and run `mvn spring-boot:run`
 Install the `Extenstion Pack for Java` extension pack in VS Code. This will bring all the necessary tools.
 Afterward, reload VS Code and open the repository. There should be a pop-up asking if the project should use `maven` or `gradle`. Choose `maven`. The build should be running in the background, and you can check its status by clicking th icon in the bottom right corner. (look up `vscode maven integration` for more info and debugging)
 
-Before running the code, you have to adjust the configurtion in the `application.properties` file inside `src/main/resources`. Most importantly adjust the config according to the following example:
+Before running the code, you have to adjust the configuration in the `application.properties` file inside `src/main/resources`. Copy the file `application.properties.example` to `application.properties` and change the DB connection settings and OpenAPI API key.
 
-```
-spring.application.name = "ThuBOT"
-spring.jpa.generate-ddl=true
-spring.jpa.show-sql=true
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://localhost:3306/THUBOT_DB?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-spring.datasource.username=DB_USERNAME
-spring.datasource.password=DB_PASSWORD
-```
+**NEVER PUSH THIS FILE TO GIT! It is in the .gitignore, and it should stay that way. Do not modify the example file, otherwise credentials WILL get leaked and your OpenAI account WILL be terminated.**
 
 This assumes you are running a MySQL server on localhost port 3306 (default for MySQL) and you have a db called THUBOT_DB and a user DB_USERNAME with DB_PASSWORD that has access to that database. 
 The easiest option is to download MySQL Server for Win, Mac or Linux and run the installer. It will have a GUI configurator that is easy to use.
