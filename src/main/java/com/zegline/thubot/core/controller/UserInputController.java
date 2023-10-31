@@ -1,3 +1,8 @@
+/*
+* POC (Proof of concept) implementation of question matching using the OpenAI API
+* using HttpURLConnection (net.java) for the request to OpenAI
+* and Jackson (com.fasterxml) for parsing JSON
+* */
 package com.zegline.thubot.core.controller;
 
 import java.io.BufferedReader;
