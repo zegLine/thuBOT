@@ -1,0 +1,25 @@
+@startuml "ThuBot Login flow"
+
+actor user
+participant thubot_core
+
+user -> thubot_core : Sends credentials
+
+alt login_correct
+
+thubot_core -> user : Sends bearer token
+
+else login_error
+
+thubot_core -> user : 403 Forbidden
+
+note left
+A 403 Forbidden is returned in both
+the case of user not found and
+password incorrect for security measures
+end note
+
+end
+
+
+@enduml
