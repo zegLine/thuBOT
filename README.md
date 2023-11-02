@@ -3,14 +3,25 @@
 So far, there is only a backend API implemented using Spring Boot.
 
 ## Main architecture
-![Class diagram](docs/generated/class_diagram.png)
+![Class diagram](docs/generated/class_diagram_new.png)
 
-There are two key concepts important for the Bot:
-- Question
-- User Input
+The important concepts are:
+- DialogNode
+- Chatbot
+- UserInput
 
-The Bot stores question / response pairs using predefined questions about different topics in *Question* objects and associate them with *Response* objects using the *QuestionResponse* entity.
-User inputs are first validated, and then transformed into a valid Question entity.
+Each DialogNode is one of three types (`ROOT`, `INTERMEDIARY` or `QUESTION`), has one parent and `n` children.
+
+A practical example:
+
+![Example of dialog node structure](docs/generated/dialog_node_example_practical.png)
+
+Therefore, the user will be prompted with the next possibilities in the dialogue only. When using natural language input, the OpenAI API is called with only the choices of the next level.
+Example: Asking a user whether they are a student or prospective student -> Send input along with the choices STUDENT, PROSPECTIVE STUDENT.
+
+This helps in reducing the amount of tokens used with the API. More info on tokens can be found in the [OpenAI documentation](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them).
+
+The following sequence diagram shows the interaction with OpenAI's API:
 
 ![Alt text](docs/generated/input_sequence.png)
 
