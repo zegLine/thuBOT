@@ -1,0 +1,38 @@
+@startuml
+skinparam componentStyle uml2
+
+' Define nodes
+actor "Browser" as browser
+cloud "Cloudflare\nFirewall & CDN" as cloudflare
+node "VPS\n139.144.71.39" as vps {
+    component "Nginx Reverse Proxy" as nginx
+    component "Java JAR Service\n(Spring Boot)" as service
+}
+node "DB Server\n172.104.157.101" as dbserver {
+    database "MySQL Server" as mysql
+}
+
+' Define relationships
+browser --> cloudflare : "Accesses\ndomain"
+cloudflare --> vps : "Forwards requests\nFilters non-EU traffic"
+vps --> nginx : "Routes to\nservice"
+nginx --> service : "Reverse proxies"
+service --> mysql : "Connects to\nMySQL"
+
+' Add notes
+note right of cloudflare
+  thubot.com
+  Blocks connections
+  outside EU
+end note
+
+note right of service
+  thubot_core.jar
+end note
+
+note right of dbserver
+  Only accepts connections
+  from VPS 139.144.71.39
+end note
+
+@enduml
