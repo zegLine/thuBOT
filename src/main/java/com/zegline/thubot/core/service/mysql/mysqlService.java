@@ -17,11 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class mysqlService {
     
-    public static List<String> dbNodeMatch(String UserInput, String currContext){
+    public static String dbNodeMatch(String UserInput){
         
             
 
+        return new String();
+    }
+
+    public static List<String> dbSubTree(String context){
         return new ArrayList<String>();
     }
+
         
 }
