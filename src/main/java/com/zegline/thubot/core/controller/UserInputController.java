@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zegline.thubot.core.service.dialogNodeMatch.dialogNodeMatch;
 import com.zegline.thubot.core.service.openai.OpenAIService;
 
 @RestController
@@ -20,12 +22,14 @@ public class UserInputController {
     private String openaiApiKey;
 
     @GetMapping("/ask")
-    public String input_ask(@RequestBody() Map<String, String> body) {
-        String question = body.get("question");
+    public List<String> input_ask(@RequestParam String userInput, @RequestParam String currentContext) {
+        String returnNodeStr = dialogNodeMatch.getResponseNode(userInput, currentContext);
 
         List<String> list_nodes = new ArrayList<>();
 
-        return OpenAIService.getQuestionMatch(question, list_nodes).get(0);
+
+        // OpenAIService.getQuestionMatch(question, list_nodes).get(0);
+        return new ArrayList<String>();
     }
 
     
