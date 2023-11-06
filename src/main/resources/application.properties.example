@@ -12,3 +12,10 @@ spring.thymeleaf.check-template-location=true
 spring.thymeleaf.enabled=true
 spring.thymeleaf.prefix=classpath:/templates/
 spring.thymeleaf.suffix=.html
+
+management.info.git.enabled=true
+management.info.java.enabled=true
+management.endpoint.info.enabled=true
+management.endpoints.web.exposure.include=*
+
+spring.info.git.location=classpath:git.properties
