@@ -42,5 +42,7 @@ jobs:
           password: ${{ secrets.SERVER_PASS }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            cp /thubot_core/*.jar /thubot_core/before_deploy/
+            cp /thubot_core/deployed/target/*.jar /thubot_core/thubot_core.jar
             sudo systemctl restart thubot
             sudo systemctl restart nginx
