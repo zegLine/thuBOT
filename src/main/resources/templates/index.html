@@ -9,19 +9,28 @@
             height: 100%;
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between; /* Vertical alignment */
             align-items: center;
             background-color: #f0f0f0;
         }
 
         .centered-text {
             font-family: 'Roboto', sans-serif;
-
             font-weight: bold;
         }
 
         .text-lg {
             font-size: 5em;
+        }
+
+        .corner-text {
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            color: red; /* Red color for the text */
+            position: absolute;
+            top: 10px; /* Adjust top position as needed */
+            right: 10px; /* Adjust right position as needed */
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
@@ -29,6 +38,7 @@
 <body>
 
 <div class="centered-text text-lg">ThuBOT</div>
+<div class="corner-text" th:text="${jsonData}"></div>
 
 </body>
 </html>
