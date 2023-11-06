@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.SERVER_PASS }}
           port: ${{ secrets.SSH_PORT }}
           source: "target/*.jar"
-          target: "/thubot_core/service-deployed.jar"
+          target: "/thubot_core/deployed/"
 
       - name: Restart services
         uses: appleboy/ssh-action@master
