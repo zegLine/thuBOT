@@ -10,5 +10,5 @@ import com.zegline.thubot.core.model.DialogNodeResponse;
 
 @Repository
 public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeResponse, Long>{
-    List<DialogNodeResponse> findByQuestion(DialogNode q);
+    //List<DialogNodeResponse> findByQuestion(DialogNode q);
 }

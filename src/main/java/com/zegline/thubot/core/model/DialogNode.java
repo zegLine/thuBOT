@@ -20,25 +20,31 @@ public class DialogNode {
     parameters = { @Parameter(name = "prefix", value = "QN") })
     @Column(name = "id")
     private String id;
+    @Column(name="dialog_text")
+    private String dialogText;
 
-    @Column(name = "question_text")
-    private String question_text;
+    @Column(name = "parent_node")
+    private DialogNode parent;
 
-    @OneToMany(mappedBy = "question")
+
+    @Column(name = "children_node")
+    private DialogNode[] children;
+
+    @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeResponse> questionrespons;
 
     public DialogNode() {}
 
     public DialogNode(String q) {
-        question_text = q;
+        dialogText = q;
     }
 
     public String getQuestionText() {
-        return question_text;
+        return dialogText;
     }
 
     public String toString() {
-        return "<Question> " + question_text;
+        return "<Question> " + dialogText;
     }
     
 }
