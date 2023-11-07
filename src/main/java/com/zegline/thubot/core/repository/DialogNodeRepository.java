@@ -3,9 +3,9 @@ package com.zegline.thubot.core.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.zegline.thubot.core.model.Question;
+import com.zegline.thubot.core.model.DialogNode;
 
 @Repository
-public interface QuestionRepository extends CrudRepository<Question, String> {
+public interface DialogNodeRepository extends CrudRepository<DialogNode, String> {
     
 }

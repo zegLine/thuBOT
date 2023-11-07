@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Question {
+public class DialogNode {
 
     @Id
     @GeneratedValue(generator="questionid-generator")
@@ -25,11 +25,11 @@ public class Question {
     private String question_text;
 
     @OneToMany(mappedBy = "question")
-    Set<QuestionResponse> questionresponses;
+    Set<DialogNodeResponse> questionrespons;
 
-    public Question() {}
+    public DialogNode() {}
 
-    public Question(String q) {
+    public DialogNode(String q) {
         question_text = q;
     }
 

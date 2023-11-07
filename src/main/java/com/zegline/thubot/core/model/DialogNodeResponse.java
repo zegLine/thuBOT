@@ -6,21 +6,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class QuestionResponse {
+public class DialogNodeResponse {
     
     @Id
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
-    private Question question;
+    private DialogNode dialogNode;
 
     @ManyToOne
     @JoinColumn(name = "response_id")
     private Response response;
 
-    public Question getQuestion() {
-        return question;
+    public DialogNode getQuestion() {
+        return dialogNode;
     }
 
     public Response getResponse() {
