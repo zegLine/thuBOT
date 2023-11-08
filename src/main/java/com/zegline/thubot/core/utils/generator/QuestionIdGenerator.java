@@ -29,7 +29,7 @@ public class QuestionIdGenerator implements IdentifierGenerator {
 
     private boolean isIdExists(SharedSessionContractImplementor session, String generatedId) {
         // Check if an entity with the given ID already exists in the database
-        return session.createQuery("select count(*) from Question where id = :id", Long.class)
+        return session.createQuery("select count(*) from DialogNode where id = :id", Long.class)
                 .setParameter("id", generatedId)
                 .uniqueResult() > 0;
     }
