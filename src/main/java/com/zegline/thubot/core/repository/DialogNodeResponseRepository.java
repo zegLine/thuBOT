@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.model.DialogNodeResponse;
+import com.zegline.thubot.core.model.DialogNodeToResponse;
 
 @Repository
-public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeResponse, Long>{
+public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeToResponse, Long>{
     //List<DialogNodeResponse> findByQuestion(DialogNode q);
 }
