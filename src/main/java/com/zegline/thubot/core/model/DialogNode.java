@@ -18,17 +18,17 @@ import jakarta.persistence.OneToMany;
 public class DialogNode {
 
     @Id
-    @GeneratedValue(generator="questionid-generator")
-    @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator",
-    parameters = { @Parameter(name = "prefix", value = "QN") })
+    @GeneratedValue(generator = "questionid-generator")
+    @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator", parameters = {
+            @Parameter(name = "prefix", value = "QN") })
 
     @Column(name = "id")
     private String id;
-    
-    @Column(name="dialog_text")
+
+    @Column(name = "dialog_text")
     private String dialogText;
 
-    @Column(name="msg_text")
+    @Column(name = "msg_text")
     private String msgText;
 
     @OneToMany(mappedBy = "dialogNode")
@@ -40,27 +40,49 @@ public class DialogNode {
     @ManyToMany()
     private Set<DialogNode> children = new HashSet<>();
 
-    public DialogNode() {}
+    public DialogNode() {
+    }
 
     public DialogNode(String q, String p) {
         dialogText = q;
         msgText = p;
     }
 
-    public String getQuestionText() {
-        return dialogText;
+    public DialogNode addChild(DialogNode c) {
+        this.children.add(c);
+        return this;
     }
 
     public String toString() {
-        return "<Question> " + dialogText;
+        return "<Dialog> " + dialogText;
+    }
+
+    public String getDialogText() {
+        return dialogText;
     }
 
     public DialogNode getParent() {
         return this.parent;
     }
 
+    public String getMsgText() {
+        return this.msgText;
+    }
+
+    public Set<DialogNode> getChildren() {
+        return this.children;
+    }
+
     public void setParent(DialogNode dn) {
         this.parent = dn;
+    }
+
+    public void setDialogText(String dialogText) {
+        this.dialogText = dialogText;
+    }
+
+    public void setMsgText(String msgText) {
+        this.msgText = msgText;
     }
     
 }
