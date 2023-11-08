@@ -20,7 +20,7 @@ public class Response {
     private String response_text;
 
     @OneToMany(mappedBy = "response")
-    Set<DialogNodeResponse> dialogNodeRespons;
+    Set<DialogNodeToResponse> dialogNodeRespons;
 
     public Response() {}
 

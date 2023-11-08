@@ -18,20 +18,14 @@ public class DialogNode {
     @GeneratedValue(generator="questionid-generator")
     @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator",
     parameters = { @Parameter(name = "prefix", value = "QN") })
+
     @Column(name = "id")
     private String id;
     @Column(name="dialog_text")
     private String dialogText;
 
-    @Column(name = "parent_node")
-    private DialogNode parent;
-
-
-    @Column(name = "children_node")
-    private DialogNode[] children;
-
     @OneToMany(mappedBy = "dialogNode")
-    Set<DialogNodeResponse> questionrespons;
+    Set<DialogNodeToResponse> questionresponse;
 
     public DialogNode() {}
 
