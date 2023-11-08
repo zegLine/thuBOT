@@ -22,23 +22,24 @@ public class dialogNodeMatch {
     /**
      * Matches the user input with responses in the databases
      * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
-     * @param parent <b>String</b> The current context the chatbot is in.
+     * @param parent <b>String</b> The id of the parent node.
      * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
      * 
      */
-    public static String getResponseNode(String userInput, DialogNode parent){
+    public static String getResponseNode(String userInput, String parent_id){
         
-
+        //First match with one node in the database, and if not found, send the user input and the 
+        // subtree and the current parent text to openAI
 
 
 
         List<String> responseList;
         List<String> possibleResponses;
-        responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
+        //responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
 
-        if(responseList.size()!=0){
-            return responseList.get(0);
-        }
+        //if(responseList.size()!=0){
+        //    return responseList.get(0);
+       //}
 
         return "null";
     }
