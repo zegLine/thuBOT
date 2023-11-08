@@ -12,33 +12,33 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Question {
+public class DialogNode {
 
     @Id
     @GeneratedValue(generator="questionid-generator")
     @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator",
     parameters = { @Parameter(name = "prefix", value = "QN") })
+
     @Column(name = "id")
     private String id;
+    @Column(name="dialog_text")
+    private String dialogText;
 
-    @Column(name = "question_text")
-    private String question_text;
+    @OneToMany(mappedBy = "dialogNode")
+    Set<DialogNodeToResponse> questionresponse;
 
-    @OneToMany(mappedBy = "question")
-    Set<QuestionResponse> questionresponses;
+    public DialogNode() {}
 
-    public Question() {}
-
-    public Question(String q) {
-        question_text = q;
+    public DialogNode(String q) {
+        dialogText = q;
     }
 
     public String getQuestionText() {
-        return question_text;
+        return dialogText;
     }
 
     public String toString() {
-        return "<Question> " + question_text;
+        return "<Question> " + dialogText;
     }
     
 }
