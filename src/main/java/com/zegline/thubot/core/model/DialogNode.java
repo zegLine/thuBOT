@@ -43,16 +43,30 @@ public class DialogNode {
     public DialogNode() {
     }
 
+    /**
+     * Constructor for DialogNode.
+     * @param q <b>String</b> The text the dialog node will contain.
+     * @param p <b>String</b> The message printed out after the DialogNode's text.
+     */
     public DialogNode(String q, String p) {
         dialogText = q;
         msgText = p;
     }
 
+    /**
+     * Adds a child to the current DialogNode.
+     * @param c <b>DialogNode</b> Child to be added to the children list of the DialogNode.
+     * @return <i>this</i> <d>DialogNode</d>
+     */
     public DialogNode addChild(DialogNode c) {
         this.children.add(c);
         return this;
     }
 
+    /**
+     * Converts DialogNode to a String
+     * @return <b>String</b> The Text that the node contains
+     */
     public String toString() {
         return "<Dialog> " + dialogText;
     }

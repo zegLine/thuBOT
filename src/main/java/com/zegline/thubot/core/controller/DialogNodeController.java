@@ -17,6 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 
+
+/**
+ * Controller class handling operations related to DialogNode entities, serving as an interface for creating and retrieving DialogNodes.
+ */
 @RestController
 @RequestMapping("/api/dialognode")
 public class DialogNodeController {
@@ -24,6 +28,13 @@ public class DialogNodeController {
     @Autowired
     DialogNodeRepository dnr;
 
+
+    /**
+     * Creates a new DialogNode based on the provided data in the request body.
+     *
+     * @param body A map containing dialogNodeText and msgText to create the DialogNode.
+     * @return The created DialogNode.
+     */
     @PostMapping("/create")
     public DialogNode dialog_node_create(@RequestBody Map<String, String> body) {
         String dialogNodeText = body.get("dialogNodeText");
@@ -33,6 +44,14 @@ public class DialogNodeController {
         dnr.save(d);
         return d;
     }
+
+    /**
+     * Retrieves DialogNode(s) based on the provided parameters or returns all DialogNodes if no parameters are specified.
+     *
+     * @param body A map containing parameters for filtering DialogNodes (optional).
+     * @return Set of DialogNodes matching the provided criteria or all DialogNodes if no specific parameters are provided.
+     * @throws ResponseStatusException If the provided ID is empty or if the DialogNode with the specified ID is not found.
+     */
 
     @GetMapping("/get")
     public Set<DialogNode> get(@RequestBody (required = false) Map<String, String> body) {

@@ -22,7 +22,7 @@ public class dialogNodeMatch {
     /**
      * Matches the user input with responses in the databases
      * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
-     * @param parent <b>String</b> The id of the parent node.
+     * @param parent_id <b>String</b> The id of the parent node.
      * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
      * 
      */
