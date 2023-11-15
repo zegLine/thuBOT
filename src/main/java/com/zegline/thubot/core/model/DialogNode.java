@@ -34,10 +34,7 @@ public class DialogNode {
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
-    @ManyToOne()
-    private DialogNode parent;
-
-    @ManyToMany()
+    @OneToMany()
     private Set<DialogNode> children = new HashSet<>();
 
     public DialogNode() {
@@ -61,20 +58,12 @@ public class DialogNode {
         return dialogText;
     }
 
-    public DialogNode getParent() {
-        return this.parent;
-    }
-
     public String getMsgText() {
         return this.msgText;
     }
 
     public Set<DialogNode> getChildren() {
         return this.children;
-    }
-
-    public void setParent(DialogNode dn) {
-        this.parent = dn;
     }
 
     public void setDialogText(String dialogText) {

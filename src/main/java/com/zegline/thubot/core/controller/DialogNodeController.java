@@ -1,9 +1,6 @@
 package com.zegline.thubot.core.controller;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,25 +21,36 @@ public class DialogNodeController {
     @Autowired
     DialogNodeRepository dnr;
 
-    @PostMapping("/create")
+    @PostMapping("/createChild")
     public DialogNode dialog_node_create(@RequestBody Map<String, String> body) {
         String dialogNodeText = body.get("dialogNodeText");
         String msgText = body.get("msgText");
+        String parentNodeId = body.get("parentNodeId");
 
-        DialogNode d = new DialogNode(dialogNodeText, msgText);
-        dnr.save(d);
-        return d;
+        Optional<DialogNode> optionalParent = dnr.findById(parentNodeId);
+        if (optionalParent.isPresent()) {
+            DialogNode parent = optionalParent.get();
+            DialogNode d = new DialogNode(dialogNodeText, msgText);
+            dnr.save(d);
+            parent.addChild(d);
+
+            return parent;
+        };
+
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "couldn't find parent"
+        );
     }
 
     @GetMapping("/get")
     public Set<DialogNode> get(@RequestBody (required = false) Map<String, String> body) {
         Set<DialogNode> returned = new HashSet<>() ;
-        Iterable<DialogNode> a;
         if(body == null){
-            a = dnr.findAll();
-            
-            for (DialogNode dialogNode : a) {
-                returned.add(dialogNode);
+            List<String> rootIds = dnr.findIdsWithNoChildren();
+
+            for (String rootId : rootIds) {
+                System.out.println(rootId);
+                returned.add(dnr.findById(rootId).get());
             }
 
             return returned;
@@ -64,4 +72,5 @@ public class DialogNodeController {
             HttpStatus.NOT_FOUND, "id cannot be empty"
         );
     }
+
 }
