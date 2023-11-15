@@ -33,7 +33,7 @@ public class DialogNodeController {
             DialogNode d = new DialogNode(dialogNodeText, msgText);
             dnr.save(d);
             parent.addChild(d);
-
+            dnr.save(parent);
             return parent;
         };
 
