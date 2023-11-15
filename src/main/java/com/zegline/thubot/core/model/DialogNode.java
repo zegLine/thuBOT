@@ -3,6 +3,11 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -14,9 +19,14 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class DialogNode {
-
+    @Getter
     @Id
     @GeneratedValue(generator = "questionid-generator")
     @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator", parameters = {
@@ -39,9 +49,6 @@ public class DialogNode {
 
     @ManyToMany()
     private Set<DialogNode> children = new HashSet<>();
-
-    public DialogNode() {
-    }
 
     /**
      * Constructor for DialogNode.
