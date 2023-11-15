@@ -28,7 +28,7 @@ function createMap(entities, parentElement) {
 }
 
 function fetchDataAndDisplayMap() {
-    fetch('http://localhost:8080/api/dialognode/get')
+    fetch('/api/dialognode/get')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('map-container');
