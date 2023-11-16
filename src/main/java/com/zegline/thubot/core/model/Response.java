@@ -1,3 +1,10 @@
+/**
+ * @file Response.java
+ * @brief Entity class for storing response text associated with dialog nodes
+ *
+ * This class represents a response entity in the database which stores the response text. Each response
+ * can be associated with multiple dialog nodes through a DialogNodeToResponse relationship
+ */
 package com.zegline.thubot.core.model;
 
 import java.util.Set;
@@ -9,6 +16,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+/**
+ * @class Response
+ * @brief Entity representing a response in the system
+ *
+ * The Response entity contains the response text that can be associated with dialog nodes. The association
+ * is managed through a set of DialogNodeToResponse entities which map each response to various dialog nodes
+ */
 @Entity
 public class Response {
 
@@ -22,16 +36,33 @@ public class Response {
     @OneToMany(mappedBy = "response")
     Set<DialogNodeToResponse> dialogNodeRespons;
 
+    /**
+     * Default constructor
+     */
     public Response() {}
 
+    /**
+     * Constructor with response text initialization
+     *
+     * @param r The response text to initialize
+     */
     public Response(String r) {
         response_text = r;
     }
 
+    /**
+     * Gets the response text
+     *
+     * @return The text of the response
+     */
     public String getResponseText() {
         return response_text;
     }
 
+    /**
+     * Sets the response text
+     * @param rt The text to set as the response
+     */
     public void setResponseText(String rt) {
         response_text = rt;
     }

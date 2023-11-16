@@ -1,3 +1,11 @@
+/**
+ * @file DialogNode.java
+ * @brief Entity representing a dialog node in a conversation flow
+ *
+ * This class is used to model a node in a conversational dialog flow, where each node represents a point in the conversation.
+ * Nodes have a hierarchical structure with parent and child relationships
+ */
+
 package com.zegline.thubot.core.model;
 
 import java.util.HashSet;
@@ -19,7 +27,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
-
+/**
+ * @class DialogNode
+ * @brief Represents a node within a dialog conversation
+ *
+ * A dialog node is an entity that contains text for both the dialog (question) and the message (response).
+ * It is part of a larger conversation flow and can have relationships to other nodes
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,23 +1,26 @@
+/**
+ * @file DialogNodeMatch.java
+ * @brief Service Class for matching dialog nodes to user input
+ *
+ * This service class provides functionality to match user input with dialog nodes,
+ * utilizing both local repository data and external OpenAI services
+ */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.net.URL;
-import java.net.HttpURLConnection;
-import java.io.DataOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.service.openai.OpenAIService;
-
+/**
+ * @class DialogNodeMatch
+ * @brief Service class for matching user input to dialog nodes
+ *
+ * This class offers methods to match user input against dialog nodes from a repository
+ * or generate responses using OpenAI's services. It encapsulates the logic for the
+ * dialog node matching process.
+ */
 @Service
-public class dialogNodeMatch {
+public class DialogNodeMatch {
     
     /**
      * Matches the user input with responses in the databases

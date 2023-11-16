@@ -1,3 +1,9 @@
+/**
+ * @file DialogNodeController.java
+ * @brief Controller for handling requests related to DialogNodes.
+ * This controller provides REST endpoints for creating and retrieving DialogNodes
+ * which are components of a conversational interface
+ */
 package com.zegline.thubot.core.controller;
 
 import java.util.*;
@@ -16,7 +22,11 @@ import com.zegline.thubot.core.repository.DialogNodeRepository;
 
 
 /**
- * Controller class handling operations related to DialogNode entities, serving as an interface for creating and retrieving DialogNodes.
+ * @class DialogNodeController
+ * @brief Controller class to manage DialogNode resources
+ *
+ * Provides the REST endpoints for creating and retrieving DialogNode entities. DialogNodes
+ * are the constructs used to hold dialog data for open conversations according to sessionId
  */
 @RestController
 @RequestMapping("/api/dialognode")
