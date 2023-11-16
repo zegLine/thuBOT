@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * Controller class handling GUI-related operations and serving the index page.
+ */
 @Controller
 public class GUIController {
 
