@@ -38,12 +38,14 @@ public class DialogNode {
     @Column(name = "dialog_text")
     private String dialogText;
 
+    @Getter
     @Column(name = "msg_text")
     private String msgText;
 
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
+    @Getter
     @OneToMany()
     private Set<DialogNode> children = new HashSet<>();
 
@@ -75,17 +77,6 @@ public class DialogNode {
         return "<Dialog> " + dialogText;
     }
 
-    public String getDialogText() {
-        return dialogText;
-    }
-
-    public String getMsgText() {
-        return this.msgText;
-    }
-
-    public Set<DialogNode> getChildren() {
-        return this.children;
-    }
 
     public void setDialogText(String dialogText) {
         this.dialogText = dialogText;
