@@ -26,4 +26,9 @@ public class GUIController {
         return "index";
     }
 
+    @GetMapping("/dialognode")
+    public String getDN() {
+        return "explore_nodes";
+    }
+
 }
