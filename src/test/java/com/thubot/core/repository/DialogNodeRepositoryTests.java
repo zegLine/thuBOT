@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.HashSet;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -33,7 +35,7 @@ public class DialogNodeRepositoryTests {
 
         //Assert
         Assertions.assertNotNull(savedDialogNode);
-        Assertions.assertEquals(savedDialogNode.getId(), testNode.getId());
+        Assertions.assertEquals(savedDialogNode, testNode);
 
     }
 
@@ -41,26 +43,29 @@ public class DialogNodeRepositoryTests {
     public void DialogNodeRelationship_Find_ReturnFoundRelationship(){
 
         //Arrange
-        DialogNode rootNode = DialogNode.builder()
-                .id("QR0000")
-                .dialogText("This is the root node")
-                .msgText("Root")
-                .parent(null).build();
 
         DialogNode leafNode = DialogNode.builder()
                 .id("QR1000")
                 .dialogText("This is a leaf node")
                 .msgText("Leaf")
-                .parent(rootNode).build();
+                .children(new HashSet<>(1))
+                .build();
+
+        DialogNode rootNode = DialogNode.builder()
+                .id("QR0000")
+                .dialogText("This is the root node")
+                .msgText("Root")
+                .children(new HashSet<>(1))
+                .build();
+        rootNode.addChild(leafNode);
 
         //Act
         DialogNode savedRoot = dnr.save(rootNode);
         DialogNode savedLeaf = dnr.save(leafNode);
 
         //Assert
-        //Assertions.assertNotNull(rootNode.getChildren());
+        Assertions.assertNotNull(savedRoot.getChildren());
+        Assertions.assertEquals(dnr.findByChildren(savedLeaf), savedRoot);
     }
-
-
 
 }
