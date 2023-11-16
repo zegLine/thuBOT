@@ -41,7 +41,7 @@ public class DialogNodeController {
         Optional<DialogNode> optionalParent = dnr.findById(parentNodeId);
         if (optionalParent.isPresent()) {
             DialogNode parent = optionalParent.get();
-            DialogNode d = new DialogNode(dialogNodeText, msgText);
+            DialogNode d = DialogNode.builder().dialogText(dialogNodeText).msgText(msgText).build();
             dnr.save(d);
             parent.addChild(d);
             dnr.save(parent);
@@ -77,7 +77,7 @@ public class DialogNodeController {
 
         if(!body.get("id").isEmpty()) {
             Optional<DialogNode> match = dnr.findById(body.get("id"));
-            if (!match.isPresent()) {
+            if (match.isEmpty()) {
                 throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "couldn't find node"
                 );
