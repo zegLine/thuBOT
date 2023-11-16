@@ -1,3 +1,11 @@
+/**
+ * @file OpenAIService.java
+ * @brief Service class for interactions with the OpenAI API
+ *
+ * This class is responsible for making requests to the OpenAI API with the user input
+ * and fetching a response based on the list of possible questions provided. It handles
+ * the construction of the request, communication with the API, and parsing of the response
+ */
 package com.zegline.thubot.core.service.openai;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,16 +22,27 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @class OpenAIService
+ * @brief Service class for querying the OpenAI API
+ *
+ * The OpenAIService class encapsulates the functionality required to interact with the OpenAI API.
+ * It performs HTTP POST requests to send the user input and processes the response to find the best-matching
+ * question node
+ */
 @Service
 public class OpenAIService {
     
     @Value("${openai.api.key}") // Read the API key from your application.properties or application.yml file
     private static String openaiApiKey;
     /**
-     * Connects to the the OpenAIApi and sends the provided user input and the possible question nodes.
-     * @param input_question : <b>String</b> Natural language user input 
-     * @param list_nodes : <b>String List</b> Nodes to match the input with
-     * @return A <b>String List</b> of length one containing the matched node, or of length zero incase of no matched node
+     * Sends user input to the OpenAI API and receives a matched response.
+     * This method constructs a request with the user's input and a list of possible questions,
+     * sends it to the OpenAI API, and parses the response to extract the question that best matches the input
+     *
+     * @param input_question Natural language user input
+     * @param list_nodes List of questions to match the input against
+     * @return A list containing the best-matched question node or an empty list if no match is found
      */
     public static List<String> getQuestionMatch(String input_question, List<String> list_nodes) {
 

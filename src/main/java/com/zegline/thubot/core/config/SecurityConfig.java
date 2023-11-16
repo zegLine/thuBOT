@@ -1,3 +1,10 @@
+/**
+ * @file SecurityConfig.java
+ * @brief Configuration class for Spring Security
+ *
+ * This class contains the configuration for Spring Security, defining the security filter chain,
+ * user details service, and password encoder
+ */
 package com.zegline.thubot.core.config;
 
 import org.springframework.context.annotation.Bean;
@@ -15,10 +22,24 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * @class SecurityConfig
+ * @brief Configuration class to set up security filters and user details
+ *
+ * This class provides beans to set up the security filters, define users with their roles and authorities,
+ * and encode their passwords. It uses an in-memory user details manager for simplicity
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configures the security filter chain to set up CORS, CSRF, and endpoint access rules
+     *
+     * @param http HttpSecurity to configure the request authorizations and access rules
+     * @return The configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
@@ -31,6 +52,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Creates an in-memory user details service with predefined users
+     *
+     * @return An instance of UserDetailsService with predefined user details
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
@@ -48,6 +74,11 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user, sysUser);
     }
 
+    /**
+     * Configures the password encoder to be used for encoding and matching passwords
+     *
+     * @return A PasswordEncoder that uses BCrypt hashing for securing passwords
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

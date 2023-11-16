@@ -1,3 +1,10 @@
+/**
+ * @file DialogNodeRepository.java
+ * @brief Interface for CRUD operations on DialogNode entities
+ *
+ * This interface provides access to the DialogNode database, allowing for simple CRUD operations.
+ * Additional query methods can be defined for specific search criteria related to DialogNodes
+ */
 package com.zegline.thubot.core.repository;
 
 import org.springframework.data.jpa.repository.Query;

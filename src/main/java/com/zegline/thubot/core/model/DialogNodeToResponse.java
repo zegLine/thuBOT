@@ -1,3 +1,10 @@
+/**
+ * @file DialogNodeToResponse.java
+ * @brief Entity class that represents the association between dialog nodes and responses
+ *
+ * This class is a join entity that maps the many-to-many relationship between dialog nodes and responses
+ * into two many-to-one relationships
+ */
 package com.zegline.thubot.core.model;
 
 import jakarta.persistence.Entity;
@@ -7,8 +14,12 @@ import jakarta.persistence.ManyToOne;
 
 
 /**
- * Entity class representing the relationship between a DialogNode and its associated Response.
- * This entity establishes a link between a DialogNode and a Response through their IDs.
+ * @class DialogNodeToResponse
+ * @brief Represents a link between a DialogNode and a Response entity
+ *
+ * This entity serves as a join table in the database which holds the association between a dialog node
+ * and a response. Each DialogNode can have multiple responses associated with it, and each response can be
+ * associated with multiple dialog nodes
  */
 @Entity
 public class DialogNodeToResponse {
@@ -24,10 +35,20 @@ public class DialogNodeToResponse {
     @JoinColumn(name = "response_id")
     private Response response;
 
+    /**
+     * Gets the associated DialogNode question
+     *
+     * @return The DialogNode associated with this relationship
+     */
     public DialogNode getQuestion() {
         return dialogNode;
     }
 
+    /**
+     * Gets the associated Response entity
+     *
+     * @return The Response associated with this relationship
+     */
     public Response getResponse() {
         return response;
     }

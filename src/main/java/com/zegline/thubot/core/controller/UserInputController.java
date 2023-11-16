@@ -1,3 +1,10 @@
+/**
+ * @file UserInputController.java
+ * @brief Controller for handling user input related endpoints
+ *
+ * This controller is responsible for processing user input and returning appropriate
+ * responses by interfacing with the DialogNodeMatch service.
+ */
 package com.zegline.thubot.core.controller;
 
 import java.util.ArrayList;
@@ -9,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zegline.thubot.core.service.dialogNodeMatch.dialogNodeMatch;
+import com.zegline.thubot.core.service.dialogNodeMatch.DialogNodeMatch;
 
 
 /**
- * Controller class managing user input through REST API endpoints for interaction with dialog nodes and external services.
+ * @class UserInputController
+ * @brief Controller to manage user input related actions
+ *
+ * Provides an API endpoint to receive user input and return a list of possible responses
+ * by matching with dialog nodes or querying the OpenAI service
  */
 @RestController
 @RequestMapping("/api/input")
@@ -31,7 +42,7 @@ public class UserInputController {
      */
     @GetMapping("/ask")
     public List<String> input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
-        String returnNodeStr = dialogNodeMatch.getResponseNode(userInput, parent_id);
+        String returnNodeStr = DialogNodeMatch.getResponseNode(userInput, parent_id);
 
         List<String> list_nodes = new ArrayList<>();
 
