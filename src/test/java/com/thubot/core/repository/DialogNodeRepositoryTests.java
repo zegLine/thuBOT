@@ -60,8 +60,9 @@ public class DialogNodeRepositoryTests {
         rootNode.addChild(leafNode);
 
         //Act
-        DialogNode savedRoot = dnr.save(rootNode);
         DialogNode savedLeaf = dnr.save(leafNode);
+
+        DialogNode savedRoot = dnr.save(rootNode);
 
         //Assert
         Assertions.assertNotNull(savedRoot.getChildren());
