@@ -49,6 +49,7 @@ public class SecurityConfig {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeRequests(authorize -> authorize
+                        .requestMatchers("/api/secret").hasRole("SYS")
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
