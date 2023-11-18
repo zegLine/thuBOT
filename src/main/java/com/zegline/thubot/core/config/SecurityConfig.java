@@ -7,6 +7,7 @@
  */
 package com.zegline.thubot.core.config;
 
+import com.zegline.thubot.core.service.user.ThuUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -45,33 +49,14 @@ public class SecurityConfig {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeRequests(authorize -> authorize
+                        .requestMatchers("/api/secret").hasRole("SYS")
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .httpBasic(withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll());
         return http.build();
-    }
-
-    /**
-     * Creates an in-memory user details service with predefined users
-     *
-     * @return An instance of UserDetailsService with predefined user details
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails sysUser = User.builder()
-                .username("sys_user")
-                .password(passwordEncoder().encode("password_sys"))
-                .roles("SYSTEM")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, sysUser);
     }
 
     /**
