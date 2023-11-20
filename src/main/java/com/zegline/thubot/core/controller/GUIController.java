@@ -57,4 +57,13 @@ public class GUIController {
         return "login";
     }
 
+    @GetMapping("/register")
+    String register(Model model) {
+        // Fetch JSON data from /actuator/info
+        String jsonData = infoEndpoint.info().get("git").toString();
+
+        model.addAttribute("commitid", jsonData);
+        return "register";
+    }
+
 }

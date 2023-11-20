@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/login-style.css">
-    <title>Please Log In</title>
+    <title>Register an Account</title>
 </head>
 <body>
 <div class="login-container">
     <div class="panel">
         <div class="welcome-text">
             <img src="img/logo_transparent.png" alt="Logo">
-            <h1>Welcome!</h1>
-            <p>The THU bot is here to help you with information about Technische Hochschule Ulm. Please provide your credentials in order to access the bot.</p>
+            <h1>Willkommen!</h1>
+            <p>It is very easy to register an account with us. Fill out this form, and you will soon get access to the bot.</p>
         </div>
         <div class="links">
             <a href="#">Impressum</a>
@@ -29,10 +29,13 @@
                 <input type="password" name="password" placeholder="Password" class="input-field">
             </div>
             <div class="form-group">
-                <input type="submit" value="Log in" class="submit-button">
+                <input type="password" name="password_confirm" placeholder="Confirm password" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register account" class="submit-button">
             </div>
             <div class="register-text">
-                <a href="/register" class="no-decoration muted-text">Don't have an account yet?</a>
+                <a href="/login" class="no-decoration muted-text">Already have an account?</a>
             </div>
         </form>
     </div>

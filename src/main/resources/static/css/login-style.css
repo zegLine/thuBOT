@@ -72,6 +72,7 @@ body {
 .submit-button {
     width: 100%;
     padding: 10px;
+    margin-top: 15px;
     background: #3145ee;
     border: none;
     border-radius: 5px;
@@ -102,4 +103,17 @@ body {
 .welcome-text img {
     max-width: 100px; /* Adjust the maximum width as needed */
     height: auto; /* Maintain aspect ratio */
+}
+
+.muted-text {
+    color: #454545;
+    font-size: 14px;
+}
+
+.register-text {
+    margin-top: 10px;
+}
+
+.no-decoration {
+    text-decoration: none !important;
 }
