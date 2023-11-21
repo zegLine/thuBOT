@@ -21,7 +21,8 @@ import java.util.List;
  */
 @Service
 public class DialogNodeMatch {
-    
+
+
     /**
      * Matches the user input with responses in the databases
      * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
@@ -33,16 +34,28 @@ public class DialogNodeMatch {
         
         //First match with one node in the database, and if not found, send the user input and the 
         // subtree and the current parent text to openAI
-
-
-
+        String machedNode = matchNodeToInput();
         List<String> responseList;
         List<String> possibleResponses;
-        //responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
+
+        if(machedNode.equals("null")){
+            //responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
+
+        }else{
+            //Todo return Node content
+
+        }
+
 
         //if(responseList.size()!=0){
         //    return responseList.get(0);
        //}
+
+        return "null";
+    }
+
+
+    private static String matchNodeToInput(){
 
         return "null";
     }
