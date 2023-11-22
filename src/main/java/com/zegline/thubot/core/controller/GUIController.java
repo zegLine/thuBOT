@@ -7,14 +7,23 @@
  */
 package com.zegline.thubot.core.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,7 +58,7 @@ public class GUIController {
     }
 
     @GetMapping("/login")
-    String login(Model model) {
+    public String login(Model model) {
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
@@ -58,11 +67,36 @@ public class GUIController {
     }
 
     @GetMapping("/register")
-    String register(Model model) {
+    public String showRegisterForm(Model model) {
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
         model.addAttribute("commitid", jsonData);
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(Model model, @RequestParam Map<String, String> body) {
+        List<String> errors = new ArrayList<>();
+
+        // Fetch JSON data from /actuator/info and add git info to frontend
+        String jsonData = infoEndpoint.info().get("git").toString();
+        model.addAttribute("commitid", jsonData);
+
+        String submittedUsername = body.get("username");
+        String submittedPassword = body.get("password");
+        String submittedPasswordConfirmed = body.get("password_confirm");
+
+        if (!submittedPassword.equals(submittedPasswordConfirmed)) {
+            errors.add("Passwords do not match. Please try again.");
+        }
+
+        if (!errors.isEmpty()) {
+            // There are errors, add them to the model and return to the registration page
+            model.addAttribute("errors", errors);
+        }
+
+
         return "register";
     }
 

@@ -117,3 +117,14 @@ body {
 .no-decoration {
     text-decoration: none !important;
 }
+
+.error-badge {
+    display: block;
+    background-color: #ff0000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+}

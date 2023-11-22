@@ -7,6 +7,18 @@
     <title>Register an Account</title>
 </head>
 <body>
+
+<!-- Error Section -->
+<div th:if="${errors}">
+    <div class="error">
+        <ul>
+            <li style="text-decoration: none" th:each="error : ${errors}">
+                <span class="error-badge" th:text="${error}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <div class="login-container">
     <div class="panel">
         <div class="welcome-text">
@@ -20,6 +32,9 @@
             <a href="#">Data Processing</a>
         </div>
     </div>
+
+
+
     <div class="login-form">
         <form action="#" method="post">
             <div class="form-group">
