@@ -42,7 +42,7 @@ public class UserInputController {
      */
     @GetMapping("/ask")
     public List<String> input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
-        String returnNodeStr = DialogNodeMatch.getResponseNode(userInput, parent_id);
+        //String returnNodeStr = DialogNodeMatch.getResponseNode(userInput, parent_id);
 
         List<String> list_nodes = new ArrayList<>();
 

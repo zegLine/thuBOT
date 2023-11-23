@@ -9,6 +9,8 @@ package com.zegline.thubot.core.service.dialogNodeMatch;
 
 import org.springframework.stereotype.Service;
 
+import com.zegline.thubot.core.model.DialogNode;
+
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public class DialogNodeMatch {
      * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
      * 
      */
-    public static String getResponseNode(String userInput, String parent_id){
+    public static DialogNode getResponseNode(String userInput, DialogNode parent){
         
         //First match with one node in the database, and if not found, send the user input and the 
         // subtree and the current parent text to openAI
@@ -44,7 +46,7 @@ public class DialogNodeMatch {
         //    return responseList.get(0);
        //}
 
-        return "null";
+        return null;
     }
 
         
