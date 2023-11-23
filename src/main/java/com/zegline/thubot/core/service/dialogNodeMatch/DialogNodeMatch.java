@@ -12,8 +12,7 @@ import com.zegline.thubot.core.repository.DialogNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @class DialogNodeMatch
@@ -75,6 +74,22 @@ public class DialogNodeMatch {
     private String matchNodeToInput(String parent_id){
 
         return "null";
+    }
+
+    /**
+     * Get the Nodes with the Answers on the Bottom of the Promt Tree
+     * @param parent_id
+     * @return
+     */
+    private Set<DialogNode> getAnswersOfCurrentPromtTree(String parent_id){
+        Optional<DialogNode> node = dnr.findById(parent_id);
+        Set<DialogNode> answers = new HashSet<>();
+        if (node.isPresent()){
+            Set<DialogNode> children = node.get().getChildren();
+
+        }
+
+        return answers;
     }
 
         
