@@ -7,9 +7,13 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
+import com.zegline.thubot.core.model.DialogNode;
+import com.zegline.thubot.core.repository.DialogNodeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @class DialogNodeMatch
@@ -22,6 +26,9 @@ import java.util.List;
 @Service
 public class DialogNodeMatch {
 
+    @Autowired
+    private DialogNodeRepository dnr;
+
 
     /**
      * Matches the user input with responses in the databases
@@ -30,7 +37,7 @@ public class DialogNodeMatch {
      * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
      * 
      */
-    public static String getResponseNode(String userInput, String parent_id){
+    public String getResponseNode(String userInput, String parent_id){
         
         //First match with one node in the database, and if not found, send the user input and the 
         // subtree and the current parent text to openAI
@@ -39,6 +46,12 @@ public class DialogNodeMatch {
         List<String> possibleResponses;
 
         if(machedNode.equals("null")){
+            Optional<DialogNode> nodes = dnr.findById(parent_id);
+            if(nodes.isEmpty())
+                return "null";
+            for (int i = 0; i < nodes.stream().count(); i++){
+
+            }
             //responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
 
         }else{
@@ -55,7 +68,7 @@ public class DialogNodeMatch {
     }
 
 
-    private static String matchNodeToInput(){
+    private String matchNodeToInput(){
 
         return "null";
     }
