@@ -41,7 +41,7 @@ public class DialogNodeMatch {
         
         //First match with one node in the database, and if not found, send the user input and the 
         // subtree and the current parent text to openAI
-        String machedNode = matchNodeToInput();
+        String machedNode = matchNodeToInput(parent_id);
         List<String> responseList;
         List<String> possibleResponses;
 
@@ -67,8 +67,12 @@ public class DialogNodeMatch {
         return "null";
     }
 
+    /**
+     *
+     * @param parent_id <b>String</b> ID of the Parent node, to go down this Prompt Tree
+     */
 
-    private String matchNodeToInput(){
+    private String matchNodeToInput(String parent_id){
 
         return "null";
     }
