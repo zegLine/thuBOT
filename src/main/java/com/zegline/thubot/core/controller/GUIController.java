@@ -7,11 +7,14 @@
  */
 package com.zegline.thubot.core.controller;
 
+import com.zegline.thubot.core.model.security.User;
+import com.zegline.thubot.core.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -37,6 +40,12 @@ import java.util.regex.Pattern;
  */
 @Controller
 public class GUIController {
+
+    @Autowired
+    private UserRepository ur;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private InfoEndpoint infoEndpoint;
@@ -87,15 +96,27 @@ public class GUIController {
         String submittedPassword = body.get("password");
         String submittedPasswordConfirmed = body.get("password_confirm");
 
+        // Check password with confirmed
         if (!submittedPassword.equals(submittedPasswordConfirmed)) {
             errors.add("Passwords do not match. Please try again.");
+        }
+
+        // Check if user exists
+        if (ur.existsByUsername(submittedUsername)) {
+            errors.add("User with this username already exists");
         }
 
         if (!errors.isEmpty()) {
             // There are errors, add them to the model and return to the registration page
             model.addAttribute("errors", errors);
+        } else {
+            // Everything is OK (no errors) and we can add user in the db
+            User u = new User();
+            u.setUsername(submittedUsername);
+            u.setPassword(passwordEncoder.encode(submittedPassword));
+            ur.save(u);
+            model.addAttribute("message", "Registration was successful. Please log in");
         }
-
 
         return "register";
     }

@@ -13,10 +13,15 @@
     <div class="error">
         <ul>
             <li style="text-decoration: none" th:each="error : ${errors}">
-                <span class="error-badge" th:text="${error}"></span>
+                <span class="badge error-badge" th:text="${error}"></span>
             </li>
         </ul>
     </div>
+</div>
+
+<!-- Error Section -->
+<div th:if="${message}">
+    <span class="badge msg-badge" th:text="${message}"></span>
 </div>
 
 <div class="login-container">
