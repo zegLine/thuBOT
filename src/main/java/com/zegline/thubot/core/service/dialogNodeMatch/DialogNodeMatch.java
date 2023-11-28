@@ -7,11 +7,20 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zegline.thubot.core.model.DialogNode;
+import com.zegline.thubot.core.model.DialogNodeToResponse;
+import com.zegline.thubot.core.model.Response;
+import com.zegline.thubot.core.repository.DialogNodeRepository;
+import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
+import com.zegline.thubot.core.service.openai.OpenAIService;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 /**
  * @class DialogNodeMatch
@@ -24,30 +33,62 @@ import java.util.List;
 @Service
 public class DialogNodeMatch {
     
-    /**
-     * Matches the user input with responses in the databases
-     * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
-     * @param parent_id <b>String</b> The id of the parent node.
-     * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
-     * 
-     */
-    public static DialogNode getResponseNode(String userInput, DialogNode parent){
+    @Autowired
+    private DialogNodeRepository dialogNodeRepository;
+
+    @Autowired
+    private DialogNodeResponseRepository dialogNodeResponseRepository;
+
+    @Autowired
+    private OpenAIService openAIService;
+
+    public List<DialogNode> getResponseNode(String userInput, String parentId) {
+      
+        List<DialogNode> matchingNodes = findMatchingNodeLocally(userInput, parentId);
         
-        //First match with one node in the database, and if not found, send the user input and the 
-        // subtree and the current parent text to openAI
+      
+        if (matchingNodes.isEmpty()) {
+            matchingNodes = findMatchingNodeUsingOpenAI(userInput, parentId);
+        }
+        
+    
+        List<Response> responses = getResponsesForNode(matchingNodes);
 
-
-
-        List<String> responseList;
-        List<String> possibleResponses;
-        //responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
-
-        //if(responseList.size()!=0){
-        //    return responseList.get(0);
-       //}
-
-        return null;
+       
+        return buildResponse(matchingNodes, responses);
     }
 
+    private List<DialogNode> findMatchingNodeLocally(String userInput, String parentId) {
+
+        return dialogNodeRepository.findByParentIdAndDialogTextContainingIgnoreCase(parentId, userInput);
+    }
+
+
+    private List<DialogNode> findMatchingNodeUsingOpenAI(String userInput, String parentId) {
         
+        List<String> potentialQuestions = dialogNodeRepository.findAllDialogTextByParentId(parentId);
+        
+        List<String> matchedQuestions = openAIService.getQuestionMatch(userInput, potentialQuestions);
+        
+        List<DialogNode> matchedNodes = matchedQuestions.stream()
+            .map(qIndex -> potentialQuestions.get(Integer.parseInt(qIndex)))
+            .map(qText -> dialogNodeRepository.findByDialogText(qText))
+            .collect(Collectors.toList());
+        return matchedNodes;
+    }
+
+    private List<Response> getResponsesForNode(List<DialogNode> nodes) {
+       
+        List<Response> responses = new ArrayList<>();
+        for (DialogNode node : nodes) {
+            List<DialogNodeToResponse> dnToResponses = dialogNodeResponseRepository.findByDialogNode(node);
+            dnToResponses.forEach(r -> responses.add(r.getResponse()));
+        }
+        return responses;
+    }
+
+    private List<DialogNode> buildResponse(List<DialogNode> nodes, List<Response> responses) {
+        
+        return nodes; 
+    }
 }

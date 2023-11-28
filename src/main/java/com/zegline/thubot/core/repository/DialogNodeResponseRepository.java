@@ -8,9 +8,13 @@
 package com.zegline.thubot.core.repository;
 
 import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.zegline.thubot.core.model.DialogNodeToResponse;
+import com.zegline.thubot.core.model.DialogNode;
+
+import java.util.List;
 
 /**
  * @interface DialogNodeResponseRepository
@@ -20,6 +24,8 @@ import com.zegline.thubot.core.model.DialogNodeToResponse;
  * with DialogNodeToResponse data, such as saving, deleting, and finding DialogNodeToResponse entities
  */
 @Repository
-public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeToResponse, Long>{
+public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeToResponse, Long> {
     
+
+    List<DialogNodeToResponse> findByDialogNode(DialogNode dialogNode);
 }

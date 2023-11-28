@@ -9,6 +9,8 @@ package com.zegline.thubot.core.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.zegline.thubot.core.model.DialogNode;
@@ -17,10 +19,19 @@ import java.util.List;
 
 @Repository
 public interface DialogNodeRepository extends CrudRepository<DialogNode, String> {
+    
+   
+    List<DialogNode> findByParentIdAndDialogTextContainingIgnoreCase(String parentId, String searchText);
+    
 
-    DialogNode findByChildren(DialogNode child);
+    @Query("SELECT dn.dialogText FROM DialogNode dn WHERE dn.parent.id = :parentId")
+    List<String> findAllDialogTextByParentId(@Param("parentId") String parentId);
+    
+    
+    DialogNode findByDialogText(String dialogText);
 
-    @Query(value = "select d1_0.id from dialog_node d1_0 left join dialog_node_children c1_0 on d1_0.id=c1_0.children_id where c1_0.children_id is null", nativeQuery = true)
+    @Query("SELECT dn.id FROM DialogNode dn WHERE dn.parent IS NULL")
     List<String> findIdsWithNoChildren();
 
+    List<DialogNode> findAllByParentId(String parentId);
 }

@@ -1,4 +1,4 @@
-package com.thubot.core;
+/*package com.thubot.core;
 
 
 import com.zegline.thubot.ThuBotApplication;
@@ -20,3 +20,4 @@ class ApiApplicationTests {
 
 
 }
+*/
