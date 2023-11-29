@@ -43,9 +43,18 @@ public class GUIController {
         return "index";
     }
 
-    @GetMapping("/dialognode")
+    @GetMapping("/database/display")
     public String getDN() {
         return "explore_nodes";
+    }
+
+    @GetMapping("/database/entry")
+    public String getDBEntry(Model model){
+        String jsonData = infoEndpoint.info().get("git").toString();
+
+        model.addAttribute("commitid", jsonData);
+
+        return "databaseEntry";
     }
 
     @GetMapping("/login")
