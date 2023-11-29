@@ -10,6 +10,7 @@ package com.zegline.thubot.core.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,9 @@ public class UserInputController {
     @Value("${openai.api.key}") // Read the API key from your application.properties or application.yml file
     private String openaiApiKey;
 
+    @Autowired
+    private DialogNodeMatch dialogNodeMatchService;
+
     /**
      * Endpoint to handle user input and retrieve a response node based on the provided input and parent ID.
      *
@@ -42,7 +46,7 @@ public class UserInputController {
      */
     @GetMapping("/ask")
     public String input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
-        String returnNodeStr = new DialogNodeMatch().getResponseNode(userInput, parent_id);
+        String returnNodeStr = dialogNodeMatchService.getResponseNode(userInput, parent_id);
 
         List<String> list_nodes = new ArrayList<>();
 

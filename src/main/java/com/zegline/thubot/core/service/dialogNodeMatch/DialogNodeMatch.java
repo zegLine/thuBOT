@@ -7,13 +7,22 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.zegline.thubot.core.model.DialogNode;
+import com.zegline.thubot.core.model.DialogNodeToResponse;
+import com.zegline.thubot.core.model.Response;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
+import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 /**
  * @class DialogNodeMatch
@@ -29,17 +38,21 @@ public class DialogNodeMatch {
     @Autowired
     private DialogNodeRepository dialogNodeRepository;
 
+    @Autowired
+    private DialogNodeResponseRepository dialogNodeResponseRepository;
 
+    @Autowired
+    private OpenAIService openAIService;
     /**
      * Matches the user input with responses in the databases
      * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
      * @param parent_id <b>String</b> The id of the parent node.
      * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
-     * 
+     *
      */
     public String getResponseNode(String userInput, String parent_id){
-        
-        //First match with one node in the database, and if not found, send the user input and the 
+
+        //First match with one node in the database, and if not found, send the user input and the
         // subtree and the current parent text to openAI
         String machedNode = matchNodeToInput(parent_id);
         List<String> responseList = new ArrayList<>();
@@ -55,14 +68,14 @@ public class DialogNodeMatch {
                 if(possibleResponses.isEmpty())
                     possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
             }
-            responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
+            responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
             // If no response and we didn't already send all Leaf Nodes to OpenAI
             if(responseList.isEmpty() && possibleResponses.equals(dialogNodeRepository.findIdsWithNoChildren())) {
                 possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
                 if (possibleResponses.isEmpty())
                     possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
-                responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
+                responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
             }
         }else{
             //Todo return DataBase match
