@@ -27,7 +27,7 @@ import java.util.*;
 public class DialogNodeMatch {
 
     @Autowired
-    private DialogNodeRepository dnr;
+    private DialogNodeRepository dialogNodeRepository;
 
 
     /**
@@ -47,21 +47,21 @@ public class DialogNodeMatch {
 
         if(machedNode.equals("null")){
             // Get Leaf Nodes that are Descendants of Parent
-            List<String> possibleResponses = dnr.findLeafNodesByParentIdAsDescendants(parent_id);
+            List<String> possibleResponses = dialogNodeRepository.findLeafNodesByParentIdAsDescendants(parent_id);
 
             if(possibleResponses.isEmpty()) {
-                possibleResponses = dnr.findLeafNodesExceptDescendantsOfParentId(parent_id);
+                possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
                 // If still Empty
                 if(possibleResponses.isEmpty())
-                    possibleResponses = dnr.findIdsWithNoChildren();
+                    possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
             }
             responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
 
             // If no response and we didn't already send all Leaf Nodes to OpenAI
-            if(responseList.isEmpty() && possibleResponses.equals(dnr.findIdsWithNoChildren())) {
-                possibleResponses = dnr.findLeafNodesExceptDescendantsOfParentId(parent_id);
+            if(responseList.isEmpty() && possibleResponses.equals(dialogNodeRepository.findIdsWithNoChildren())) {
+                possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
                 if (possibleResponses.isEmpty())
-                    possibleResponses = dnr.findIdsWithNoChildren();
+                    possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
                 responseList = OpenAIService.getQuestionMatch(userInput, possibleResponses);
             }
         }else{
