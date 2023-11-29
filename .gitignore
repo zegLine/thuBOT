@@ -42,3 +42,4 @@ secrets.yml
 .idea/
 application.properties
 thuBOT.code-workspace
+console-output.txt
