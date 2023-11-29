@@ -41,14 +41,14 @@ public class UserInputController {
      * @return A list of strings containing response nodes associated with the user input and parent ID.
      */
     @GetMapping("/ask")
-    public List<String> input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
+    public String input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
         String returnNodeStr = new DialogNodeMatch().getResponseNode(userInput, parent_id);
 
         List<String> list_nodes = new ArrayList<>();
 
         
         // OpenAIService.getQuestionMatch(question, list_nodes).get(0);
-        return new ArrayList<String>();
+        return returnNodeStr;
     }
 
     
