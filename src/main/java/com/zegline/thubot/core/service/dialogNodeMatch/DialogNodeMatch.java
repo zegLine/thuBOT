@@ -56,11 +56,12 @@ public class DialogNodeMatch {
         // subtree and the current parent text to openAI
         String machedNode = matchNodeToInput(parent_id);
         List<String> responseList = new ArrayList<>();
+        List<String> possibleResponses = new ArrayList<>();
 
 
         if(machedNode.equals("null")){
             // Get Leaf Nodes that are Descendants of Parent
-            List<String> possibleResponses = dialogNodeRepository.findLeafNodesByParentIdAsDescendants(parent_id);
+            possibleResponses = dialogNodeRepository.findLeafNodesByParentIdAsDescendants(parent_id);
 
             if(possibleResponses.isEmpty()) {
                 possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
@@ -68,14 +69,14 @@ public class DialogNodeMatch {
                 if(possibleResponses.isEmpty())
                     possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
             }
-            responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
+            responseList = openAIService.getQuestionMatch(userInput, getAnswers(possibleResponses));
 
             // If no response and we didn't already send all Leaf Nodes to OpenAI
             if(responseList.isEmpty() && possibleResponses.equals(dialogNodeRepository.findIdsWithNoChildren())) {
                 possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
                 if (possibleResponses.isEmpty())
                     possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
-                responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
+                responseList = openAIService.getQuestionMatch(userInput, getAnswers(possibleResponses));
             }
         }else{
             //Todo return DataBase match
@@ -84,8 +85,20 @@ public class DialogNodeMatch {
 
         if(responseList.isEmpty())
             return "Sorry I could not find an answer for this";
-        else
-            return responseList.get(0);
+        else{
+           String num = responseList.get(0).replace("QUESTION", "");
+           num = num.replace("\"", "");
+            return dialogNodeRepository.findMSGTextById(possibleResponses.get(Integer.parseInt(num)));
+        }
+
+    }
+
+    private List<String> getAnswers(List<String> ids){
+        List<String> answers = new ArrayList<>();
+        for (String id:ids) {
+            answers.add(dialogNodeRepository.findDialogTextById(id));
+        }
+        return answers;
     }
 
     /**

@@ -24,7 +24,12 @@ public interface DialogNodeRepository extends CrudRepository<DialogNode, String>
     @Query(value = "select d1_0.id from dialog_node d1_0 left join dialog_node_children c1_0 on d1_0.id=c1_0.children_id where c1_0.children_id is null", nativeQuery = true)
     List<String> findIdsWithNoChildren();
 
-    //Todo Test
+    @Query(value = "SELECT dialog_text FROM dialog_node WHERE id = :nodeId", nativeQuery = true)
+    String findDialogTextById(@Param("nodeId") String nodeId);
+
+    @Query(value = "SELECT msg_text FROM dialog_node WHERE id = :nodeId", nativeQuery = true)
+    String findMSGTextById(@Param("nodeId") String nodeId);
+
     @Query(value = "WITH RECURSIVE descendant_nodes(id) AS ( " +
             "SELECT id " +
             "FROM dialog_node " +
@@ -43,7 +48,6 @@ public interface DialogNodeRepository extends CrudRepository<DialogNode, String>
             "FROM leaf_nodes d;", nativeQuery = true)
     List<String> findLeafNodesByParentIdAsDescendants(@Param("parentId") String parentId);
 
-    //Todo Test
     @Query(value = "WITH RECURSIVE excluded_descendants(id) AS ( " +
             "SELECT id " +
             "FROM dialog_node " +
