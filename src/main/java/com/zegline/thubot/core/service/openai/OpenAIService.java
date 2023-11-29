@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OpenAIService {
     
     @Value("${openai.api.key}") // Read the API key from your application.properties or application.yml file
-    private static String openaiApiKey;
+    private String openaiApiKey;
     /**
      * Sends user input to the OpenAI API and receives a matched response.
      * This method constructs a request with the user's input and a list of possible questions,
@@ -44,7 +44,7 @@ public class OpenAIService {
      * @param list_nodes List of questions to match the input against
      * @return A list containing the best-matched question node or an empty list if no match is found
      */
-    public static List<String> getQuestionMatch(String input_question, List<String> list_nodes) {
+    public List<String> getQuestionMatch(String input_question, List<String> list_nodes) {
 
         List<String> responseList = new ArrayList<>();
 
