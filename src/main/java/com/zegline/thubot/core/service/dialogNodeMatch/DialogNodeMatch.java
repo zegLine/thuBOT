@@ -83,13 +83,17 @@ public class DialogNodeMatch {
 
         }
 
-        if(responseList.isEmpty())
-            return "Sorry I could not find an answer for this";
-        else{
+        if(!responseList.isEmpty()){
            String num = responseList.get(0).replace("QUESTION", "");
            num = num.replace("\"", "");
-            return dialogNodeRepository.findMSGTextById(possibleResponses.get(Integer.parseInt(num)));
+           try {
+               return dialogNodeRepository.findMSGTextById(possibleResponses.get(Integer.parseInt(num)));
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+
         }
+        return "Sorry I could not find an answer for this";
 
     }
 
