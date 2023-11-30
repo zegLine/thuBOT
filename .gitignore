@@ -41,3 +41,5 @@ secrets.yml
 .sts4-cache
 .idea/
 application.properties
+thuBOT.code-workspace
+console-output.txt
