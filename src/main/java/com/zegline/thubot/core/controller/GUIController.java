@@ -9,14 +9,9 @@ package com.zegline.thubot.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.LinkedHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @class GUIController
@@ -48,13 +43,13 @@ public class GUIController {
         return "explore_nodes";
     }
 
-    @GetMapping("/database/entry")
+    @GetMapping("/database/form")
     public String getDBEntry(Model model){
         String jsonData = infoEndpoint.info().get("git").toString();
 
         model.addAttribute("commitid", jsonData);
 
-        return "databaseEntry";
+        return "databaseForm";
     }
 
     @GetMapping("/login")

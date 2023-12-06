@@ -99,5 +99,9 @@ public class DialogNode {
     public void setMsgText(String msgText) {
         this.msgText = msgText;
     }
-    
+
+    public DialogNode removeChild(DialogNode node) {
+        this.children.remove(node);
+        return this;
+    }
 }

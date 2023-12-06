@@ -63,6 +63,40 @@ public class DialogNodeController {
         );
     }
 
+    @PostMapping("/modifyChild")
+    public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
+        String id = body.get("dialogNodeId");
+        String newDialogNodeText = body.get("dialogNodeText");
+        String newMsgText = body.get("msgText");
+        String newParentNodeId = body.get("parentNodeId");
+
+        Optional<DialogNode> optionalNode = dnr.findById(id);
+        if (optionalNode.isPresent()) {
+            DialogNode node = optionalNode.get();
+            node.setMsgText(newMsgText);
+            node.setDialogText(newDialogNodeText);
+            Optional<DialogNode> optionalParent = dnr.findById(newParentNodeId);
+            DialogNode newParent = null;
+            DialogNode oldParent = dnr.findByChildren(node);
+            dnr.save(node);
+            if(optionalParent.isPresent()) {
+                newParent = optionalParent.get();
+                oldParent.removeChild(node);
+                newParent.addChild(node);
+                dnr.save(oldParent);
+                dnr.save(newParent);
+            } else {
+                dnr.save(oldParent);
+            }
+
+            return newParent.equals(null) ? oldParent : newParent;
+        };
+
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "couldn't find parent"
+        );
+    }
+
     /**
      * Retrieves DialogNode(s) based on the provided parameters or returns all DialogNodes if no parameters are specified.
      *
