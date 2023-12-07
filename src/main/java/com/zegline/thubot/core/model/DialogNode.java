@@ -11,10 +11,6 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
-<<<<<<< HEAD
-=======
-import com.fasterxml.jackson.annotation.JsonIgnore;
->>>>>>> origin/main
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -66,12 +62,7 @@ public class DialogNode {
 
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
-<<<<<<< HEAD
     
-=======
-
-    @JsonIgnore
->>>>>>> origin/main
     @ManyToOne
     @JoinColumn(name = "parent_id") // This is the foreign key column in your database
     private DialogNode parent;
@@ -117,24 +108,22 @@ public class DialogNode {
         this.msgText = msgText;
     }
 
-<<<<<<< HEAD
-    @Override
-public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-    DialogNode other = (DialogNode) obj;
-    return id != null && id.equals(other.getId());
-}
-
-@Override
-public int hashCode() {
-    return getClass().hashCode();
-}
-    
-=======
     public DialogNode removeChild(DialogNode node) {
         this.children.remove(node);
         return this;
     }
->>>>>>> origin/Feature/databaseEntry
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DialogNode other = (DialogNode) obj;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+    
 }

@@ -7,16 +7,6 @@
  */
 package com.zegline.thubot.core.controller;
 
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.info.InfoEndpoint;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
-<<<<<<< HEAD
-import java.util.LinkedHashMap;
-=======
 import com.zegline.thubot.core.model.security.User;
 import com.zegline.thubot.core.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,12 +27,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
->>>>>>> origin/main
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-=======
->>>>>>> origin/Feature/databaseEntry
+
 /**
  * @class GUIController
  * @brief Controller to manage GUI endpoints
@@ -55,15 +43,12 @@ import java.util.regex.Pattern;
 public class GUIController {
 
     @Autowired
-<<<<<<< HEAD
-=======
     private UserRepository ur;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
->>>>>>> origin/main
     private InfoEndpoint infoEndpoint;
 
     @GetMapping("/")
@@ -92,11 +77,7 @@ public class GUIController {
     }
 
     @GetMapping("/login")
-<<<<<<< HEAD
-    String login(Model model) {
-=======
     public String login(Model model) {
->>>>>>> origin/main
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
@@ -105,11 +86,7 @@ public class GUIController {
     }
 
     @GetMapping("/register")
-<<<<<<< HEAD
-    String register(Model model) {
-=======
     public String showRegisterForm(Model model) {
->>>>>>> origin/main
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
@@ -117,8 +94,6 @@ public class GUIController {
         return "register";
     }
 
-<<<<<<< HEAD
-=======
     @PostMapping("/register")
     public String registerUser(Model model, @RequestParam Map<String, String> body) {
         List<String> errors = new ArrayList<>();
@@ -156,5 +131,4 @@ public class GUIController {
         return "register";
     }
 
->>>>>>> origin/main
 }
