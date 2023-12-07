@@ -1,0 +1,48 @@
+name: Deploy to Linode Staging
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+    
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Build with Maven
+        run: mvn clean install spring-boot:repackage
+
+      - name: Upload JAR to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "target/*.jar"
+          target: "/thubot_core/deployed/"
+
+      - name: Restart services
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cp /thubot_core/*.jar /thubot_core/before_deploy/
+            cp /thubot_core/deployed/target/*.jar /thubot_core/thubot_core.jar
+            sudo systemctl restart thubot
+            sudo systemctl restart nginx

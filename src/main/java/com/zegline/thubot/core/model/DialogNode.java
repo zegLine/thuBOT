@@ -11,6 +11,10 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> origin/main
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -62,7 +66,12 @@ public class DialogNode {
 
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
+<<<<<<< HEAD
     
+=======
+
+    @JsonIgnore
+>>>>>>> origin/main
     @ManyToOne
     @JoinColumn(name = "parent_id") // This is the foreign key column in your database
     private DialogNode parent;

@@ -116,4 +116,26 @@ body {
 
 .no-decoration {
     text-decoration: none !important;
+<<<<<<< HEAD
+=======
+}
+
+.badge {
+    display: block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.error-badge {
+    background-color: #ff0000;
+    color: white;
+}
+
+.msg-badge {
+    background-color: #00ff0d;
+    color: white;
+>>>>>>> origin/main
 }

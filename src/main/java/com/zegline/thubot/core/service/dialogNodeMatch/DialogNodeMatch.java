@@ -60,7 +60,11 @@ public class DialogNodeMatch {
         List<String> possibleResponses = new ArrayList<>();
 
 
+<<<<<<< HEAD
         if(machedNode.equals("null")){
+=======
+        if(machedNode == null){
+>>>>>>> origin/main
             // Get Leaf Nodes that are Descendants of Parent
             possibleResponses = dialogNodeRepository.findLeafNodesByParentIdAsDescendants(parent_id);
 

@@ -7,6 +7,26 @@
     <title>Register an Account</title>
 </head>
 <body>
+<<<<<<< HEAD
+=======
+
+<!-- Error Section -->
+<div th:if="${errors}">
+    <div class="error">
+        <ul>
+            <li style="text-decoration: none" th:each="error : ${errors}">
+                <span class="badge error-badge" th:text="${error}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Error Section -->
+<div th:if="${message}">
+    <span class="badge msg-badge" th:text="${message}"></span>
+</div>
+
+>>>>>>> origin/main
 <div class="login-container">
     <div class="panel">
         <div class="welcome-text">
@@ -20,6 +40,12 @@
             <a href="#">Data Processing</a>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> origin/main
     <div class="login-form">
         <form action="#" method="post">
             <div class="form-group">
