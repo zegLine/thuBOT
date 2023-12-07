@@ -117,6 +117,7 @@ public class DialogNode {
         this.msgText = msgText;
     }
 
+<<<<<<< HEAD
     @Override
 public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -130,4 +131,10 @@ public int hashCode() {
     return getClass().hashCode();
 }
     
+=======
+    public DialogNode removeChild(DialogNode node) {
+        this.children.remove(node);
+        return this;
+    }
+>>>>>>> origin/Feature/databaseEntry
 }

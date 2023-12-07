@@ -10,11 +10,11 @@ package com.zegline.thubot.core.controller;
 <<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+<<<<<<< HEAD
 import java.util.LinkedHashMap;
 =======
 import com.zegline.thubot.core.model.security.User;
@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+=======
+>>>>>>> origin/Feature/databaseEntry
 /**
  * @class GUIController
  * @brief Controller to manage GUI endpoints
@@ -75,9 +77,18 @@ public class GUIController {
         return "index";
     }
 
-    @GetMapping("/dialognode")
+    @GetMapping("/database/display")
     public String getDN() {
         return "explore_nodes";
+    }
+
+    @GetMapping("/database/form")
+    public String getDBEntry(Model model){
+        String jsonData = infoEndpoint.info().get("git").toString();
+
+        model.addAttribute("commitid", jsonData);
+
+        return "databaseForm";
     }
 
     @GetMapping("/login")

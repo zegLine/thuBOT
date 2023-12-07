@@ -43,7 +43,6 @@ public class DialogNodeRepositoryTests {
     public void DialogNodeRelationship_Find_ReturnFoundRelationship(){
 
         //Arrange
-
         DialogNode leafNode = DialogNode.builder()
                 .id("QR1000")
                 .dialogText("This is a leaf node")
