@@ -1,0 +1,61 @@
+@startuml ThuBot
+
+enum DialogNodeType {
+    NODE_QUESTION
+    NODE_INTERMEDIARY
+    NODE_ROOT
+}
+
+class DialogNode {
+    DialogNodeType type
+    DialogNode parent
+    DialogNode[] children
+    String dialog_text
+}
+
+class Response {
+    String response_text
+}
+
+class QuestionResponse {
+    DialogNode dn
+    Response r
+    float probability
+}
+
+class UserInput {
+    String input
+    Question[] matchQuestion()
+}
+
+class Database {
+    DialogNode[] dialog_ndoes
+    Response[] responses
+}
+
+class Chatbot {
+    void askQuestion()
+    Response getResponse(UserInput)
+}
+
+class OpenAIAPI {
+    Question matchQuestion(UserInput)
+}
+
+class User {
+    String name
+    String userId
+    void ask(Chatbot)
+}
+
+DialogNode -- DialogNodeType : has
+DialogNode --* QuestionResponse : has
+Response --* QuestionResponse : forms
+Chatbot -- UserInput
+Chatbot -- DialogNode
+Chatbot -- OpenAIAPI
+Database -- DialogNode
+Database -- Response
+User -- Chatbot
+
+@enduml

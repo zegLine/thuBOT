@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login-style.css">
+    <title>Please Log In</title>
+</head>
+<body>
+<div class="login-container">
+    <div class="panel">
+        <div class="welcome-text">
+            <img src="img/logo_transparent.png" alt="Logo">
+            <h1>Welcome!</h1>
+            <p>The THU bot is here to help you with information about Technische Hochschule Ulm. Please provide your credentials in order to access the bot.</p>
+        </div>
+        <div class="links">
+            <a href="#">Impressum</a>
+            <a href="#">Contact</a>
+            <a href="#">Data Processing</a>
+        </div>
+    </div>
+    <div class="login-form">
+        <form action="#" method="post">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Log in" class="submit-button">
+            </div>
+            <div class="register-text">
+                <a href="/register" class="no-decoration muted-text">Don't have an account yet?</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="footer-bar">
+    <p>This is a work in progress. Always verify information.</p>
+    <p th:text="${commitid}"></p>
+</div>
+</body>
+</html>

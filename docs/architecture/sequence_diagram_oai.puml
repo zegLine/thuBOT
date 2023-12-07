@@ -1,0 +1,20 @@
+@startuml "ThuBotOpenAI Sequence"
+
+actor user
+participant thubot_core
+database thubot_db
+participant openai_api
+
+user -> thubot_core : Inputs question
+thubot_core -> openai_api : Validate user input for safety
+openai_api -> thubot_core : User input is safe
+thubot_core -> thubot_db : Get valid questions
+thubot_db -> thubot_core : Return question list with IDs
+thubot_core -> openai_api : Send user input and question list
+openai_api -> thubot_core : Match user input with questions
+thubot_core -> thubot_db : Query answer for matched question and next question suggestions
+thubot_db -> thubot_core : Return response
+thubot_core -> user : Respond and prompt possible next questions
+
+
+@enduml

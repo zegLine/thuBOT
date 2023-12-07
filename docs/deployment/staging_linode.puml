@@ -1,0 +1,21 @@
+@startuml
+
+!define RECTANGLE class
+!define ARROW -[dotted]->
+
+skinparam rectangle {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+skinparam roundCorner 5
+
+rectangle Deploy to Linode Staging {
+    --> "Checkout code" : on push to staging branch or workflow dispatch
+    --> "Set up JDK 17" : after checking out code
+    --> "Build with Maven" : after setting up JDK 17
+    --> "Upload JAR to Server" : after building with Maven
+    --> "Restart services" : after uploading JAR to Server
+}
+
+@enduml

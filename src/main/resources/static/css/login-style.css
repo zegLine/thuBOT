@@ -1,0 +1,119 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(45deg, #171717, #0d0d0d);
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    margin: 0;
+    color: white;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.panel {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    max-width: 500px;
+}
+
+.welcome-text {
+    text-align: left;
+}
+
+.welcome-text h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.links {
+    text-align: left;
+    margin-top: 50px;
+}
+
+.links a {
+    text-decoration: none;
+    color: #444444;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.login-form {
+    padding: 20px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    outline: none;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #3145ee;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #2c00a2;
+}
+
+.footer-bar {
+    background: #232323; /* Dark grey background */
+    height: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-bar p {
+    color: #454545; /* Slightly darker text */
+}
+
+/* Add CSS styles to control logo size */
+.welcome-text img {
+    max-width: 100px; /* Adjust the maximum width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.muted-text {
+    color: #454545;
+    font-size: 14px;
+}
+
+.register-text {
+    margin-top: 10px;
+}
+
+.no-decoration {
+    text-decoration: none !important;
+}

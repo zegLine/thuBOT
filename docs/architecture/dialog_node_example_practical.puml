@@ -1,0 +1,26 @@
+@startmindmap
+<style>
+mindmapDiagram {
+  .root {
+    BackgroundColor #FFBBCC
+  }
+  .intermediary {
+    BackgroundColor lightgreen
+  }
+  .question {
+    BackgroundColor lightblue
+  }
+}
+</style>
+* Are you a student or prospective student? <<root>>
+    * Student <<intermediary>>
+        * My courses <<intermediary>>
+            * How do I register for a course? <<question>>
+        * Campus info <<intermediary>>
+        * Other <<intermediary>>
+    * Prospective Student <<intermediary>>
+        * Application info <<intermediary>>
+            * Deadlines <<question>>
+            * Documents required <<question>>
+        * Courses offered <<intermediary>>
+@endmindmap
