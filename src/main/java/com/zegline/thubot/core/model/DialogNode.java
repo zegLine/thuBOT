@@ -87,6 +87,13 @@ public class DialogNode {
         return this;
     }
 
+    public DialogNode addChildren(Set<DialogNode> nodes) {
+        for (DialogNode n : nodes) {
+            n.setParent(this);
+        }
+        return this;
+    }
+
     /**
      * Converts DialogNode to a String
      * @return <b>String</b> The Text that the node contains

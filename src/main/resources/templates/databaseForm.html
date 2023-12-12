@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create/Modify/Delete Node Form</title>
+    <link rel="stylesheet" href="../css/databaseEntry.css">
+</head>
+<body>
+<div class="container">
+    <!-- Buttons for different forms -->
+    <div class="formAll">
+    <div class="button-group">
+        <button class ="form-change-button" onclick="showCreateForm()">Create Node Form</button>
+        <button class ="form-change-button" onclick="showModifyForm()">Modify Node Form</button>
+        <button class ="form-change-button" onclick="showDeleteForm()">Delete Node Form</button>
+    </div>
+
+    <!-- Create Node Form -->
+    <form id="createNodeForm" class="form">
+        <!-- Existing form fields -->
+        <div class="form-group welcome-text">
+            <h1>Create Node Form</h1>
+        </div>
+        <div class="form-group">
+            <label for="parentID">Parent ID:</label>
+            <input type="text" id="parentID" class="input-field" placeholder="Enter the ID of the parent node">
+        </div>
+        <div class="form-group">
+            <label for="msgText">Message Text:</label>
+            <input type="text" id="msgText" class="input-field" placeholder="Enter the text message">
+        </div>
+        <div class="form-group">
+            <label for="dialogNodeText">Node Text:</label>
+            <input type="text" id="dialogNodeText" class="input-field" placeholder="Enter the node text">
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" class="input-field" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" class="input-field" placeholder="Enter your password">
+        </div>
+        <div class="form-group create-btn">
+            <input type="submit" class="submit-button" value="Create Node">
+        </div>
+    </form>
+
+    <!-- Modify Node Form -->
+    <form id="modifyNodeForm" class="form" style="display: none;">
+        <!-- New form fields for modification -->
+        <div class="form-group welcome-text">
+            <h1>Modify Node Form</h1>
+        </div>
+        <div class="form-group">
+            <label for="idNode">Node ID:</label>
+            <input type="text" id="idNode" class="input-field" placeholder="Enter the ID of the node to modify">
+        </div>
+        <div class="form-group">
+            <label for="nodeParent">Node Parent:</label>
+            <input type="text" id="nodeParent" class="input-field" placeholder="Enter the new parent node name">
+        </div>
+        <div class="form-group">
+            <label for="newMsgText">Message text:</label>
+            <input type="text" id="newMsgText" class="input-field" placeholder="Enter the new message text">
+        </div>
+        <div class="form-group">
+            <label for="newNodeText">Node text:</label>
+            <input type="text" id="newNodeText" class="input-field" placeholder="Enter the new node text">
+        </div>
+        <div class="form-group">
+            <label for="usernameModify">Username:</label>
+            <input type="text" id="usernameModify" class="input-field" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="passwordModify">Password:</label>
+            <input type="password" id="passwordModify" class="input-field" placeholder="Enter your password">
+        </div>
+        <div class="form-group create-btn">
+            <input type="submit" class="submit-button" value="Modify Node">
+        </div>
+    </form>
+
+    <!-- Delete Node Form -->
+    <form id="deleteNodeForm" class="form" style="display: none;">
+        <!-- New form fields for deletion -->
+        <div class="form-group welcome-text">
+            <h1>Delete Node Form</h1>
+        </div>
+        <div class="form-group">
+            <label for="deleteNodeID">Node ID:</label>
+            <input type="text" id="deleteNodeID" class="input-field" placeholder="Enter the ID of the node to delete">
+        </div>
+        <div class="form-group">
+            <label for="usernameDelete">Username:</label>
+            <input type="text" id="usernameDelete" class="input-field" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="passwordDelete">Password:</label>
+            <input type="password" id="passwordDelete" class="input-field" placeholder="Enter your password">
+        </div>
+        <div class="form-group create-btn">
+            <input type="submit" class="submit-button" value="Delete Node">
+        </div>
+    </form>
+
+    <div class="output-box" id="resultBox"></div>
+    </div>
+</div>
+
+<script src="../js/databaseEntry.js"></script>
+
+</body>
+</html>

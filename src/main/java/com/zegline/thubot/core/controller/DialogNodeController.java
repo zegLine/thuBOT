@@ -63,6 +63,64 @@ public class DialogNodeController {
         );
     }
 
+    @PostMapping("/modifyChild")
+    public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
+        String id = body.get("dialogNodeId");
+        String newDialogNodeText = body.get("dialogNodeText");
+        String newMsgText = body.get("msgText");
+        String newParentNodeId = body.get("parentNodeId");
+
+        Optional<DialogNode> optionalNode = dnr.findById(id);
+        if (optionalNode.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find node"
+            );
+        }
+
+        DialogNode node = optionalNode.get();
+        node.setMsgText(newMsgText);
+        node.setDialogText(newDialogNodeText);
+
+        Optional<DialogNode> optionalNewParent = dnr.findById(newParentNodeId);
+        if (optionalNewParent.isPresent()) {
+            DialogNode newParent = optionalNewParent.get();
+
+            node.setParent(newParent);
+        }
+
+        dnr.save(node);
+        return node;
+    }
+
+    @PostMapping("/deleteChild")
+    public DialogNode dialog_node_delete(@RequestBody Map<String, String> body){
+        String id = body.get("dialogNodeId");
+
+        Optional<DialogNode> optionalNode = dnr.findById(id);
+        if(optionalNode.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find node"
+            );
+        }
+
+        DialogNode node = optionalNode.get();
+
+        DialogNode nodeParent = node.getParent();
+
+        if (nodeParent == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Not allowed to delete root node"
+            );
+        }
+
+        nodeParent.getChildren().remove(node);
+        nodeParent.addChildren(node.getChildren());
+        dnr.delete(node);
+        dnr.save(nodeParent);
+        return nodeParent;
+
+    }
+
     /**
      * Retrieves DialogNode(s) based on the provided parameters or returns all DialogNodes if no parameters are specified.
      *
