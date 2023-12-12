@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,16 +21,8 @@ import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 //import jakarta.persistence.ManyToMany;
 //import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.FetchType;
 
 
 /**
@@ -70,7 +63,7 @@ public class DialogNode {
     private DialogNode parent;
 
     @Getter
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER) // This binds the 'children' collection to the 'parent' of each child entity
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL) // This binds the 'children' collection to the 'parent' of each child entity
     private Set<DialogNode> children = new HashSet<>();
 
     /**
@@ -90,6 +83,7 @@ public class DialogNode {
      */
     public DialogNode addChild(DialogNode c) {
         this.children.add(c);
+        c.setParent(this);
         return this;
     }
 
