@@ -16,6 +16,34 @@ function showDeleteForm() {
     document.getElementById("deleteNodeForm").style.display = "block";
 }
 
+document.getElementById('deleteNodeForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const nodeId = document.getElementById('deleteNodeID').value;
+    const data = {
+        "dialogNodeId": nodeId
+    }
+    // Make POST request using Fetch API
+    fetch('../api/dialognode/deleteChild', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(apiResponse => {
+            // Log the API response.
+            console.log('API Response:', apiResponse);
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerText = `Request sent + ${apiResponse.id? "success" : "failure, see console for more details."}`;``
+        })
+        .catch(error => {
+            // Log errors
+            console.error('Error:', error);
+        });
+});
+
+
 document.getElementById('createNodeForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -23,8 +51,6 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
     const parentID = document.getElementById('parentID').value;
     const msgText = document.getElementById('msgText').value;
     const dialogNodeText = document.getElementById('dialogNodeText').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
     // Prepare data for POST request
     const data = {
@@ -39,7 +65,6 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
         url: '../api/dialognode/createChild',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
         body: JSON.stringify(data),
     });
