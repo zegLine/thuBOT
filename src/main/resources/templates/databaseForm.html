@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/Modify/Delete Node Form</title>
-    <link rel="stylesheet" href="../css/databaseEntry.css">
+    <link rel="stylesheet" th:href="@{/css/databaseEntry.css}">
 </head>
 <body>
 <div class="container">
+
+    <div class="panel">
+        <div class="welcome-text">
+            <img th:src="@{/img/logo_transparent.png}" alt="Logo">
+            <h1>Welcome to the backend, <span th:text="${loggedInUser}"></span></h1>
+            <p>Since you got here, you probably know what to do=) (text needs change).</p>
+        </div>
+        <div class="links">
+            <a href="#">Impressum</a>
+            <a href="#">Contact</a>
+            <a href="#">Data Processing</a>
+        </div>
+    </div>
     <!-- Buttons for different forms -->
     <div class="formAll">
     <div class="button-group">
@@ -85,7 +98,7 @@
     </div>
 </div>
 
-<script src="../js/databaseEntry.js"></script>
+<script th:src="@{/js/databaseEntry.js}"></script>
 
 </body>
 </html>

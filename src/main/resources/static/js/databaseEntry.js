@@ -23,7 +23,7 @@ document.getElementById('deleteNodeForm').addEventListener('submit', function (e
         "dialogNodeId": nodeId
     }
     // Make POST request using Fetch API
-    fetch('../api/dialognode/deleteChild', {
+    fetch('../api/dialognode/delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
     // Log the request details to the console
     console.log('Request Details:', {
         method: 'POST',
-        url: '../api/dialognode/createChild',
+        url: '../api/dialognode/create',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -70,7 +70,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
     });
 
     // Make POST request using Fetch API
-    fetch('../api/dialognode/createChild', {
+    fetch('../api/dialognode/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,10 +71,11 @@ public class GUIController {
     }
 
     @GetMapping("/database/form")
-    public String getDBEntry(Model model){
+    public String getDBEntry(Model model, @AuthenticationPrincipal UserDetails userDetails){
         String jsonData = infoEndpoint.info().get("git").toString();
 
         model.addAttribute("commitid", jsonData);
+        model.addAttribute("loggedInUser", userDetails.getUsername());
 
         return "databaseForm";
     }
