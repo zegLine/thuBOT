@@ -62,7 +62,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
     // Log the request details to the console
     console.log('Request Details:', {
         method: 'POST',
-        url: '../api/dialognode/create',
+        url: '../api/dialognode/createChild',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -70,7 +70,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
     });
 
     // Make POST request using Fetch API
-    fetch('../api/dialognode/create', {
+    fetch('../api/dialognode/createChild', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
