@@ -49,15 +49,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .httpBasic(Customizer.withDefaults())
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/api/secret").hasRole("SYS")
+                        .requestMatchers("/database/**").hasRole("SYS")
+                        .requestMatchers("/api/input").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .permitAll());
+                        .permitAll())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/access-denied") // Specify the custom access denied page
+                );
         return http.build();
     }
 
