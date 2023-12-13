@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/database/**").hasRole("SYS")
-                        .requestMatchers("/api/input").permitAll()
+                        .requestMatchers("/api/input/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
