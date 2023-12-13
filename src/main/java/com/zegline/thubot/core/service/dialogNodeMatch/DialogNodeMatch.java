@@ -19,11 +19,8 @@ import com.zegline.thubot.core.service.openai.OpenAIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
 
 /**
  * @class DialogNodeMatch
@@ -126,6 +123,29 @@ public class DialogNodeMatch {
      */
     private DialogNode matchNodeToInput(String input) {
         // TODO: Implement database matching logic
+        input = input.toLowerCase();
+        Set<String> stopWords = new HashSet<>(
+                Arrays.asList(
+                        "a", "about", "all", "and", "any", "at", "be",
+                        "because", "been", "before", "being", "between", "by", "can",
+                        "come", "could", "did", "do", "each", "for", "from", "he",
+                        "have", "having", "her", "him", "his", "how", "i","if", "in",
+                        "is", "it", "its", "just", "me", "more", "most", "my", "of",
+                        "on", "one", "only", "or", "our", "over", "same", "still",
+                        "see", "should", "so", "some", "such", "that", "the",
+                        "their", "them", "there", "these", "they", "this", "to", "too",
+                        "two", "was", "were", "what", "when", "where", "which", "who",
+                        "with", "would", "you", "your")
+        );
+        StringTokenizer tokenizer = new StringTokenizer(input);
+
+        List<String> words = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            words.add(tokenizer.nextToken());
+        }
+        words.removeAll(stopWords);
+
+        System.out.println(words);
         return null;
     }
 
