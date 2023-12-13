@@ -63,7 +63,7 @@ public class DialogNodeController {
         );
     }
 
-    @PostMapping("/modifyChild")
+    @PostMapping("/modify")
     public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
         String id = body.get("dialogNodeId");
         String newDialogNodeText = body.get("dialogNodeText");
@@ -92,7 +92,7 @@ public class DialogNodeController {
         return node;
     }
 
-    @PostMapping("/deleteChild")
+    @PostMapping("/delete")
     public DialogNode dialog_node_delete(@RequestBody Map<String, String> body){
         String id = body.get("dialogNodeId");
 
