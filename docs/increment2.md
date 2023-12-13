@@ -7,6 +7,7 @@
 - functioning dialog node matching
 - login and registration page for users
 - visual backend for adding, deleting and modifying dialog nodes
+- filter chain with access denied handler (for backend pages)
 
 **Work in progress**:
 - fully functioning frontend (JS calls to the backend routes)
@@ -20,5 +21,10 @@
 
 
 ## Screenshots
-Visual backend for adding nodes
-![inc2_backend.png](img%2Finc2_backend.png)
+Visual backend for adding, modifying and deleting nodes
+![inc2_create.png](img%2Finc2_create.png)
+![inc2_mod.png](img%2Finc2_mod.png)
+![inc2_del.png](img%2Finc2_del.png)
+
+Access denied handlers (Security filter chain)
+![inc2_access_denied.png](img%2Finc2_access_denied.png)
