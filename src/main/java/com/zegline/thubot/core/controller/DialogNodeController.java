@@ -113,10 +113,14 @@ public class DialogNodeController {
             );
         }
 
+        if (!node.getChildren().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "cannot delete nodes with children"
+            );
+        }
+
         nodeParent.getChildren().remove(node);
-        nodeParent.addChildren(node.getChildren());
         dnr.delete(node);
-        dnr.save(nodeParent);
         return nodeParent;
 
     }

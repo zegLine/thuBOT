@@ -16,6 +16,54 @@ function showDeleteForm() {
     document.getElementById("deleteNodeForm").style.display = "block";
 }
 
+document.getElementById('modifyNodeForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Get values from form elements
+    const nodeId = document.getElementById('idNode').value;
+    const parentID = document.getElementById('nodeParent').value;
+    const msgText = document.getElementById('newMsgText').value;
+    const dialogNodeText = document.getElementById('newNodeText').value;
+
+    // Prepare data for POST request
+    const data = {
+        dialogNodeId: nodeId,
+        parentNodeId: parentID,
+        msgText: msgText,
+        dialogNodeText: dialogNodeText
+    };
+
+    // Log the request details to the console
+    console.log('Request Details:', {
+        method: 'POST',
+        url: '../api/dialognode/modifyChild',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    });
+
+    // Make POST request using Fetch API
+    fetch('../api/dialognode/modify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(apiResponse => {
+            // Log the API response.
+            console.log('API Response:', apiResponse);
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerText = `Request sent + ${apiResponse.id? "modify successful" : "failure, see console for more details."}`;
+        })
+        .catch(error => {
+            // Log errors
+            console.error('Error:', error);
+        });
+});
+
 document.getElementById('deleteNodeForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const nodeId = document.getElementById('deleteNodeID').value;
