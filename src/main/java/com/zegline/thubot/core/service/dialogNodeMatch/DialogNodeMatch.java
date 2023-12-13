@@ -46,7 +46,6 @@ public class DialogNodeMatch {
      * Matches user input with responses in the databases.
      *
      * @param userInput The input string the user provided, could be the prompt or natural language.
-     * @param parentId  The id of the parent node.
      * @return The fetched answer or a default message if no suitable response is found.
      */
     public DialogNode getResponseNode(String userInput){
