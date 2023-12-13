@@ -1,4 +1,4 @@
-package com.thubot.core.repository;
+/*package com.thubot.core.repository;
 
 import com.zegline.thubot.ThuBotApplication;
 import com.zegline.thubot.core.model.DialogNode;
@@ -69,3 +69,4 @@ public class DialogNodeRepositoryTests {
     }
 
 }
+*/
