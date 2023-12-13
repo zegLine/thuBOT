@@ -1,0 +1,9 @@
+spring.application.name = "ThuBOT TEST"
+spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://URL:3306/DB?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+spring.datasource.username=USER
+spring.datasource.password=PASS
+
+// USE THIS FOR THE APPLICATION TEST FILE IN THIS DIRECTORY

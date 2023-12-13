@@ -118,21 +118,84 @@ body {
     text-decoration: none !important;
 }
 
-.badge {
-    display: block;
-    padding: 5px 10px;
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(45deg, #171717, #0d0d0d);
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: white;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 100%;
+    gap: 50px;
+}
+
+.form {
+    padding: 20px;
+    width: 450px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
     border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    text-align: center;
+    color: white;
+    outline: none;
 }
 
-.error-badge {
-    background-color: #ff0000;
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #3145ee;
+    border: none;
+    border-radius: 5px;
     color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.msg-badge {
-    background-color: #00ff0d;
+.form-change-button {
+    width: 32%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #9631ee;
+    border: none;
+    border-radius: 5px;
     color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
+
+.submit-button:hover {
+    background-color: #2c00a2;
+}
+
+.output-box {
+    grid-column: span 2; /* Span both columns */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    color: white;
+    overflow: auto; /* Add scroll if needed */
+}
+
+
+

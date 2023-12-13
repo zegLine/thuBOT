@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.service.dialogNodeMatch.DialogNodeMatch;
+
+//import com.zegline.thubot.core.service.dialogNodeMatch.DialogNodeMatch;
 
 
 /**
@@ -34,9 +37,6 @@ public class UserInputController {
     @Value("${openai.api.key}") // Read the API key from your application.properties or application.yml file
     private String openaiApiKey;
 
-    @Autowired
-    private DialogNodeMatch dialogNodeMatchService;
-
     /**
      * Endpoint to handle user input and retrieve a response node based on the provided input and parent ID.
      *
@@ -44,16 +44,12 @@ public class UserInputController {
      * @param parent_id The parent ID associated with the user input.
      * @return A list of strings containing response nodes associated with the user input and parent ID.
      */
+    @Autowired
+    private DialogNodeMatch dialogNodeMatchService;
+
     @GetMapping("/ask")
-    public String input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
-        String returnNodeStr = dialogNodeMatchService.getResponseNode(userInput, parent_id);
-
-        List<String> list_nodes = new ArrayList<>();
-
-        
-        // OpenAIService.getQuestionMatch(question, list_nodes).get(0);
-        return returnNodeStr;
+    public DialogNode inputAsk(@RequestParam String userInput) {
+        return dialogNodeMatchService.getResponseNode(userInput);
     }
-
     
 }

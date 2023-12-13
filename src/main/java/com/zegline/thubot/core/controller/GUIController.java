@@ -7,14 +7,30 @@
  */
 package com.zegline.thubot.core.controller;
 
+import com.zegline.thubot.core.model.security.User;
+import com.zegline.thubot.core.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +46,12 @@ import java.util.regex.Pattern;
 public class GUIController {
 
     @Autowired
+    private UserRepository ur;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private InfoEndpoint infoEndpoint;
 
     @GetMapping("/")
@@ -43,13 +65,23 @@ public class GUIController {
         return "index";
     }
 
-    @GetMapping("/dialognode")
+    @GetMapping("/database/display")
     public String getDN() {
         return "explore_nodes";
     }
 
+    @GetMapping("/database/form")
+    public String getDBEntry(Model model, @AuthenticationPrincipal UserDetails userDetails){
+        String jsonData = infoEndpoint.info().get("git").toString();
+
+        model.addAttribute("commitid", jsonData);
+        model.addAttribute("loggedInUser", userDetails.getUsername());
+
+        return "databaseForm";
+    }
+
     @GetMapping("/login")
-    String login(Model model) {
+    public String login(Model model) {
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
@@ -58,11 +90,53 @@ public class GUIController {
     }
 
     @GetMapping("/register")
-    String register(Model model) {
+    public String showRegisterForm(Model model) {
         // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
 
         model.addAttribute("commitid", jsonData);
+        return "register";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDeniedPage(){
+        return "access-denied";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(Model model, @RequestParam Map<String, String> body) {
+        List<String> errors = new ArrayList<>();
+
+        // Fetch JSON data from /actuator/info and add git info to frontend
+        String jsonData = infoEndpoint.info().get("git").toString();
+        model.addAttribute("commitid", jsonData);
+
+        String submittedUsername = body.get("username");
+        String submittedPassword = body.get("password");
+        String submittedPasswordConfirmed = body.get("password_confirm");
+
+        // Check password with confirmed
+        if (!submittedPassword.equals(submittedPasswordConfirmed)) {
+            errors.add("Passwords do not match. Please try again.");
+        }
+
+        // Check if user exists
+        if (ur.existsByUsername(submittedUsername)) {
+            errors.add("User with this username already exists");
+        }
+
+        if (!errors.isEmpty()) {
+            // There are errors, add them to the model and return to the registration page
+            model.addAttribute("errors", errors);
+        } else {
+            // Everything is OK (no errors) and we can add user in the db
+            User u = new User();
+            u.setUsername(submittedUsername);
+            u.setPassword(passwordEncoder.encode(submittedPassword));
+            ur.save(u);
+            model.addAttribute("message", "Registration was successful. Please log in");
+        }
+
         return "register";
     }
 

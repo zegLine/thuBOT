@@ -1,4 +1,4 @@
-package com.thubot.core;
+package com.zegline.thubot.core;
 
 
 import com.zegline.thubot.ThuBotApplication;

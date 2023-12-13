@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
@@ -43,76 +44,89 @@ public class DialogNodeMatch {
 
     @Autowired
     private OpenAIService openAIService;
+    
     /**
-     * Matches the user input with responses in the databases
-     * @param userInput <b>String</b> The input string the user provided, could be the prompt or natural langauge.
-     * @param parent_id <b>String</b> The id of the parent node.
-     * @return <b>String</b> of the fetched answer, "null" if doesn't exist.
+     * Matches user input with responses in the databases.
      *
+     * @param userInput The input string the user provided, could be the prompt or natural language.
+     * @param parentId  The id of the parent node.
+     * @return The fetched answer or a default message if no suitable response is found.
      */
-    public String getResponseNode(String userInput, String parent_id){
+    public DialogNode getResponseNode(String userInput){
 
-        //First match with one node in the database, and if not found, send the user input and the
-        // subtree and the current parent text to openAI
-        String machedNode = matchNodeToInput(parent_id);
-        List<String> responseList = new ArrayList<>();
-        List<String> possibleResponses = new ArrayList<>();
+        int recurseLevel = 15;
 
+        // Get the root node
+        DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
 
-        if(machedNode.equals("null")){
-            // Get Leaf Nodes that are Descendants of Parent
-            possibleResponses = dialogNodeRepository.findLeafNodesByParentIdAsDescendants(parent_id);
+        // First match with one node in the database
+        // if it is found, return it immediately
+        DialogNode matchedNode = matchNodeToInput(userInput);
+        if (matchedNode != null) return matchedNode;
 
-            if(possibleResponses.isEmpty()) {
-                possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
-                // If still Empty
-                if(possibleResponses.isEmpty())
-                    possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
-            }
-            responseList = openAIService.getQuestionMatch(userInput, getAnswers(possibleResponses));
+        // Not directly found, therefore call OpenAI service
+        List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
+        List<String> possibleResponses = getAnswers(possibleNodes);
+        List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
-            // If no response and we didn't already send all Leaf Nodes to OpenAI
-            if(responseList.isEmpty() && possibleResponses.equals(dialogNodeRepository.findIdsWithNoChildren())) {
-                possibleResponses = dialogNodeRepository.findLeafNodesExceptDescendantsOfParentId(parent_id);
-                if (possibleResponses.isEmpty())
-                    possibleResponses = dialogNodeRepository.findIdsWithNoChildren();
-                responseList = openAIService.getQuestionMatch(userInput, getAnswers(possibleResponses));
-            }
-        }else{
-            //Todo return DataBase match
+        if(responseList.isEmpty())
+            return new DialogNode();
 
+        String unsafeNum = responseList.get(0).replace("QUESTION", "");
+        unsafeNum = unsafeNum.replace("\"", "");
+
+        try {
+            int num = Integer.parseInt(unsafeNum);
+            return possibleNodes.get(num);
+        } catch (Exception e) {
+            return DialogNode.builder().msgText("PROMPT GOES AGAINST OUR AULA").build();
         }
 
-        if(!responseList.isEmpty()){
-           String num = responseList.get(0).replace("QUESTION", "");
-           num = num.replace("\"", "");
-           try {
-               return dialogNodeRepository.findMSGTextById(possibleResponses.get(Integer.parseInt(num)));
-           }catch (Exception e){
-               e.printStackTrace();
-           }
-
-        }
-        return "Sorry I could not find an answer for this";
 
     }
 
-    private List<String> getAnswers(List<String> ids){
+    private List<String> getAnswers(List<DialogNode> nodes) {
+        // Implement your logic to extract answers from the list of DialogNodes
+        // You can loop through the nodes and extract the msgText or other relevant data
         List<String> answers = new ArrayList<>();
-        for (String id:ids) {
-            answers.add(dialogNodeRepository.findDialogTextById(id));
+        for (DialogNode node : nodes) {
+            answers.add(node.getMsgText());
         }
         return answers;
     }
 
-    /**
-     *
-     * @param parent_id <b>String</b> ID of the Parent node, to go down this Prompt Tree
-     */
+    public static List<DialogNode> getNodesRecursively(DialogNode root, int recurseLevel) {
+        List<DialogNode> result = new ArrayList<>();
+        getNodesRecursivelyHelper(root, recurseLevel, result);
+        return result;
+    }
 
-    private String matchNodeToInput(String parent_id){
-        // Todo Implement Database Matching
-        return "null";
+    private static void getNodesRecursivelyHelper(DialogNode node, int recurseLevel, List<DialogNode> result) {
+        if (node == null || recurseLevel < 0) {
+            return;
+        }
+
+        result.add(node);
+
+        // Eagerly load children
+        node.getChildren().size();
+
+        if (recurseLevel > 0) {
+            for (DialogNode child : node.getChildren()) {
+                getNodesRecursivelyHelper(child, recurseLevel - 1, result);
+            }
+        }
+    }
+
+    /**
+     * Placeholder method to implement database matching logic.
+     *
+     * @param input The String to match
+     * @return Matched node if found, otherwise null.
+     */
+    private DialogNode matchNodeToInput(String input) {
+        // TODO: Implement database matching logic
+        return null;
     }
 
         

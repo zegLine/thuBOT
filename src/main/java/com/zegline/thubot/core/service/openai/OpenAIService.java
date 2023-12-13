@@ -24,27 +24,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @class OpenAIService
- * @brief Service class for querying the OpenAI API
+ * @brief Service class for querying the OpenAI API to match user inputs to dialog nodes.
  *
- * The OpenAIService class encapsulates the functionality required to interact with the OpenAI API.
- * It performs HTTP POST requests to send the user input and processes the response to find the best-matching
- * question node
+ * Encapsulates the functionality required to interact with the OpenAI API.
+ * It performs HTTP POST requests using user inputs and processes the returned response
+ * to identify the best matching dialog node from a list of possibilities.
  */
 @Service
 public class OpenAIService {
     
     @Value("${openai.api.key}") // Read the API key from your application.properties or application.yml file
     private String openaiApiKey;
+    //System.out.println("OpenAI API Key: " + openaiApiKey);
+    
     /**
-     * Sends user input to the OpenAI API and receives a matched response.
-     * This method constructs a request with the user's input and a list of possible questions,
-     * sends it to the OpenAI API, and parses the response to extract the question that best matches the input
+     * Sends user input to the OpenAI API to match against a list of dialog node questions.
+     * 
+     * The method constructs an API request with the user input and a list of questions.
+     * It sends the request to the OpenAI API and parses the JSON response to extract the best match.
      *
-     * @param input_question Natural language user input
-     * @param list_nodes List of questions to match the input against
-     * @return A list containing the best-matched question node or an empty list if no match is found
+     * @param input_question Natural language user input.
+     * @param list_nodes List of dialog questions to match against the input.
+     * @return List containing the best-matched dialog node, or an empty list if no match was found.
+     * @throws Exception Throws an exception if the API request fails for any reason, such as network issues.
      */
-    public List<String> getQuestionMatch(String input_question, List<String> list_nodes) {
+     public List<String> getQuestionMatch(String input_question, List<String> list_nodes) {
 
         List<String> responseList = new ArrayList<>();
 
@@ -53,7 +57,7 @@ public class OpenAIService {
         for (String node : list_nodes) {
             openaiInput.append("QUESTION").append(list_nodes.indexOf(node)).append(":").append(node).append(";");
         }
-        openaiInput.append("You will ONLY respond with the Question NUMBER that you think MAKES SENSE to match to the input");
+        openaiInput.append("You will ONLY respond with the Question NUMBER that you think MAKES SENSE to match to the input. DO NOT RESPOND WITH ANYTHING ELSE THAN QUESTIONX (where X is the number)");
 
         try {
             // Create a URL object for the OpenAI API endpoint
