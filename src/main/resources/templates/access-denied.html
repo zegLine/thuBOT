@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCESS DENIED</title>
+    <link rel="stylesheet" th:href="@{/css/databaseEntry.css}">
+</head>
+<body>
+<div class="container">
+
+    <div class="panel">
+        <div class="welcome-text">
+            <img th:src="@{/img/logo_transparent.png}" alt="Logo">
+            <h1>Not so fast, <span th:text="${loggedInUser}"></span></h1>
+            <p>You don't have the rights to view this resource. I know, we live in a strict society =(</p>
+        </div>
+    </div>
+
+    <div class="form">
+        <img th:src="@{/img/stop_sign.png}" alt="Stop Sign" width="200" height="200">
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -98,6 +98,11 @@ public class GUIController {
         return "register";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDeniedPage(){
+        return "access-denied";
+    }
+
     @PostMapping("/register")
     public String registerUser(Model model, @RequestParam Map<String, String> body) {
         List<String> errors = new ArrayList<>();
