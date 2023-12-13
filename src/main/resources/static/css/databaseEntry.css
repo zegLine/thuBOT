@@ -24,6 +24,7 @@ body {
 }
 
 .panel {
+    grid-area: panel;
     background: rgba(0, 0, 0, 0.7);
     padding: 40px;
     border-radius: 10px;
@@ -69,23 +70,14 @@ body {
     outline: none;
 }
 
-.submit-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background: #3145ee;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
 .submit-button:hover {
     background-color: #2c00a2;
 }
 
 .footer-bar {
+    grid-column: 2;
+    grid-row: 4;
     background: #232323; /* Dark grey background */
     height: 15px;
     padding: 20px;
@@ -144,7 +136,18 @@ body {
     gap: 50px;
 }
 
+.formAll{
+    display: grid;
+    grid-template-areas: "buttons"
+                         "form"
+                         "submit"
+                         "output";
+    grid-template-rows: auto 1fr auto auto;
+    min-height: 526px;
+}
+
 .form {
+    grid-area: form;
     padding: 20px;
     width: 450px;
 }
@@ -161,6 +164,7 @@ body {
 }
 
 .submit-button {
+    grid-area: submit;
     width: 100%;
     padding: 10px;
     margin-top: 15px;
@@ -189,12 +193,16 @@ body {
 }
 
 .output-box {
-    grid-column: span 2; /* Span both columns */
+    grid-column: output; /* Span both columns */
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     color: white;
     overflow: auto; /* Add scroll if needed */
+}
+
+.button-group{
+    grid-area: buttons;
 }
 
 

@@ -47,10 +47,10 @@
             <label for="dialogNodeText">Node Text:</label>
             <input type="text" id="dialogNodeText" class="input-field" placeholder="Enter the node text">
         </div>
-        <div class="form-group create-btn">
-            <input type="submit" class="submit-button" value="Create Node">
-        </div>
     </form>
+    <div class="form-group create-btn">
+        <input type="submit" id="submitCreate" class="submit-button" value="Create Node">
+    </div>
 
     <!-- Modify Node Form -->
     <form id="modifyNodeForm" class="form" style="display: none;">
@@ -74,10 +74,10 @@
             <label for="newNodeText">Node text:</label>
             <input type="text" id="newNodeText" class="input-field" placeholder="Enter the new node text">
         </div>
-        <div class="form-group create-btn">
-            <input type="submit" class="submit-button" value="Modify Node">
-        </div>
     </form>
+    <div class="form-group create-btn">
+        <input type="submit" id="submitModify"class="submit-button" value="Modify Node">
+    </div>
 
     <!-- Delete Node Form -->
     <form id="deleteNodeForm" class="form" style="display: none;">
@@ -89,10 +89,10 @@
             <label for="deleteNodeID">Node ID:</label>
             <input type="text" id="deleteNodeID" class="input-field" placeholder="Enter the ID of the node to delete">
         </div>
-        <div class="form-group create-btn">
-            <input type="submit" class="submit-button" value="Delete Node">
-        </div>
     </form>
+    <div class="form-group create-btn">
+        <input type="submit" id="submitDelete" class="submit-button" value="Delete Node">
+    </div>
 
     <div class="output-box" id="resultBox"></div>
     </div>
