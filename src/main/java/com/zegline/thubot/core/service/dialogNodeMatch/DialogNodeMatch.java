@@ -72,10 +72,17 @@ public class DialogNodeMatch {
         if(responseList.isEmpty())
             return new DialogNode();
 
-        String num = responseList.get(0).replace("QUESTION", "");
-        num = num.replace("\"", "");
+        String unsafeNum = responseList.get(0).replace("QUESTION", "");
+        unsafeNum = unsafeNum.replace("\"", "");
 
-        return possibleNodes.get(Integer.parseInt(num));
+        try {
+            int num = Integer.parseInt(unsafeNum);
+            return possibleNodes.get(num);
+        } catch (Exception e) {
+            return DialogNode.builder().msgText("PROMPT GOES AGAINST OUR AULA").build();
+        }
+
+
     }
 
     private List<String> getAnswers(List<DialogNode> nodes) {
