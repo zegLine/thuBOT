@@ -48,15 +48,8 @@ public class UserInputController {
     private DialogNodeMatch dialogNodeMatchService;
 
     @GetMapping("/ask")
-    public String input_ask(@RequestParam String userInput, @RequestParam String parent_id) {
-        String returnNodeStr = dialogNodeMatchService.getResponseNode(userInput, parent_id);
-
-        List<String> list_nodes = new ArrayList<>();
-
-        
-        // OpenAIService.getQuestionMatch(question, list_nodes).get(0);
-        return returnNodeStr;
+    public DialogNode inputAsk(@RequestParam String userInput) {
+        return dialogNodeMatchService.getResponseNode(userInput);
     }
-
     
 }

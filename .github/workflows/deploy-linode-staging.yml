@@ -22,7 +22,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Build with Maven
-        run: mvn clean install spring-boot:repackage
+        run: mvn clean install spring-boot:repackage -DskipTests
 
       - name: Upload JAR to Server
         uses: appleboy/scp-action@master

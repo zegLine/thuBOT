@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login-style.css">
+    <link rel="stylesheet" th:href="@{css/login-style.css}">
     <title>Register an Account</title>
 </head>
 <body>
@@ -30,7 +30,7 @@
 <div class="login-container">
     <div class="panel">
         <div class="welcome-text">
-            <img src="img/logo_transparent.png" alt="Logo">
+            <img th:src="@{img/logo_transparent.png}" alt="Logo">
             <h1>Willkommen!</h1>
             <p>It is very easy to register an account with us. Fill out this form, and you will soon get access to the bot.</p>
         </div>

@@ -109,11 +109,10 @@ public class DialogNodeController {
     public Set<DialogNode> get(@RequestBody (required = false) Map<String, String> body) {
         Set<DialogNode> returned = new HashSet<>() ;
         if(body == null){
-            List<String> rootIds = dnr.findIdsWithNoChildren();
+            List<DialogNode> nodes = dnr.findDialogNodesByParentIsNull();
 
-            for (String rootId : rootIds) {
-                System.out.println(rootId);
-                returned.add(dnr.findById(rootId).get());
+            for (DialogNode node : nodes) {
+                returned.add(node);
             }
 
             return returned;

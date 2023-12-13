@@ -69,7 +69,7 @@ public class DialogNode {
     private DialogNode parent;
 
     @Getter
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY) // This binds the 'children' collection to the 'parent' of each child entity
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL) // This binds the 'children' collection to the 'parent' of each child entity
     private Set<DialogNode> children = new HashSet<>();
 
 
@@ -90,6 +90,14 @@ public class DialogNode {
      */
     public DialogNode addChild(DialogNode c) {
         this.children.add(c);
+        c.setParent(this);
+        return this;
+    }
+
+    public DialogNode addChildren(Set<DialogNode> nodes) {
+        for (DialogNode n : nodes) {
+            n.setParent(this);
+        }
         return this;
     }
 
