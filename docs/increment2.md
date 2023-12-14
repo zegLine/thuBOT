@@ -3,7 +3,7 @@
 ## Current state of the project
 
 **Implemented**:
-- unit tests for around 50% of the codebase
+- unit tests for around 20% of the codebase
 - functioning dialog node matching
 - login and registration page for users
 - visual backend for adding, deleting and modifying dialog nodes
