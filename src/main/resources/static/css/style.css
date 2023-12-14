@@ -10,12 +10,18 @@ body {
     background: #E3F2FD;
 }
 
+.chatbot-logo {
+    max-width: auto; 
+    max-height: 120%;
+}
+
 .chat-logo {
     width: 52px;
     height: 52px;
     border-radius: 50%;
     margin-right: 10px;
 }
+
 .chatbot-toggler {
     position: fixed;
     bottom: 30px;
@@ -29,7 +35,7 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #2d00b9;
+    background: #003160;
     transition: all 0.2s ease;
 }
 body.show-chatbot .chatbot-toggler {
@@ -67,7 +73,7 @@ body.show-chatbot .chatbot-toggler span:last-child {
     -moz-background-size: contain;
     -o-background-size: contain;
     background-size: contain;
-    background-color: #064776;
+    background-color: #ffffff;
 }
 body.show-chatbot .chatbot {
     opacity: 1;
@@ -75,11 +81,12 @@ body.show-chatbot .chatbot {
     transform: scale(1);
 }
 .chatbot header {
+    height: 70px;
     padding: 16px 0;
     position: relative;
     text-align: center;
     color: #fff;
-    background: #1600a0;
+    background: #003160;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .chatbot header span {
@@ -97,6 +104,7 @@ header h2 {
     overflow-y: auto;
     height: 510px;
     padding: 30px 20px 100px;
+    list-style: none;
 }
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
     width: 6px;
@@ -109,13 +117,7 @@ header h2 {
     background: #ccc;
     border-radius: 25px;
 }
-/*
-.chatbox .chat {
-    display: flex;
-    list-style: none;
-}
 
- */
 .chatbox .chat p {
     display: inline-block;
     white-space: nowrap;
@@ -128,7 +130,7 @@ header h2 {
     max-width: 75%;
     color: #fff;
     font-size: 0.95rem;
-    background: #3145ee;
+    background: #4173b4;
     box-sizing: border-box;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
@@ -140,9 +142,20 @@ header h2 {
 }
 
 .chatbox .outgoing p {
-    background: #3145ee;
+    background: #4173b4;
     border-radius: 10px 10px 10px 0;
+    margin: 6px 0; 
     margin-left: auto;
+}
+
+
+/*spacing between left-right & right-left bubbles*/
+.chatbox .incoming + .outgoing {
+    margin-top: 6px; 
+}
+
+.chatbox .outgoing + .incoming {
+    margin-top: 6px; 
 }
 
 .chatbox .incoming span {
@@ -164,16 +177,16 @@ header h2 {
     max-width: 75%;
     color: #fff;
     font-size: 0.95rem;
-    background: #3145ee;
+    background: #3c3c3c;
 }
 .response-buttons {
-    margin-top: 10px;
-    text-align: center;
+    margin-top: 6px;
+    text-align: left;
 }
 
 .btn-response {
     padding: 10px 20px;
-    margin: 0 5px;
+    margin: 5px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -184,7 +197,15 @@ header h2 {
 }
 
 .btn-response:hover {
-    background-color: #1d81d2;
+    background-color: #0f4978;
+}
+
+
+/*put logo to bottom of bubbles*/
+.chatbox .incoming {
+    display: flex;
+    list-style: none;
+    align-items: flex-end;
 }
 
 .chatbox .incoming p {
@@ -192,6 +213,7 @@ header h2 {
     background: #f2f2f2;
     border-radius: 18px 18px 18px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    margin: 7px;
 }
 .chatbox .chat p.error {
     color: #721c24;
@@ -223,7 +245,7 @@ header h2 {
 }
 .chat-input span {
     align-self: flex-end;
-    color: #3000cd;
+    color: #003160;
     cursor: pointer;
     height: 55px;
     display: flex;
