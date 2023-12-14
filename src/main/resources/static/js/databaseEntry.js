@@ -1,19 +1,32 @@
+window.onload = function () {
+    showCreateForm(); // Trigger showCreateForm() when the page loads
+};
+
 function showCreateForm() {
     document.getElementById("createNodeForm").style.display = "block";
     document.getElementById("modifyNodeForm").style.display = "none";
     document.getElementById("deleteNodeForm").style.display = "none";
+    document.getElementById("submitCreate").style.display = "block";
+    document.getElementById("submitModify").style.display = "none";
+    document.getElementById("submitDelete").style.display = "none";
 }
 
 function showModifyForm() {
     document.getElementById("createNodeForm").style.display = "none";
     document.getElementById("modifyNodeForm").style.display = "block";
     document.getElementById("deleteNodeForm").style.display = "none";
+    document.getElementById("submitCreate").style.display = "none";
+    document.getElementById("submitModify").style.display = "block";
+    document.getElementById("submitDelete").style.display = "none";
 }
 
 function showDeleteForm() {
     document.getElementById("createNodeForm").style.display = "none";
     document.getElementById("modifyNodeForm").style.display = "none";
     document.getElementById("deleteNodeForm").style.display = "block";
+    document.getElementById("submitCreate").style.display = "none";
+    document.getElementById("submitModify").style.display = "none";
+    document.getElementById("submitDelete").style.display = "block";
 }
 
 document.getElementById('modifyNodeForm').addEventListener('submit', function (event) {
