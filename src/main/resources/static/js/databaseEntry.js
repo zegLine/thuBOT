@@ -29,8 +29,7 @@ function showDeleteForm() {
     document.getElementById("submitDelete").style.display = "block";
 }
 
-document.getElementById('modifyNodeForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+function doModify() {
 
     // Get values from form elements
     const nodeId = document.getElementById('idNode').value;
@@ -75,10 +74,8 @@ document.getElementById('modifyNodeForm').addEventListener('submit', function (e
             // Log errors
             console.error('Error:', error);
         });
-});
-
-document.getElementById('deleteNodeForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+}
+function doDelete() {
     const nodeId = document.getElementById('deleteNodeID').value;
     const data = {
         "dialogNodeId": nodeId
@@ -102,12 +99,10 @@ document.getElementById('deleteNodeForm').addEventListener('submit', function (e
             // Log errors
             console.error('Error:', error);
         });
-});
+}
 
 
-document.getElementById('createNodeForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-
+function doCreate(){
     // Get values from form elements
     const parentID = document.getElementById('parentID').value;
     const msgText = document.getElementById('msgText').value;
@@ -149,4 +144,4 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
             // Log errors
             console.error('Error:', error);
         });
-});
+}

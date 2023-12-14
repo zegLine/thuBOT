@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/databaseEntry.css}">
 </head>
 <body>
+<div class="output-box" id="resultBox"></div>
 <div class="container">
 
     <div class="panel">
@@ -48,7 +49,7 @@
             <input type="text" id="dialogNodeText" class="input-field" placeholder="Enter the node text">
         </div>
     </form>
-    <div class="form-group create-btn">
+    <div class="form-group create-btn" onclick="doCreate()">
         <input type="submit" id="submitCreate" class="submit-button" value="Create Node">
     </div>
 
@@ -75,7 +76,7 @@
             <input type="text" id="newNodeText" class="input-field" placeholder="Enter the new node text">
         </div>
     </form>
-    <div class="form-group create-btn">
+    <div class="form-group create-btn" onclick="doModify()">
         <input type="submit" id="submitModify"class="submit-button" value="Modify Node">
     </div>
 
@@ -90,11 +91,10 @@
             <input type="text" id="deleteNodeID" class="input-field" placeholder="Enter the ID of the node to delete">
         </div>
     </form>
-    <div class="form-group create-btn">
+    <div class="form-group create-btn" onclick="doDelete()">
         <input type="submit" id="submitDelete" class="submit-button" value="Delete Node">
     </div>
 
-    <div class="output-box" id="resultBox"></div>
     </div>
 </div>
 
