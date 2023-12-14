@@ -7,12 +7,7 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.model.DialogNodeToResponse;
-import com.zegline.thubot.core.model.Response;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
@@ -20,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @class DialogNodeMatch
@@ -143,9 +137,26 @@ public class DialogNodeMatch {
             words.add(tokenizer.nextToken());
         }
         words.removeAll(stopWords);
+        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeRepository.findDialogNodesByParentIsNull().get(0), 15);
+        DialogNode response = new DialogNode();
+        int dialogMatches = 0;
 
-        System.out.println(words);
-        return null;
+        for(DialogNode node: possibleNodes) {
+            String question = node.getDialogText();
+            int matches = 0;
+            for (String word : words) {
+                boolean containsWord = question.contains(word);
+                boolean containsPartOfWord = question.matches(".*\\b" + word + "\\b.*");
+                if ((containsWord || containsPartOfWord))
+                    matches++;
+            }
+            if (matches > dialogMatches) {
+                dialogMatches = matches;
+                response = node;
+            }
+        }
+        System.out.println("Dialog Node Matches: "+ response.getId());
+        return response;
     }
 
         
