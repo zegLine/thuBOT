@@ -135,4 +135,17 @@ public class DialogNodeController {
         );
     }
 
+    /**
+    * Retrieves the entire DialogNode tree starting from the root nodes.
+    * 
+    * @return A collection of root DialogNodes with nested child DialogNodes in a hierarchical representation.
+    */
+    @GetMapping("/tree")
+    public Iterable<DialogNode> getDialogNodeTree() {
+        
+        List<DialogNode> rootNodes = dnr.findDialogNodesByParentIsNull();
+
+        return rootNodes;
+}
+
 }

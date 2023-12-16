@@ -1,3 +1,22 @@
+
+function fetchAndVisualizeTree() {
+    fetch('/api/dialognode/tree')
+    .then(response => response.json())
+    .then(treeData => {
+        console.log(treeData);
+        if (!treeData) {
+            throw new Error('No tree data');
+        }
+        
+        d3.select("#tree-container").selectAll("*").remove();
+
+        visualizeTree(treeData[0]); 
+    })
+    .catch(error => {
+        console.error('Error fetching tree data:', error);
+    });
+}
+
 function showCreateForm() {
     document.getElementById("createNodeForm").style.display = "block";
     document.getElementById("modifyNodeForm").style.display = "none";
@@ -15,6 +34,8 @@ function showDeleteForm() {
     document.getElementById("modifyNodeForm").style.display = "none";
     document.getElementById("deleteNodeForm").style.display = "block";
 }
+
+fetchAndVisualizeTree();
 
 document.getElementById('createNodeForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -44,7 +65,6 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
         body: JSON.stringify(data),
     });
 
-    // Make POST request using Fetch API
     fetch('../api/dialognode/createChild', {
         method: 'POST',
         headers: {
@@ -53,15 +73,17 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
         },
         body: JSON.stringify(data),
     })
-        .then(response => response.json())
-        .then(apiResponse => {
-            // Log the API response.
-            console.log('API Response:', apiResponse);
-            const resultBox = document.getElementById('resultBox');
-            resultBox.innerText = `Request sent + ${apiResponse.id? "success" : "failure, see console for more details."}`;``
-        })
-        .catch(error => {
-            // Log errors
-            console.error('Error:', error);
-        });
+    .then(response => response.json())
+    .then(apiResponse => {
+        console.log('API Response:', apiResponse);
+        if(apiResponse.id) {
+            
+            fetchAndVisualizeTree();
+        } else {
+            throw new Error('Node creation failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 });

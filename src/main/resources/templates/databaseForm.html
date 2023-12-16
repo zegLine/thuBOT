@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/Modify/Delete Node Form</title>
     <link rel="stylesheet" href="../css/databaseEntry.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-<div class="container">
+    <div class="container">
     <!-- Buttons for different forms -->
     <div class="formAll">
     <div class="button-group">
@@ -15,10 +16,11 @@
         <button class ="form-change-button" onclick="showModifyForm()">Modify Node Form</button>
         <button class ="form-change-button" onclick="showDeleteForm()">Delete Node Form</button>
     </div>
+    
+    <div id="tree-container" class="tree-container">
+    </div>
 
-    <!-- Create Node Form -->
     <form id="createNodeForm" class="form">
-        <!-- Existing form fields -->
         <div class="form-group welcome-text">
             <h1>Create Node Form</h1>
         </div>
@@ -47,9 +49,7 @@
         </div>
     </form>
 
-    <!-- Modify Node Form -->
     <form id="modifyNodeForm" class="form" style="display: none;">
-        <!-- New form fields for modification -->
         <div class="form-group welcome-text">
             <h1>Modify Node Form</h1>
         </div>
@@ -74,9 +74,7 @@
         </div>
     </form>
 
-    <!-- Delete Node Form -->
     <form id="deleteNodeForm" class="form" style="display: none;">
-        <!-- New form fields for deletion -->
         <div class="form-group welcome-text">
             <h1>Delete Node Form</h1>
         </div>
@@ -102,6 +100,7 @@
 </div>
 
 <script src="../js/databaseEntry.js"></script>
+<script src="../js/d3Visualization.js"></script>
 
 </body>
 </html>

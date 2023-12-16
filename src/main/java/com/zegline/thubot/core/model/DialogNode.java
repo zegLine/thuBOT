@@ -20,6 +20,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,7 +47,7 @@ import jakarta.persistence.OneToMany;
 @Builder
 @Entity
 public class DialogNode {
-    @Getter
+    
     @Id
     @GeneratedValue(generator = "questionid-generator")
     @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator", parameters = {
@@ -57,20 +59,22 @@ public class DialogNode {
     @Column(name = "dialog_text")
     private String dialogText;
 
-    @Getter
+    
     @Column(name = "msg_text")
     private String msgText;
 
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
-    @JsonIgnore
+    
     @ManyToOne
-    @JoinColumn(name = "parent_id") // This is the foreign key column in your database
+    @JoinColumn(name = "parent_id")
+    @JsonBackReference
     private DialogNode parent;
 
-    @Getter
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL) // This binds the 'children' collection to the 'parent' of each child entity
+    
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<DialogNode> children = new HashSet<>();
 
 

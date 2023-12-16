@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/database/**").hasRole("SYS")
                         .requestMatchers("/api/input/**").permitAll()
+                        .requestMatchers("/api/dialognode/tree/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )

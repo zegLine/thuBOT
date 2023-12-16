@@ -31,6 +31,7 @@ public interface DialogNodeRepository extends CrudRepository<DialogNode, String>
      */
     DialogNode findByChildren(DialogNode child);
 
+    @Query("SELECT d FROM DialogNode d WHERE d.parent IS NULL")
     List<DialogNode> findDialogNodesByParentIsNull();
 
 }
