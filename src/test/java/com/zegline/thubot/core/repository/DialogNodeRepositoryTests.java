@@ -1,4 +1,4 @@
-/*package com.zegline.thubot.core.repository;
+package com.zegline.thubot.core.repository;
 
 import com.zegline.thubot.core.model.DialogNode;
 import org.junit.jupiter.api.Assertions;
@@ -67,4 +67,3 @@ public class DialogNodeRepositoryTests {
     }
 
 }
-*/
