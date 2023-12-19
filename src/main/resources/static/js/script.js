@@ -139,12 +139,20 @@ chatbotCloseBtn.addEventListener("click", () => {
     document.body.classList.remove("show-chatbot");
 });
 
+let isChatbotOpenedBefore = false;
+
+
+// Updated chatbotToggler event listener
 chatbotToggler.addEventListener("click", () => {
-    const isChatbotOpen = document.body.classList.contains("show-chatbot");
+    // Toggle the chatbot visibility
     document.body.classList.toggle("show-chatbot");
-    if (isChatbotOpen) {
-        clearChat();
-    } else {
-        fetchAndDisplayRootNodes();
+
+    // Check if the chatbot is being opened
+    if (document.body.classList.contains("show-chatbot")) {
+        // If it's the first time opening the chatbot, load the root nodes
+        if (!isChatbotOpenedBefore) {
+            fetchAndDisplayRootNodes();
+            isChatbotOpenedBefore = true; // Set to true after first opening
+        }
     }
 });
