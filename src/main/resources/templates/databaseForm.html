@@ -8,7 +8,6 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-<div class="output-box" id="resultBox"></div>
 <div class="container">
 
     <div class="panel">
@@ -25,10 +24,82 @@
     </div>
     <!-- Buttons for different forms -->
     <div class="formAll">
-    <div class="button-group">
-        <button class ="form-change-button" onclick="showCreateForm()">Create Node Form</button>
-        <button class ="form-change-button" onclick="showModifyForm()">Modify Node Form</button>
-        <button class ="form-change-button" onclick="showDeleteForm()">Delete Node Form</button>
+        <label class="upload-field">
+            <span class="custom-button">Upload File</span>
+            <input id="fileInput" type="file"  accept=".csv" onchange="handleFile()" style="display: none;">
+        </label>
+
+        <div class="button-group">
+            <button class ="form-change-button" onclick="showCreateForm()">Create Node Form</button>
+            <button class ="form-change-button" onclick="showModifyForm()">Modify Node Form</button>
+            <button class ="form-change-button" onclick="showDeleteForm()">Delete Node Form</button>
+        </div>
+
+        <!-- Create Node Form -->
+        <form id="createNodeForm" class="form">
+            <!-- Existing form fields -->
+            <div class="form-group welcome-text">
+                <h1>Create Node Form</h1>
+            </div>
+            <div class="form-group">
+                <label for="parentID">Parent ID:</label>
+                <input type="text" id="parentID" class="input-field" placeholder="Enter the ID of the parent node">
+            </div>
+            <div class="form-group">
+                <label for="msgText">Message Text:</label>
+                <input type="text" id="msgText" class="input-field" placeholder="Enter the text message">
+            </div>
+            <div class="form-group">
+                <label for="dialogNodeText">Node Text:</label>
+                <input type="text" id="dialogNodeText" class="input-field" placeholder="Enter the node text">
+            </div>
+        </form>
+        <div class="form-group create-btn" onclick="doCreate()">
+            <input type="submit" id="submitCreate" class="submit-button" value="Create Node">
+        </div>
+
+        <!-- Modify Node Form -->
+        <form id="modifyNodeForm" class="form" style="display: none;">
+            <!-- New form fields for modification -->
+            <div class="form-group welcome-text">
+                <h1>Modify Node Form</h1>
+            </div>
+            <div class="form-group">
+                <label for="idNode">Node ID:</label>
+                <input type="text" id="idNode" class="input-field" placeholder="Enter the ID of the node to modify">
+            </div>
+            <div class="form-group">
+                <label for="nodeParent">Node Parent:</label>
+                <input type="text" id="nodeParent" class="input-field" placeholder="Enter the new parent node name">
+            </div>
+            <div class="form-group">
+                <label for="newMsgText">Message text:</label>
+                <input type="text" id="newMsgText" class="input-field" placeholder="Enter the new message text">
+            </div>
+            <div class="form-group">
+                <label for="newNodeText">Node text:</label>
+                <input type="text" id="newNodeText" class="input-field" placeholder="Enter the new node text">
+            </div>
+        </form>
+        <div class="form-group create-btn" onclick="doModify()">
+            <input type="submit" id="submitModify" class="submit-button" value="Modify Node">
+        </div>
+
+        <!-- Delete Node Form -->
+        <form id="deleteNodeForm" class="form" style="display: none;">
+            <!-- New form fields for deletion -->
+            <div class="form-group welcome-text">
+                <h1>Delete Node Form</h1>
+            </div>
+            <div class="form-group">
+                <label for="deleteNodeID">Node ID:</label>
+                <input type="text" id="deleteNodeID" class="input-field" placeholder="Enter the ID of the node to delete">
+            </div>
+        </form>
+        <div class="form-group create-btn" onclick="doDelete()">
+            <input type="submit" id="submitDelete" class="submit-button" value="Delete Node">
+        </div>
+        <div class="output-box" id="resultBox"></div>
     </div>
     
     <div id="tree-container" class="tree-container">
@@ -120,6 +191,10 @@
 
 <script src="../js/databaseEntry.js"></script>
 <script src="../js/d3Visualization.js"></script>
+</div>
+
+
+<script th:src="@{/js/databaseEntry.js}"></script>
 
 </body>
 </html>
