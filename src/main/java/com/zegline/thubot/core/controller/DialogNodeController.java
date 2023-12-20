@@ -89,8 +89,51 @@ public class DialogNodeController {
                 dnr.save(oldParent);
             }
 
-            return newParent.equals(null) ? oldParent : newParent;
-        };
+        DialogNode node = optionalNode.get();
+        node.setMsgText(newMsgText);
+        node.setDialogText(newDialogNodeText);
+
+        Optional<DialogNode> optionalNewParent = dnr.findById(newParentNodeId);
+        if (optionalNewParent.isPresent()) {
+            DialogNode newParent = optionalNewParent.get();
+
+            node.setParent(newParent);
+        }
+
+        dnr.save(node);
+        return node;
+    }
+
+    @PostMapping("/delete")
+    public DialogNode dialog_node_delete(@RequestBody Map<String, String> body){
+        String id = body.get("dialogNodeId");
+
+        Optional<DialogNode> optionalNode = dnr.findById(id);
+        if(optionalNode.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find node"
+            );
+        }
+
+        DialogNode node = optionalNode.get();
+
+        DialogNode nodeParent = node.getParent();
+
+        if (nodeParent == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Not allowed to delete root node"
+            );
+        }
+
+        if (!node.getChildren().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "cannot delete nodes with children"
+            );
+        }
+
+        nodeParent.getChildren().remove(node);
+        dnr.delete(node);
+        return nodeParent;
 
         throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "couldn't find parent"
