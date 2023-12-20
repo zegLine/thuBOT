@@ -1,27 +1,25 @@
 function visualizeTree(treeData) {
     
-    var i = 0; 
-    
-    var margin = {top: 50, right: 90, bottom: 30, left: 750},
-        width = 1248 - margin.left - margin.right,
-        height = 800 - margin.top - margin.bottom;
+    var i = 0;
+    var containerWidth = d3.select("#tree-container").node().getBoundingClientRect().width;
+    var height = 800;
+    var margin = {top: 50, right: 90, bottom: 30, left: 90};
+    var width = containerWidth - margin.left - margin.right;
 
     var svg = d3.select("#tree-container").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate("
-              + margin.left + "," + margin.top + ")");
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var treemap = d3.tree()
-        .size([width, height]);
+    var treemap = d3.tree().size([width, height]);
     
     var root = d3.hierarchy(treeData, function(d) { 
         return d.children; 
     });
 
     root.x0 = width / 2;
-    root.y0 = 0;
+    root.y0 = margin.top;
 
     collapse(root); 
 
@@ -34,6 +32,18 @@ function visualizeTree(treeData) {
             d.children = null;
         }
     }
+
+    function onResize() {
+
+        var newContainerWidth = d3.select("#tree-container").node().getBoundingClientRect().width;
+        width = newContainerWidth - margin.left - margin.right;
+        svg.attr("width", width + margin.right + margin.left)
+        .attr("height", height + margin.top + margin.bottom);
+        treemap.size([width, height]);
+        update(root);
+    }
+
+    window.addEventListener('resize', onResize);
 
     function update(source) {
     
@@ -68,8 +78,9 @@ function visualizeTree(treeData) {
             });
 
         nodeEnter.append('text')
-            .attr("dy", "-1.5em") 
-            .attr("text-anchor", "middle")
+            .attr("dx", "-12px") 
+            .attr("dy", ".35em") 
+            .attr("text-anchor", "end")
             .style("fill", "white")
             .style("font-size", "10px")
             .text(function(d) {
@@ -133,7 +144,7 @@ function visualizeTree(treeData) {
 
         var linkEnter = link.enter().insert('path', "g")
             .attr("class", "link")
-            .style("stroke", "red")
+            .style("stroke", "white")
             .attr('d', function(d){
                 var o = {x: source.x0, y: source.y0}
                 return diagonal(o, o)
@@ -167,7 +178,7 @@ function visualizeTree(treeData) {
         
 
 
-        var path = `M ${s.x} ${s.y} L ${d.x} ${d.y}`; // Path from s to d
+        var path = `M ${s.x} ${s.y} L ${d.x} ${d.y}`; 
         return path;
         }
 
