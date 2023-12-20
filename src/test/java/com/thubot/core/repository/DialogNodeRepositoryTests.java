@@ -17,7 +17,7 @@ import java.util.HashSet;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ContextConfiguration(classes = ThuBotApplication.class)
-public class DialogNodeRepositoryTests {
+public class  DialogNodeRepositoryTests {
 
     @Autowired
     DialogNodeRepository dnr;
