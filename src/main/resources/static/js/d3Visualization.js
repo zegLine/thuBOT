@@ -2,9 +2,9 @@ function visualizeTree(treeData) {
     
     var i = 0; 
     
-    var margin = {top: 20, right: 90, bottom: 30, left: 90},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    var margin = {top: 50, right: 90, bottom: 30, left: 750},
+        width = 1248 - margin.left - margin.right,
+        height = 800 - margin.top - margin.bottom;
 
     var svg = d3.select("#tree-container").append("svg")
         .attr("width", width + margin.right + margin.left)
@@ -14,13 +14,13 @@ function visualizeTree(treeData) {
               + margin.left + "," + margin.top + ")");
 
     var treemap = d3.tree()
-        .size([height, width]);
+        .size([width, height]);
     
     var root = d3.hierarchy(treeData, function(d) { 
         return d.children; 
     });
 
-    root.x0 = height / 2;
+    root.x0 = width / 2;
     root.y0 = 0;
 
     collapse(root); 
@@ -56,7 +56,7 @@ function visualizeTree(treeData) {
             .attr('class', 'node')
             .attr("transform", function(d) {
                 
-                return "translate(" + source.y0 + "," + source.x0 + ")";
+                return "translate(" + source.x0 + "," + source.y0 + ")";
             })
             .on('click', click);
 
@@ -93,7 +93,7 @@ function visualizeTree(treeData) {
         nodeUpdate.transition()
             .duration(750)
             .attr("transform", function(d) {
-                return "translate(" + d.y + "," + d.x + ")";
+                return "translate(" + d.x + "," + d.y + ")";
             });
 
         nodeUpdate.select('circle.node')
@@ -105,7 +105,7 @@ function visualizeTree(treeData) {
         var nodeExit = node.exit().transition()
             .duration(750)
             .attr("transform", function(d) {
-                return "translate(" + source.y + "," + source.x + ")";
+                return "translate(" + source.x + "," + source.y + ")";
             })
             .remove();
 
@@ -133,6 +133,7 @@ function visualizeTree(treeData) {
 
         var linkEnter = link.enter().insert('path', "g")
             .attr("class", "link")
+            .style("stroke", "red")
             .attr('d', function(d){
                 var o = {x: source.x0, y: source.y0}
                 return diagonal(o, o)
@@ -159,15 +160,17 @@ function visualizeTree(treeData) {
         .remove();
 
         function diagonal(s, d) {
-        path = `M ${s.y} ${s.x}
+        /*path = `M ${s.y} ${s.x}
                 C ${(s.y + d.y) / 2} ${s.x},
                 ${(s.y + d.y) / 2} ${d.x},
-                ${d.y} ${d.x}`
+                ${d.y} ${d.x}`*/
         
 
 
+        var path = `M ${s.x} ${s.y} L ${d.x} ${d.y}`; // Path from s to d
         return path;
         }
+
 
         nodes.forEach(function(d){
             d.x0 = d.x;

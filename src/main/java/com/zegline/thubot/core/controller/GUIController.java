@@ -71,10 +71,11 @@ public class GUIController {
     }
 
     @GetMapping("/database/form")
-    public String getDBEntry(Model model){
+    public String getDBEntry(Model model, @AuthenticationPrincipal UserDetails userDetails){
         String jsonData = infoEndpoint.info().get("git").toString();
 
         model.addAttribute("commitid", jsonData);
+        model.addAttribute("loggedInUser", userDetails.getUsername());
 
         return "databaseForm";
     }

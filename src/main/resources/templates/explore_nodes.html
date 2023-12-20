@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dialog Map Display</title>
-    <link rel="stylesheet" href="css/explore_nodes.css">
+    <link rel="stylesheet" th:href="@{/css/explore_nodes.css}">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script th:src="@{/js/d3Visualization.js}"></script>
+    <script th:src="@{/js/explore_nodes.js}"></script>
 </head>
 <body>
-<div id="map-container"></div>
-<script src="js/explore_nodes.js"></script>
+
+    <div id="tree-container" class="tree-container">
+    </div>
+
 </body>
 </html>

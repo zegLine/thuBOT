@@ -1,21 +1,3 @@
-
-function fetchAndVisualizeTree() {
-    fetch('/api/dialognode/tree')
-    .then(response => response.json())
-    .then(treeData => {
-        console.log(treeData);
-        if (!treeData) {
-            throw new Error('No tree data');
-        }
-        
-        d3.select("#tree-container").selectAll("*").remove();
-
-        visualizeTree(treeData[0]); 
-    })
-    .catch(error => {
-        console.error('Error fetching tree data:', error);
-    });
-}
 window.onload = function () {
     showCreateForm(); // Trigger showCreateForm() when the page loads
 };
@@ -47,7 +29,6 @@ function showDeleteForm() {
     document.getElementById("submitDelete").style.display = "block";
 }
 
-fetchAndVisualizeTree();
 function doModify() {
 
     // Get values from form elements
@@ -126,8 +107,6 @@ function doCreate(){
     const parentID = document.getElementById('parentID').value;
     const msgText = document.getElementById('msgText').value;
     const dialogNodeText = document.getElementById('dialogNodeText').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
     // Prepare data for POST request
     const data = {
@@ -142,16 +121,15 @@ function doCreate(){
         url: '../api/dialognode/createChild',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
         body: JSON.stringify(data),
     });
 
+    // Make POST request using Fetch API
     fetch('../api/dialognode/createChild', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
         body: JSON.stringify(data),
     })
@@ -166,37 +144,4 @@ function doCreate(){
             // Log errors
             console.error('Error:', error);
         });
-}
-
-function handleFile() {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const contents = e.target.result;
-            processCSV(contents);
-        };
-
-        reader.readAsText(file);
-    }
-}
-
-function processCSV(contents) {
-    // Split CSV content into rows
-    const rows = contents.split('\n');
-
-    // Process each row
-    rows.forEach(row => {
-        // Split row into columns
-        const columns = row.split(',');
-
-        // Process each column
-        columns.forEach(column => {
-            // Do something with the column value
-            console.log(column);
-        });
-    });
 }

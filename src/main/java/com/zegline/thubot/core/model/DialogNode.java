@@ -11,6 +11,8 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,20 +21,9 @@ import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+//import jakarta.persistence.ManyToMany;
+//import jakarta.persistence.ManyToOne;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 /**
  * @class DialogNode
@@ -47,7 +38,7 @@ import jakarta.persistence.OneToMany;
 @Builder
 @Entity
 public class DialogNode {
-    
+    @Getter
     @Id
     @GeneratedValue(generator = "questionid-generator")
     @GenericGenerator(name = "questionid-generator", strategy = "com.zegline.thubot.core.utils.generator.QuestionIdGenerator", parameters = {
@@ -59,24 +50,21 @@ public class DialogNode {
     @Column(name = "dialog_text")
     private String dialogText;
 
-    
+    @Getter
     @Column(name = "msg_text")
     private String msgText;
 
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
-    
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @JsonBackReference
+    @JoinColumn(name = "parent_id") // This is the foreign key column in your database
     private DialogNode parent;
 
-    
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @Getter
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL) // This binds the 'children' collection to the 'parent' of each child entity
     private Set<DialogNode> children = new HashSet<>();
-
 
     /**
      * Constructor for DialogNode.
@@ -123,21 +111,17 @@ public class DialogNode {
         this.msgText = msgText;
     }
 
-    public DialogNode removeChild(DialogNode node) {
-        this.children.remove(node);
-        return this;
-    }
+    @Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    DialogNode other = (DialogNode) obj;
+    return id != null && id.equals(other.getId());
+}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        DialogNode other = (DialogNode) obj;
-        return id != null && id.equals(other.getId());
-    }
+@Override
+public int hashCode() {
+    return getClass().hashCode();
+}
     
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

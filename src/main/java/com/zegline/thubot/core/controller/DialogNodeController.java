@@ -63,7 +63,7 @@ public class DialogNodeController {
         );
     }
 
-    @PostMapping("/modifyChild")
+    @PostMapping("/modify")
     public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
         String id = body.get("dialogNodeId");
         String newDialogNodeText = body.get("dialogNodeText");
@@ -71,23 +71,11 @@ public class DialogNodeController {
         String newParentNodeId = body.get("parentNodeId");
 
         Optional<DialogNode> optionalNode = dnr.findById(id);
-        if (optionalNode.isPresent()) {
-            DialogNode node = optionalNode.get();
-            node.setMsgText(newMsgText);
-            node.setDialogText(newDialogNodeText);
-            Optional<DialogNode> optionalParent = dnr.findById(newParentNodeId);
-            DialogNode newParent = null;
-            DialogNode oldParent = dnr.findByChildren(node);
-            dnr.save(node);
-            if(optionalParent.isPresent()) {
-                newParent = optionalParent.get();
-                oldParent.removeChild(node);
-                newParent.addChild(node);
-                dnr.save(oldParent);
-                dnr.save(newParent);
-            } else {
-                dnr.save(oldParent);
-            }
+        if (optionalNode.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find node"
+            );
+        }
 
         DialogNode node = optionalNode.get();
         node.setMsgText(newMsgText);
@@ -135,9 +123,6 @@ public class DialogNodeController {
         dnr.delete(node);
         return nodeParent;
 
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "couldn't find parent"
-        );
     }
 
     /**
@@ -177,18 +162,5 @@ public class DialogNodeController {
             HttpStatus.NOT_FOUND, "id cannot be empty"
         );
     }
-
-    /**
-    * Retrieves the entire DialogNode tree starting from the root nodes.
-    * 
-    * @return A collection of root DialogNodes with nested child DialogNodes in a hierarchical representation.
-    */
-    @GetMapping("/tree")
-    public Iterable<DialogNode> getDialogNodeTree() {
-        
-        List<DialogNode> rootNodes = dnr.findDialogNodesByParentIsNull();
-
-        return rootNodes;
-}
 
 }
