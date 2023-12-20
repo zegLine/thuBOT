@@ -145,3 +145,36 @@ function doCreate(){
             console.error('Error:', error);
         });
 }
+
+function handleFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const contents = e.target.result;
+            processCSV(contents);
+        };
+
+        reader.readAsText(file);
+    }
+}
+
+function processCSV(contents) {
+    // Split CSV content into rows
+    const rows = contents.split('\n');
+
+    // Process each row
+    rows.forEach(row => {
+        // Split row into columns
+        const columns = row.split(',');
+
+        // Process each column
+        columns.forEach(column => {
+            // Do something with the column value
+            console.log(column);
+        });
+    });
+}
