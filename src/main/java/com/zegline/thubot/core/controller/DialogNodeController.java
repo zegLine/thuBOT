@@ -55,7 +55,7 @@ public class DialogNodeController {
             dnr.save(d);
             parent.addChild(d);
             dnr.save(parent);
-            return parent;
+            return d;
         };
 
         throw new ResponseStatusException(
