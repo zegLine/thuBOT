@@ -70,6 +70,11 @@ public class GUIController {
         return "explore_nodes";
     }
 
+    @GetMapping("/database/display/static")
+    public String getDN1() {
+        return "explore_nodes_static";
+    }
+
     @GetMapping("/database/form")
     public String getDBEntry(Model model, @AuthenticationPrincipal UserDetails userDetails){
         String jsonData = infoEndpoint.info().get("git").toString();
