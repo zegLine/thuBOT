@@ -155,8 +155,11 @@ public class DialogNodeMatch {
                 response = node;
             }
         }
-        System.out.println("Dialog Node Matches: "+ response.getId());
-        return response;
+        if(dialogMatches >= 3){
+            System.out.println("Dialog Node Matches: "+ response.getId());
+            return response;
+        }
+        return null;
     }
 
         
