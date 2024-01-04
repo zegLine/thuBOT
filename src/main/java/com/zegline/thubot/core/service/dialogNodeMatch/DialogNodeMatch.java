@@ -11,18 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.model.DialogNodeToResponse;
-import com.zegline.thubot.core.model.Response;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 /**

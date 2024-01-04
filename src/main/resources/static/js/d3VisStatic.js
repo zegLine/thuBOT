@@ -1,7 +1,7 @@
 function visualizeTree(treeData) {
     
     const rectWidth = 200;
-    const rectHeight = 60;
+    const rectHeight = 80;
     const rectRoundness = 5;
 
     var i = 0;
@@ -13,13 +13,13 @@ function visualizeTree(treeData) {
     var height = containerHeight - margin.top - margin.bottom;
 
     var svg = d3.select("#tree-cont-static").append("svg")
-    .attr("width", '100%')
-    .attr("height", height + margin.top + margin.bottom)
-    .attr("viewBox", `0 0 ${containerWidth} ${height}`)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("width", '100%')
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${containerWidth} ${height}`)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var treemap = d3.tree().size([width, height]);
+    var treemap = d3.tree().size([width - margin.right, height - margin.bottom]);
     
     var root = d3.hierarchy(treeData, function(d) { 
         return d.children; 
@@ -105,7 +105,7 @@ function visualizeTree(treeData) {
 
         var nodeText = nodeEnter.append('text')
             .attr("x", -rectWidth / 2 + 10)
-            .attr("y", -rectHeight / 2 + 20) // Start the text closer to the top of the rectangle
+            .attr("y", -rectHeight / 2 + 5) // Start the text closer to the top of the rectangle
             .attr("text-anchor", "start")
             .style("fill", "black") // Changed text color to black for visibility
             .style("font-size", "10px");
@@ -127,6 +127,13 @@ function visualizeTree(treeData) {
             .attr('dy', '1.5em')
             .text(function(d) { 
                 return 'Message: ' + trimText(d.data.msgText || '', rectWidth - 20); 
+            });
+
+        nodeText.append('tspan')
+            .attr('x', -rectWidth / 2 + 10)
+            .attr('dy', '1.5em') 
+            .text(function(d) {
+                return d.parent && d.parent.data.id !== "root" ? 'Parent ID: ' + d.parent.data.id : '';
             });
 
         function trimText(text, maxWidth) {
@@ -216,13 +223,6 @@ function visualizeTree(treeData) {
         .remove();
 
         function diagonal(s, d) {
-        /*path = `M ${s.y} ${s.x}
-                C ${(s.y + d.y) / 2} ${s.x},
-                ${(s.y + d.y) / 2} ${d.x},
-                ${d.y} ${d.x}`*/
-        
-
-
         var path = `M ${s.x} ${s.y} L ${d.x} ${d.y}`; 
         return path;
         }
