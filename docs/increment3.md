@@ -19,3 +19,6 @@
 ## Screenshots
 New design, and working frontend
 ![inc3_newdesign.png](img%2Finc3_newdesign.png)
+
+Graphical visualization using D3.js
+![inc3_graphviz.png](img%2Finc3_graphviz.png)
