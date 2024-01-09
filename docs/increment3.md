@@ -9,6 +9,7 @@
 
 **Work in progress**:
 - end-to-end tests
+- more unit tests
 - basic voice access to the bot (using twilio API)
 
 **Planned**:
