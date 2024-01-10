@@ -29,7 +29,4 @@ public class ThuBotApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ThuBotApplication.class, args);
 	}
-
-	
-
 }

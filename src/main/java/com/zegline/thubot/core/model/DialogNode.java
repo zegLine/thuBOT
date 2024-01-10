@@ -11,7 +11,7 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,7 +57,8 @@ public class DialogNode {
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "parent_id") // This is the foreign key column in your database
     private DialogNode parent;
