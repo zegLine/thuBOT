@@ -1,9 +1,9 @@
 /**
  * @file SecurityConfig.java
- * @brief Configuration class for Spring Security
+ * @brief Holds the configuration class for security purposes in the Spring application.
  *
- * This class contains the configuration for Spring Security, defining the security filter chain,
- * user details service, and password encoder
+ * This file contains the SecurityConfig class which provides the security configurations of the application.
+ * It configures the security filter chain, user details service, and password encoder.
  */
 package com.zegline.thubot.core.config;
 
@@ -18,10 +18,10 @@ import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
  * @class SecurityConfig
- * @brief Configuration class to set up security filters and user details
+ * @brief Configures the security settings including security filters, user details, and password encoding.
  *
- * This class provides beans to set up the security filters, define users with their roles and authorities,
- * and encode their passwords. It uses an in-memory user details manager for simplicity
+ * This class defines the beans for setting up the security filters, defines users with their roles and authorities,
+ * and encodes their passwords by configuring the PasswordEncoder. The user details are managed in-memory for simplicity.
  */
 @Configuration
 @EnableWebSecurity
