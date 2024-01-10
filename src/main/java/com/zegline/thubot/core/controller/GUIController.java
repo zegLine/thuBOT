@@ -9,6 +9,7 @@ package com.zegline.thubot.core.controller;
 
 import com.zegline.thubot.core.model.security.User;
 import com.zegline.thubot.core.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-
 /**
  * @class GUIController
  * @brief Controller to manage GUI endpoints
