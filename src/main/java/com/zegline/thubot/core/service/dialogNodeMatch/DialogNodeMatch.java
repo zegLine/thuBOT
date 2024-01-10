@@ -70,7 +70,7 @@ public class DialogNodeMatch {
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
         if(responseList.isEmpty())
-            return new DialogNode();
+            return DialogNode.builder().msgText("PROMPT GOES AGAINST OUR AULA").build();
 
         String unsafeNum = responseList.get(0).replace("QUESTION", "");
         unsafeNum = unsafeNum.replace("\"", "");
