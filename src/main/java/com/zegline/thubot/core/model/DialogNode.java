@@ -64,7 +64,7 @@ public class DialogNode {
     @Getter
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DialogNode> children = new HashSet<>();
-    
+
     /**
      * Constructor for the DialogNode.
      *
