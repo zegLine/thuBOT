@@ -48,19 +48,21 @@ public class DialogNodeController {
         String msgText = body.get("msgText");
         String parentNodeId = body.get("parentNodeId");
 
+        // Validation is missing
+
         Optional<DialogNode> optionalParent = dnr.findById(parentNodeId);
-        if (optionalParent.isPresent()) {
-            DialogNode parent = optionalParent.get();
-            DialogNode d = DialogNode.builder().dialogText(dialogNodeText).msgText(msgText).build();
-            dnr.save(d);
-            parent.addChild(d);
-            dnr.save(parent);
-            return d;
+        if (optionalParent.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find parent"
+            );
         };
 
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "couldn't find parent"
-        );
+        DialogNode parent = optionalParent.get();
+        DialogNode d = DialogNode.builder().dialogText(dialogNodeText).msgText(msgText).build();
+        dnr.save(d);
+        parent.addChild(d);
+        dnr.save(parent);
+        return d;
     }
 
     @PostMapping("/modify")
@@ -150,7 +152,7 @@ public class DialogNodeController {
             Optional<DialogNode> match = dnr.findById(body.get("id"));
             if (match.isEmpty()) {
                 throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "couldn't find node"
+                        HttpStatus.NOT_FOUND, "couldn't find node"
                 );
             }
             returned.add(match.get());
@@ -159,8 +161,15 @@ public class DialogNodeController {
         }
 
         throw new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "id cannot be empty"
+                HttpStatus.NOT_FOUND, "id cannot be empty"
         );
     }
+
+    //https://www.bezkoder.com/spring-boot-download-csv-file/
+    //@GetMapping("/generateCSV")
+    //public ResponseEntity<Resource> getFile() {
+
+    //}
+    //}
 
 }
