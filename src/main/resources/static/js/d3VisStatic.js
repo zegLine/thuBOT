@@ -14,31 +14,36 @@ function visualizeTree(treeData) {
 
     var svg = d3.select("#tree-cont-static").append("svg")
         .attr("width", '100%')
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("viewBox", `0 0 ${containerWidth} ${height}`)
+        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom}`)
+        .style("overflow-y", "auto")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var treemap = d3.tree().size([width - margin.right, height - margin.bottom]);
+        var treemap = d3.tree().size([width, height]);
     
-    var root = d3.hierarchy(treeData, function(d) { 
-        return d.children; 
+        var root = d3.hierarchy(treeData, function(d) { 
+            return d.children; 
     });
 
     root.x0 = width / 2;
     root.y0 = height / 2;
 
-    collapse(root); 
+    function setInitialDepths(source, depthIncrement) {
+        if (source.children) {
+            source.children.forEach(function (child) {
+                child.y = (source.depth + 1) * depthIncrement;
+                setInitialDepths(child, depthIncrement);  // Use recursion to establish y for all children
+            });
+        }
+    }
+
+    
+
+    setInitialDepths(root, 180);
 
     update(root);
 
-    function collapse(d) {
-        if(d.children) {
-            d._children = d.children;
-            d._children.forEach(collapse);
-            d.children = null;
-        }
-    }
+    
 
     function onResize() {
         var newContainerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
@@ -54,16 +59,14 @@ function visualizeTree(treeData) {
     window.addEventListener('resize', onResize);
 
     function update(source) {
+        
+
     
         var treeData = treemap(root);
 
         var nodes = treeData.descendants();
             
         var links = treeData.descendants().slice(1);
-
-        nodes.forEach(function(d) {
-            d.isLeaf = !d.children && !d._children;
-        });
 
         var node = svg.selectAll('g.node')
             .data(nodes, function(d) { 
@@ -74,9 +77,9 @@ function visualizeTree(treeData) {
             .attr('class', 'node')
             .attr("transform", function(d) {
                 
-                return "translate(" + source.x0 + "," + source.y0 + ")";
+                return "translate(" + d.x + "," + d.y + ")";
             })
-            .on('click', click);
+            //.on('click', click);
 
         nodeEnter.append('rect')
             .attr('class', 'node')
@@ -159,16 +162,10 @@ function visualizeTree(treeData) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
 
-        nodeUpdate.select('circle.node')
-            .attr('r', 10)
-            .style('fill', function(d) {
-                return d.isLeaf ? 'lightgreen' : (d._children ? 'lightsteelblue' : '#fff');
-            });
-
         var nodeExit = node.exit().transition()
             .duration(750)
             .attr("transform", function(d) {
-                return "translate(" + source.x + "," + source.y + ")";
+                return "translate(" + d.x + "," + d.y + ")";
             })
             .remove();
 
@@ -198,7 +195,7 @@ function visualizeTree(treeData) {
             .attr("class", "link")
             .style("stroke", "white")
             .attr('d', function(d){
-                var o = {x: source.x0, y: source.y0}
+                var o = {x: d.x, y: d.y}
                 return diagonal(o, o)
             });
 
@@ -217,7 +214,7 @@ function visualizeTree(treeData) {
         var linkExit = link.exit().transition()
         .duration(750)
         .attr('d', function(d) {
-            var o = {x: source.x, y: source.y}
+            var o = {x: d.x, y: d.y}
             return diagonal(o, o)
         })
         .remove();
