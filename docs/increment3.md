@@ -6,6 +6,7 @@
 - fully functioning frontend (JS calls to the backend routes)
 - impressum, privacy policy, contact pages
 - graph visualization for the dialog nodes
+- file-based import / export of nodes (CSV format)
 
 **Work in progress**:
 - end-to-end tests
