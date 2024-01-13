@@ -7,23 +7,14 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.model.DialogNodeToResponse;
-import com.zegline.thubot.core.model.Response;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @class DialogNodeMatch
@@ -49,7 +40,6 @@ public class DialogNodeMatch {
      * Matches user input with responses in the databases.
      *
      * @param userInput The input string the user provided, could be the prompt or natural language.
-     * @param parentId  The id of the parent node.
      * @return The fetched answer or a default message if no suitable response is found.
      */
     public DialogNode getResponseNode(String userInput){
@@ -126,6 +116,49 @@ public class DialogNodeMatch {
      */
     private DialogNode matchNodeToInput(String input) {
         // TODO: Implement database matching logic
+        input = input.toLowerCase();
+        Set<String> stopWords = new HashSet<>(
+                Arrays.asList(
+                        "a", "about", "all", "and", "any", "at", "be",
+                        "because", "been", "before", "being", "between", "by", "can",
+                        "come", "could", "did", "do", "each", "for", "from", "he",
+                        "have", "having", "her", "him", "his", "how", "i","if", "in",
+                        "is", "it", "its", "just", "me", "more", "most", "my", "of",
+                        "on", "one", "only", "or", "our", "over", "same", "still",
+                        "see", "should", "so", "some", "such", "that", "the",
+                        "their", "them", "there", "these", "they", "this", "to", "too",
+                        "two", "was", "were", "what", "when", "where", "which", "who",
+                        "with", "would", "you", "your")
+        );
+        StringTokenizer tokenizer = new StringTokenizer(input);
+
+        List<String> words = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            words.add(tokenizer.nextToken());
+        }
+        words.removeAll(stopWords);
+        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeRepository.findDialogNodesByParentIsNull().get(0), 15);
+        DialogNode response = new DialogNode();
+        int dialogMatches = 0;
+
+        for(DialogNode node: possibleNodes) {
+            String question = node.getDialogText();
+            int matches = 0;
+            for (String word : words) {
+                boolean containsWord = question.contains(word);
+                boolean containsPartOfWord = question.matches(".*\\b" + word + "\\b.*");
+                if ((containsWord || containsPartOfWord))
+                    matches++;
+            }
+            if (matches > dialogMatches) {
+                dialogMatches = matches;
+                response = node;
+            }
+        }
+        if(dialogMatches >= 3){
+            System.out.println("Dialog Node Matches: "+ response.getId());
+            return response;
+        }
         return null;
     }
 

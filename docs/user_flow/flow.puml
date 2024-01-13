@@ -1,0 +1,86 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE User {
+    .. Interactions ..
+    + Click prompt
+    + Input text
+}
+
+RECTANGLE DialogNodeController {
+    .. Endpoints ..
+    + createChild()
+    + getNode()
+}
+
+RECTANGLE UserInputController {
+    .. Endpoints ..
+    + input_ask()
+}
+
+RECTANGLE DialogNodeMatch {
+    .. Matching logic ..
+    + getResponseNode()
+}
+
+RECTANGLE OpenAIService {
+    .. OpenAI Interaction ..
+    + getQuestionMatch()
+}
+
+RECTANGLE DialogNodeRepository {
+    .. Database Operations ..
+    + findById()
+    + findByParentId()
+}
+
+RECTANGLE DialogNodeResponseRepository {
+    .. Database Operations ..
+    + findByDialogNode()
+}
+
+RECTANGLE PrivilegeRepository
+RECTANGLE ResponseRepository
+RECTANGLE RoleRepository
+RECTANGLE UserRepository
+
+RECTANGLE DialogNode {
+    .. Properties ..
+    + dialogText
+    + msgText
+    .. Relationships ..
+    + children: DialogNode[]
+    + questionresponse: DialogNodeToResponse[]
+}
+
+RECTANGLE DialogNodeToResponse {
+    .. Relationships ..
+    + response: Response
+    + dialogNode: DialogNode
+}
+
+RECTANGLE Response {
+    .. Properties ..
+    + response_text
+}
+
+User --> DialogNodeController : clicks on prompt
+User --> UserInputController : enters text
+
+DialogNodeController --> DialogNodeMatch : requests matching child node
+UserInputController --> DialogNodeMatch : requests matching node from input
+
+DialogNodeMatch --> OpenAIService : calls if no local match
+OpenAIService --> DialogNodeMatch : returns best match from OpenAI
+
+DialogNodeMatch --> DialogNodeRepository : fetches dialog nodes
+DialogNodeRepository --> DialogNodeMatch : returns dialog nodes
+
+DialogNodeMatch --> DialogNodeResponseRepository : finds responses for node
+DialogNodeResponseRepository --> DialogNodeMatch : returns associated responses
+
+DialogNode --> DialogNodeRepository : entity managed by repository
+DialogNodeToResponse --> DialogNodeResponseRepository : entity managed by repository
+Response --> ResponseRepository : entity managed by repository
+
+@enduml
