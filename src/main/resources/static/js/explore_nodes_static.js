@@ -7,7 +7,7 @@ function fetchAndVisualizeTree() {
                 throw new Error('No tree data');
             }
 
-            d3.select("#tree-container").selectAll("*").remove();
+            d3.select("#tree-cont-static").selectAll("*").remove();
 
             visualizeTree(treeData[0]);
         })

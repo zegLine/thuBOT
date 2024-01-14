@@ -1,38 +1,27 @@
 /**
  * @file SecurityConfig.java
- * @brief Configuration class for Spring Security
+ * @brief Holds the configuration class for security purposes in the Spring application.
  *
- * This class contains the configuration for Spring Security, defining the security filter chain,
- * user details service, and password encoder
+ * This file contains the SecurityConfig class which provides the security configurations of the application.
+ * It configures the security filter chain, user details service, and password encoder.
  */
 package com.zegline.thubot.core.config;
 
-import com.zegline.thubot.core.service.user.ThuUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
  * @class SecurityConfig
- * @brief Configuration class to set up security filters and user details
+ * @brief Configures the security settings including security filters, user details, and password encoding.
  *
- * This class provides beans to set up the security filters, define users with their roles and authorities,
- * and encode their passwords. It uses an in-memory user details manager for simplicity
+ * This class defines the beans for setting up the security filters, defines users with their roles and authorities,
+ * and encodes their passwords by configuring the PasswordEncoder. The user details are managed in-memory for simplicity.
  */
 @Configuration
 @EnableWebSecurity
@@ -46,24 +35,29 @@ public class SecurityConfig {
      * @throws Exception if an error occurs during configuration
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/database/**").hasRole("SYS")
-                        .requestMatchers("/api/input/**").permitAll()
-                        .requestMatchers("/api/dialognode/get").permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll())
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedPage("/access-denied") // Specify the custom access denied page
-                );
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers.addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "SAMEORIGIN")))
+            .authorizeHttpRequests(authz -> {
+                authz.requestMatchers("/database/display/**", "/database/display/static/**").permitAll();
+                authz.requestMatchers("/database/**").hasRole("SYS");
+                authz.requestMatchers("/api/input/**").permitAll();
+                authz.requestMatchers("/api/dialognode/get").permitAll();
+                authz.requestMatchers("/api/**").authenticated();
+                authz.anyRequest().permitAll();
+            })
+            .formLogin(form -> form
+                .loginPage("/login")
+                .permitAll())
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedPage("/access-denied")
+            );
         return http.build();
+
     }
+
 
     /**
      * Configures the password encoder to be used for encoding and matching passwords
@@ -71,7 +65,7 @@ public class SecurityConfig {
      * @return A PasswordEncoder that uses BCrypt hashing for securing passwords
      */
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
