@@ -20,13 +20,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 
-
 /**
  * @class DialogNodeController
- * @brief Controller class to manage DialogNode resources
+ * @brief Provides REST endpoints to manage DialogNodes
  *
- * Provides the REST endpoints for creating and retrieving DialogNode entities. DialogNodes
- * are the constructs used to hold dialog data for open conversations according to sessionId
+ * This controller class defines the routes for creating, modifying, deleting, and retrieving DialogNodes. 
+ * All endpoints of this controller are under the "/api/dialognode" route.
  */
 @RestController
 @RequestMapping("/api/dialognode")
@@ -34,7 +33,6 @@ public class DialogNodeController {
 
     @Autowired
     DialogNodeRepository dnr;
-
 
     /**
      * Creates a new DialogNode based on the provided data in the request body.
@@ -63,6 +61,13 @@ public class DialogNodeController {
         );
     }
 
+    /**
+     * Modifies an existing DialogNode based on the provided data in the request body.
+     *
+     * @param body A map containing dialogNodeId and the new dialogNodeText, msgText, and parentNodeId.
+     * @return The modified DialogNode.
+     * @throws ResponseStatusException if the specified DialogNode is not found.
+     */
     @PostMapping("/modify")
     public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
         String id = body.get("dialogNodeId");
@@ -92,6 +97,14 @@ public class DialogNodeController {
         return node;
     }
 
+    /**
+     * Deletes a DialogNode based on the provided ID in the request body.
+     *
+     * @param body A map containing the ID of the DialogNode to delete.
+     * @return The parent of the deleted DialogNode.
+     * @throws ResponseStatusException if the specified DialogNode is not found, 
+     * if it has children, or the specified DialogNode is the root.
+     */
     @PostMapping("/delete")
     public DialogNode dialog_node_delete(@RequestBody Map<String, String> body){
         String id = body.get("dialogNodeId");
@@ -104,7 +117,6 @@ public class DialogNodeController {
         }
 
         DialogNode node = optionalNode.get();
-
         DialogNode nodeParent = node.getParent();
 
         if (nodeParent == null) {
@@ -132,7 +144,6 @@ public class DialogNodeController {
      * @return Set of DialogNodes matching the provided criteria or all DialogNodes if no specific parameters are provided.
      * @throws ResponseStatusException If the provided ID is empty or if the DialogNode with the specified ID is not found.
      */
-
     @GetMapping("/get")
     public Set<DialogNode> get(@RequestBody (required = false) Map<String, String> body) {
         Set<DialogNode> returned = new HashSet<>() ;

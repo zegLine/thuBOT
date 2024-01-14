@@ -43,3 +43,10 @@ secrets.yml
 application.properties
 thuBOT.code-workspace
 console-output.txt
+.gitignore
+Dataloader.java
+DialogNodeRepositoryTests.java
+apiApplicationTests.java
+DialogNodeRepositoryTests.java
+apiApplicationTests.java
+

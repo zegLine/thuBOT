@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-
 /**
  * @class DialogNodeToResponse
  * @brief Represents a link between a DialogNode and a Response entity
@@ -36,18 +35,18 @@ public class DialogNodeToResponse {
     private Response response;
 
     /**
-     * Gets the associated DialogNode question
+     * Returns the DialogNode question associated with this DialogNode-Response relationship.
      *
-     * @return The DialogNode associated with this relationship
+     * @return The DialogNode associated with this relationship.
      */
     public DialogNode getQuestion() {
         return dialogNode;
     }
 
     /**
-     * Gets the associated Response entity
+     * Returns the Response entity associated with this DialogNode-Response relationship.
      *
-     * @return The Response associated with this relationship
+     * @return The Response associated with this relationship.
      */
     public Response getResponse() {
         return response;

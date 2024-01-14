@@ -1,0 +1,8 @@
+body {
+    background: linear-gradient(45deg, #171717, #0d0d0d);
+}
+
+#tree-cont-static {
+    min-height: 100vh; /* This gives a minimum height based on the viewport height */
+    overflow-y: auto; /* Allows for scrolling */
+}
