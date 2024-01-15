@@ -11,36 +11,48 @@
 </head>
 <body>
 
-<div class="corner-text" th:text="${jsonData}"></div>
+  <div class="corner-text" th:text="${jsonData}"></div>
 
-<button class="chatbot-toggler">
-  <span class="material-symbols-rounded">mode_comment</span>
-  <span class="material-symbols-outlined">close</span>
-</button>
-<div class="chatbot">
-  <header>
-    <img th:src="@{/img/logo_transparent.png}" alt="Logo" class="chatbot-logo">
-    <span class="close-btn material-symbols-outlined">close</span>
-  </header>
-  <ul class="chatbox">
-    <!-- Typing indicator (hidden by default) -->
-    <div id="typingIndicator" style="display: none; text-align: center;">
-      <span>Stupid BOT is typing...</span>
+  <button class="chatbot-toggler">
+    <span class="material-symbols-rounded">mode_comment</span>
+    <span class="material-symbols-outlined">close</span>
+  </button>
+  <div class="chatbot">
+    <div class="navigation">
+      <nav>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="dataPolicy.html">Data Policy</a></li>
+        </ul>
+      </nav>
     </div>
-
-    <!-- Example chat message (incoming) -->
-    <li class="chat incoming">
-      <img src="https://i.imgur.com/0N92vb3.png" alt="Logo" class="chat-logo">
-      <p>Hi there!</p>
-      <div class="response-buttons">
+    <header id="chatbot-header">
+      <img th:src="@{/img/logo_transparent.png}" alt="Logo" class="chatbot-logo">
+      <div class="header-buttons">
+        <span class="close-btn material-symbols-outlined">close</span>
+        <span id="open-in-full-btn" class="open-in-full material-symbols-outlined">open_in_full</span>
       </div>
-    </li>
-  </ul>
-  <div class="chat-input">
-    <textarea placeholder="Enter a message..." spellcheck="false" class="message-input" required></textarea>
-    <span id="send-btn" class="material-symbols-rounded">send</span>
+    </header>
+    <ul class="chatbox">
+      <!-- Typing indicator (hidden by default) -->
+      <div id="typingIndicator" style="display: none; text-align: center;">
+        <span>Stupid BOT is typing...</span>
+      </div>
+
+      <!-- Example chat message (incoming) -->
+      <li class="chat incoming">
+        <img src="https://i.imgur.com/0N92vb3.png" alt="Logo" class="chat-logo">
+        <p>Hi there!</p>
+        <div class="response-buttons">
+        </div>
+      </li>
+    </ul>
+    <div class="chat-input">
+      <textarea placeholder="Enter a message..." spellcheck="false" class="message-input" required></textarea>
+      <span id="send-btn" class="material-symbols-rounded">send</span>
+    </div>
   </div>
-</div>
 
 </body>
 </html>

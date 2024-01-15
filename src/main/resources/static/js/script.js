@@ -49,7 +49,6 @@ const toggleText = (button, fullText) => {
     button.remove(); // Remove the button after expanding the text
 };
 
-
 const showTypingIndicator = () => {
     const typingBubble = createChatBubble("THUBot is typing...", true);
     chatbox.appendChild(typingBubble);
@@ -89,7 +88,6 @@ const sendMessage = async (message) => {
         chatbox.scrollTop = chatbox.scrollHeight;
     }
 };
-
 
 const createResponseButtons = (children) => {
     const buttonsDiv = document.createElement("div");
@@ -141,7 +139,6 @@ chatbotCloseBtn.addEventListener("click", () => {
 
 let isChatbotOpenedBefore = false;
 
-
 // Updated chatbotToggler event listener
 chatbotToggler.addEventListener("click", () => {
     // Toggle the chatbot visibility
@@ -156,3 +153,19 @@ chatbotToggler.addEventListener("click", () => {
         }
     }
 });
+
+//Button full size and closing
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbot = document.querySelector('.chatbot');
+    
+    // Toggle full screen function
+    function toggleFullScreen() {
+        chatbot.classList.toggle('open-in-full');
+    }
+    
+    document.querySelector('.open-in-full').addEventListener('click', toggleFullScreen);
+    document.querySelector('.close-btn').addEventListener('click', toggleFullScreen);
+});
+
+
+
