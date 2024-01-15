@@ -9,7 +9,7 @@ function setInitialDepths(root, depthIncrement) {
 
 function onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundness, i, depthSize) {
     var newContainerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
-    var newContainerHeight = window.innerHeight;
+    var newContainerHeight = window.innerHeight * 2;
     var newWidth = newContainerWidth - margin.left - margin.right;
     var newHeight = newContainerHeight - margin.top - margin.bottom;
 
@@ -50,7 +50,8 @@ function visualizeTree(treeData) {
     var i = 0;
     var margin = {top: 50, right: 90, bottom: 30, left: 90};
     var containerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
-    var containerHeight = window.innerHeight;
+    
+    var containerHeight = window.innerHeight * 2;
     var width = containerWidth - margin.left - margin.right;
     var height = containerHeight - margin.top - margin.bottom;
     var depthSize = 180;
@@ -72,6 +73,14 @@ function visualizeTree(treeData) {
         .style("overflow", "auto")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var zoom = d3.zoom()
+        .scaleExtent([0.1, 10])
+        .on("zoom", function (event) {
+            svg.attr("transform", event.transform);
+        });
+
+    svg.call(zoom);
 
     
 

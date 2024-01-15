@@ -2,12 +2,13 @@ body {
     background: linear-gradient(45deg, #171717, #0d0d0d);
 }
 
-/*#tree-cont-static {
+#tree-cont-static {
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: auto; 
-}*/
+    height: 100%; /* Add this line */
+}
 
 #svg-container {
     width: 100%;
