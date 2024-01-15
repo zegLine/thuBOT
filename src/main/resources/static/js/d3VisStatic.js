@@ -73,6 +73,8 @@ function visualizeTree(treeData) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    
+
     setInitialDepths(root, depthSize);
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
     window.addEventListener('resize', function() {
