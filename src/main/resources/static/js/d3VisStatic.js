@@ -13,6 +13,9 @@ function onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundne
     var newWidth = newContainerWidth - margin.left - margin.right;
     var newHeight = newContainerHeight - margin.top - margin.bottom;
 
+    var nodes = root.descendants();
+    var newWidth = nodes.length * rectWidth; // rectWidth is the width of each node
+
     svg.attr("viewBox", `0 0 ${newWidth + margin.left + margin.right} ${newHeight + margin.top + margin.bottom}`);
     treemap.size([newWidth, newHeight]);
 
@@ -52,21 +55,24 @@ function visualizeTree(treeData) {
     var height = containerHeight - margin.top - margin.bottom;
     var depthSize = 180;
     
-    var svg = d3.select("#tree-cont-static").append("svg")
-        .attr("width", '100%')
-        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom}`)
-        .style("overflow-y", "auto")
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-    var treemap = d3.tree().size([width, height]);
-    
     var root = d3.hierarchy(treeData, function(d) { 
         return d.children; 
     });
-    
+    var nodes = root.descendants();
+    var width = nodes.length * rectWidth; // rectWidth is the width of each node
+
     root.x0 = width / 2;
     root.y0 = height / 2;
+
+    var treemap = d3.tree().size([width, height]);
+
+    var svg = d3.select("#tree-cont-static").append("svg")
+        .attr("width", '100%')
+        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom}`)
+        .style("overflow", "auto")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     setInitialDepths(root, depthSize);
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
     window.addEventListener('resize', function() {
