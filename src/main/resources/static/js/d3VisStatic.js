@@ -16,7 +16,7 @@ function onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundne
     var nodes = root.descendants();
     var newWidth = nodes.length * rectWidth; // rectWidth is the width of each node
 
-    svg.attr("viewBox", `0 0 ${newWidth + margin.left + margin.right} ${newHeight + margin.top + margin.bottom}`);
+    svg.attr("viewBox", `0 0 ${newWidth + margin.left + margin.right} ${newHeight + margin.top + margin.bottom + 100}`);
     treemap.size([newWidth, newHeight]);
 
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
@@ -68,7 +68,7 @@ function visualizeTree(treeData) {
 
     var svg = d3.select("#tree-cont-static").append("svg")
         .attr("width", '100%')
-        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom}`)
+        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom + 100}`)
         .style("overflow", "auto")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
