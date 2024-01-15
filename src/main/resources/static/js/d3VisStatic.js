@@ -49,17 +49,21 @@ function visualizeTree(treeData) {
     const rectRoundness = 5;
     var i = 0;
     var margin = {top: 50, right: 90, bottom: 30, left: 90};
-    var containerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
     
+    var containerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
     var containerHeight = window.innerHeight * 2;
+
+    var root = d3.hierarchy(treeData, function(d) { 
+        return d.children; 
+    });
+    
+    var nodes = root.descendants();
     var width = containerWidth - margin.left - margin.right;
     var height = containerHeight - margin.top - margin.bottom;
     var depthSize = 180;
     
-    var root = d3.hierarchy(treeData, function(d) { 
-        return d.children; 
-    });
-    var nodes = root.descendants();
+    
+    
     var width = nodes.length * rectWidth; // rectWidth is the width of each node
 
     root.x0 = width / 2;
@@ -67,11 +71,11 @@ function visualizeTree(treeData) {
 
     var treemap = d3.tree().size([width, height]);
 
-    var svg = d3.select("#tree-cont-static").append("svg")
+    var svgContainer = d3.select("#tree-cont-static").append("svg")
         .attr("width", '100%')
-        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom + 100}`)
-        .style("overflow", "auto")
-        .append("g")
+        .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height + margin.top + margin.bottom + 100}`);
+
+    var svg = svgContainer.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var zoom = d3.zoom()
@@ -80,7 +84,7 @@ function visualizeTree(treeData) {
             svg.attr("transform", event.transform);
         });
 
-    svg.call(zoom);
+    svgContainer.call(zoom);
 
     
 
