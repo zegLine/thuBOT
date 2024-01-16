@@ -7,6 +7,8 @@
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,9 @@ import java.util.ArrayList;
  * or generate responses using OpenAI's services. It encapsulates the logic for the
  * dialog node matching process.
  */
+
+@Setter
+@Getter
 @Service
 public class DialogNodeMatch {
 

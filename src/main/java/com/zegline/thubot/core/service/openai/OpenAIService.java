@@ -132,5 +132,5 @@ public class OpenAIService {
         }
         return responseList;
     }
-        
+
 }
