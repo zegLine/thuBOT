@@ -42,9 +42,86 @@ function diagonal(s, d) {
     return path;
     }
 
+function updateMap() {
+    // Fetch the latest data from the server
+    fetch('http://localhost:8080/api/dialognode', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Remove the old tree and visualize the new tree
+            fetchAndVisualizeTree(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+window.doCreate = function () {
+    // Get values from form elements
+    const parentID = document.getElementById('parentID').value;
+    const msgText = document.getElementById('msgText').value;
+    const dialogNodeText = document.getElementById('dialogNodeText').value;
+
+    // Prepare data for POST request
+    const data = {
+        parentNodeId: parentID,
+        msgText: msgText,
+        dialogNodeText: dialogNodeText,
+    };
+
+    const serverURL = 'http://localhost:8080/api/dialognode/createChild';
+    // Log the request details to the console
+    console.log('Request Details:', {
+        method: 'POST',
+        url: serverURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    // Make POST request using Fetch API
+    fetch(serverURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();  // use text(), not json()
+        })
+        .then(data => {
+            try {
+                let jsonData = JSON.parse(data);
+                // Log the API response.
+                console.log('API Response:', jsonData);
+                const resultBox = document.getElementById('resultBox');
+                resultBox.innerText = `Request sent + ${jsonData.id ? "success" : "failure, see console for more details."}`;
+
+                if (jsonData.id) {
+                    updateMap();
+                }
+            } catch (error) {
+                console.error('Parsing error:', error);
+                console.error('Raw response:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}
+    
 function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
     // Prompt the user for the new node's data
-    var newNodeId = prompt('Enter ID for the new node:');
+    var newNodeId = prompt('Enter Parent ID of Node that you want be of leaf of:');
     if (newNodeId === null) {
         // User cancelled the dialog, stop the node creation process
         return;
@@ -74,40 +151,44 @@ function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rect
     newNode.y = coordinates[1] - margin.top;
     // Add the new node to the root node's children
     root.children.push(newNode);
+
+    root = d3.hierarchy(root.data, function(d) { return d.children; });
     // Update the tree
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
         
     // Set the values of the hidden form elements
-    document.getElementById('parentID').value = root.data.id;
+    document.getElementById('parentID').value = newNodeId;
     document.getElementById('msgText').value = newNodeData.msgText;
     document.getElementById('dialogNodeText').value = newNodeData.dialogText;
         
     // Call doCreate to send the new node data to the server
+    console.log('doCreate called in D3VisStatic.js');
     window.doCreate();
+    
 }
 
 function visualizeTree(treeData) {
-    
+
     const rectWidth = 200;
     const rectHeight = 80;
     const rectRoundness = 5;
     var i = 0;
-    var margin = {top: 50, right: 90, bottom: 30, left: 90};
-    
+    var margin = { top: 50, right: 90, bottom: 30, left: 90 };
+
     var containerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
     var containerHeight = window.innerHeight * 2;
 
-    var root = d3.hierarchy(treeData, function(d) { 
-        return d.children; 
+    var root = d3.hierarchy(treeData, function (d) {
+        return d.children;
     });
-    
+
     var nodes = root.descendants();
     //var width = containerWidth - margin.left - margin.right;
     var height = containerHeight - margin.top - margin.bottom;
     var depthSize = 180;
-    
-    
-    
+
+
+
     var width = nodes.length * rectWidth;
 
     root.x0 = width / 2;
@@ -131,15 +212,15 @@ function visualizeTree(treeData) {
     svgContainer.call(zoom);
     zoom.scaleTo(svgContainer, 0.7);
 
-    
+
 
     setInitialDepths(root, depthSize);
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundness, i, depthSize);
     });
 
-    svgContainer.on('contextmenu', function(event) {
+    svgContainer.on('contextmenu', function (event) {
         event.preventDefault();
         event.stopPropagation(); // Add this line
         var coordinates = d3.pointer(event);
@@ -148,20 +229,17 @@ function visualizeTree(treeData) {
         contextMenu.style('display', 'block')
             .style('left', `${event.pageX}px`)
             .style('top', `${event.pageY}px`);
-        console.log('Context menu should be displayed now');
-        // When "Create Node" is clicked, create a new node
-        d3.select('#create-node').on('click', function() {
+
+        d3.select('#create-node').on('click', function () {
             contextMenu.style('display', 'none');
             createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
         });
     });
-    
-    d3.select('body').on('click', function() {
-        console.log('Body was clicked'); // Add this line
+
+    d3.select('body').on('click', function () {
         d3.select('#context-menu').style('display', 'none');
     });
 }
-
 function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
         
     var treeData = treemap(root);

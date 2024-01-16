@@ -6,7 +6,6 @@
     <title>Dialog Map Display</title>
     <link rel="stylesheet" th:href="@{/css/explore_nodes_static.css}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script th:src="@{/js/databaseEntry.js}"></script>
     <script th:src="@{/js/d3VisStatic.js}"></script>
     <script th:src="@{/js/explore_nodes_static.js}"></script>
     
@@ -22,6 +21,8 @@
             <li id="create-node">Create Node</li>
         </ul>
     </div>
+
+    <div id="resultBox"></div>
 
     <input type="hidden" id="parentID">
     <input type="hidden" id="msgText">

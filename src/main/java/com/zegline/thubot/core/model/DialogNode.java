@@ -66,13 +66,15 @@ public class DialogNode {
     private Set<DialogNode> children = new HashSet<>();
 
     /**
-     * Constructor for DialogNode.
-     * @param q <b>String</b> The text the dialog node will contain.
-     * @param p <b>String</b> The message printed out after the DialogNode's text.
-     */
-    public DialogNode(String q, String p) {
-        dialogText = q;
-        msgText = p;
+    * Constructor for DialogNode.
+    * @param id <b>String</b> The ID the dialog node will have.
+    * @param dialogText <b>String</b> The text the dialog node will contain.
+    * @param msgText <b>String</b> The message printed out after the DialogNode's text.
+    */
+    public DialogNode(String id, String dialogText, String msgText) {
+        this.id = id;
+        this.dialogText = dialogText;
+        this.msgText = msgText;
     }
 
     /**
