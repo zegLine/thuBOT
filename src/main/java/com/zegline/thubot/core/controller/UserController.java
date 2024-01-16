@@ -9,6 +9,7 @@ package com.zegline.thubot.core.controller;
 
 import com.zegline.thubot.core.model.security.User;
 import com.zegline.thubot.core.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

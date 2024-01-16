@@ -3,16 +3,17 @@
  * @brief Service Class for matching dialog nodes to user input
  *
  * This service class provides functionality to match user input with dialog nodes,
- * utilizing both local repository data and external OpenAI services
+ * utilizing both local repository data and external OpenAI services.
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
