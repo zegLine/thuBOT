@@ -11,19 +11,17 @@ package com.zegline.thubot.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-//import jakarta.persistence.ManyToMany;
-//import jakarta.persistence.ManyToOne;
-
 
 /**
  * @class DialogNode
@@ -57,7 +55,8 @@ public class DialogNode {
     @OneToMany(mappedBy = "dialogNode")
     Set<DialogNodeToResponse> questionresponse;
 
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "parent_id") // This is the foreign key column in your database
     private DialogNode parent;
@@ -87,6 +86,12 @@ public class DialogNode {
         return this;
     }
 
+    /**
+     * Adds multiple children to the current DialogNode.
+     *
+     * @param nodes A set of children DialogNodes to be added to the children list of the DialogNode.
+     * @return The updated DialogNode with the new children.
+     */
     public DialogNode addChildren(Set<DialogNode> nodes) {
         for (DialogNode n : nodes) {
             this.children.add(n);
@@ -96,22 +101,35 @@ public class DialogNode {
     }
 
     /**
-     * Converts DialogNode to a String
-     * @return <b>String</b> The Text that the node contains
+     * Returns a string representation of the DialogNode.
+     *
+     * @return String The dialog text that the node contains enclosed in "<Dialog> ".
      */
     public String toString() {
         return "<Dialog> " + dialogText;
     }
 
-
+    /**
+     * Sets the text for the DialogNode
+     * @param dialogText The text to be set
+     */
     public void setDialogText(String dialogText) {
         this.dialogText = dialogText;
     }
 
+    /**
+     * Sets the message text for the DialogNode
+     * @param msgText The message text to be set
+     */
     public void setMsgText(String msgText) {
         this.msgText = msgText;
     }
 
+    /**
+     * Checks if the current DialogNode is equal to another DialogNode
+     * @param obj Object to be compared for equality
+     * @return boolean representing the result of the equality check
+     */
     @Override
 public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -120,9 +138,12 @@ public boolean equals(Object obj) {
     return id != null && id.equals(other.getId());
 }
 
-@Override
-public int hashCode() {
-    return getClass().hashCode();
-}
-    
+    /**
+     * Calculates and returns the hash code for the DialogNode
+     * @return int representing the hash code of the DialogNode
+     */
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
