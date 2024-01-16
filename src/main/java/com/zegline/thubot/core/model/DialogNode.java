@@ -94,6 +94,7 @@ public class DialogNode {
      */
     public DialogNode addChildren(Set<DialogNode> nodes) {
         for (DialogNode n : nodes) {
+            this.children.add(n); // add this line
             n.setParent(this);
         }
         return this;
