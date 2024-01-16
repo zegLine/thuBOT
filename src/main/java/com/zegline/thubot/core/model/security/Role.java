@@ -10,6 +10,7 @@ package com.zegline.thubot.core.model.security;
 import jakarta.persistence.*;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
@@ -35,6 +36,7 @@ public class Role {
      * The name of the role.
      */
     @Getter
+    @Setter
     private String name;
 
     /**
