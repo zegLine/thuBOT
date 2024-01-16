@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+
 /**
  * @class DialogNodeToResponse
  * @brief Represents a link between a DialogNode and a Response entity

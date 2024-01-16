@@ -61,7 +61,7 @@ public class Response {
 
     /**
      * Updates the response text.
-     * 
+     *
      * @param rt The text to set as the response.
      */
     public void setResponseText(String rt) {

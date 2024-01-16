@@ -8,6 +8,7 @@
 package com.zegline.thubot.core.repository;
 
 import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.zegline.thubot.core.model.DialogNodeToResponse;
@@ -24,7 +25,7 @@ public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeT
     
     /**
      * Finds all DialogNodeToResponse associations for a specified DialogNode.
-     * 
+     *
      * @param dialogNode The DialogNode to find associations for.
      * @return List of DialogNodeToResponse instances associated with the specified DialogNode.
      */

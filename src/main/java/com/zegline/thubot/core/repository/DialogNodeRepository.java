@@ -8,7 +8,9 @@
  */
 package com.zegline.thubot.core.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.zegline.thubot.core.model.DialogNode;
@@ -32,8 +34,9 @@ public interface DialogNodeRepository extends CrudRepository<DialogNode, String>
 
     /**
     * Finds all DialogNodes which have no parent node (root nodes).
-    * 
+    *
     * @return List of DialogNode instances without a parent node.
     */
     List<DialogNode> findDialogNodesByParentIsNull();
+
 }

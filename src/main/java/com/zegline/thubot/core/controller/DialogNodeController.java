@@ -6,10 +6,17 @@
  */
 package com.zegline.thubot.core.controller;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +27,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 
+
 /**
  * @class DialogNodeController
  * @brief Provides REST endpoints to manage DialogNodes
  *
- * This controller class defines the routes for creating, modifying, deleting, and retrieving DialogNodes. 
+ * This controller class defines the routes for creating, modifying, deleting, and retrieving DialogNodes.
  * All endpoints of this controller are under the "/api/dialognode" route.
  */
 @RestController
@@ -33,6 +41,7 @@ public class DialogNodeController {
 
     @Autowired
     DialogNodeRepository dnr;
+
 
     /**
      * Creates a new DialogNode based on the provided data in the request body.
@@ -46,19 +55,21 @@ public class DialogNodeController {
         String msgText = body.get("msgText");
         String parentNodeId = body.get("parentNodeId");
 
+        // Validation is missing
+
         Optional<DialogNode> optionalParent = dnr.findById(parentNodeId);
-        if (optionalParent.isPresent()) {
-            DialogNode parent = optionalParent.get();
-            DialogNode d = DialogNode.builder().dialogText(dialogNodeText).msgText(msgText).build();
-            dnr.save(d);
-            parent.addChild(d);
-            dnr.save(parent);
-            return parent;
+        if (optionalParent.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "couldn't find parent"
+            );
         };
 
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "couldn't find parent"
-        );
+        DialogNode parent = optionalParent.get();
+        DialogNode d = DialogNode.builder().dialogText(dialogNodeText).msgText(msgText).build();
+        dnr.save(d);
+        parent.addChild(d);
+        dnr.save(parent);
+        return d;
     }
 
     /**
@@ -102,7 +113,7 @@ public class DialogNodeController {
      *
      * @param body A map containing the ID of the DialogNode to delete.
      * @return The parent of the deleted DialogNode.
-     * @throws ResponseStatusException if the specified DialogNode is not found, 
+     * @throws ResponseStatusException if the specified DialogNode is not found,
      * if it has children, or the specified DialogNode is the root.
      */
     @PostMapping("/delete")
@@ -117,6 +128,7 @@ public class DialogNodeController {
         }
 
         DialogNode node = optionalNode.get();
+
         DialogNode nodeParent = node.getParent();
 
         if (nodeParent == null) {
@@ -144,6 +156,7 @@ public class DialogNodeController {
      * @return Set of DialogNodes matching the provided criteria or all DialogNodes if no specific parameters are provided.
      * @throws ResponseStatusException If the provided ID is empty or if the DialogNode with the specified ID is not found.
      */
+
     @GetMapping("/get")
     public Set<DialogNode> get(@RequestBody (required = false) Map<String, String> body) {
         Set<DialogNode> returned = new HashSet<>() ;
@@ -161,7 +174,7 @@ public class DialogNodeController {
             Optional<DialogNode> match = dnr.findById(body.get("id"));
             if (match.isEmpty()) {
                 throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "couldn't find node"
+                        HttpStatus.NOT_FOUND, "couldn't find node"
                 );
             }
             returned.add(match.get());
@@ -170,8 +183,42 @@ public class DialogNodeController {
         }
 
         throw new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "id cannot be empty"
+                HttpStatus.NOT_FOUND, "id cannot be empty"
         );
+    }
+    //TODO CHANGE ROOT NODE TO QN0000 on josh db
+    @GetMapping("/generateCSV")
+    public ResponseEntity<byte[]> downloadCsv() throws IOException {
+        List<String> FCK = new ArrayList<>();
+
+        for (DialogNode d : dnr.findAll()){
+            if (d.getParent() == null) {
+                continue;
+            }
+            String ds = "" + d.getId().replace("QN","") + "," + d.getDialogText().replace("'","\'") + "," + d.getMsgText().replace("'","\'") + "," + d.getParent().getId().replace("QN","");
+            FCK.add(ds);
+        }
+
+        // Generate CSV content
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8);
+        for (String line : FCK) {
+            writer.write(line);
+            writer.write("\n");
+        }
+        writer.flush();
+
+        // Set headers for the CSV file
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("text", "csv", StandardCharsets.UTF_8));
+        headers.setContentDispositionFormData("attachment", "sample.csv");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(byteArrayOutputStream.toByteArray());
     }
 
 }
+
