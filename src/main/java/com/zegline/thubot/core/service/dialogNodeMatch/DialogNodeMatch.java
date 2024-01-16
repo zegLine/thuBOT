@@ -14,6 +14,9 @@ import com.zegline.thubot.core.service.openai.OpenAIService;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * @class DialogNodeMatch
  * @brief Service class for matching user input to dialog nodes
