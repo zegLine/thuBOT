@@ -1,9 +1,9 @@
 /**
  * @file DialogNodeResponseRepository.java
- * @brief Interface for CRUD operations on DialogNodeToResponse entities
+ * @brief Interface for CRUD operations on DialogNodeToResponse entities.
  *
- * This interface allows for creating, reading, updating, and deleting DialogNodeToResponse
- * entities from the database. It extends CrudRepository provided by Spring Data
+ * This interface extends the CrudRepository to provide CRUD operations for DialogNodeToResponse entities.
+ * It includes an additional query method for finding associations by their DialogNode.
  */
 package com.zegline.thubot.core.repository;
 
@@ -18,14 +18,16 @@ import java.util.List;
 
 /**
  * @interface DialogNodeResponseRepository
- * @brief Repository interface for DialogNodeToResponse entities
- *
- * By extending CrudRepository, this interface automatically inherits several methods for working
- * with DialogNodeToResponse data, such as saving, deleting, and finding DialogNodeToResponse entities
+ * @brief Interface providing CRUD operations and custom queries for DialogNodeToResponse entities.
  */
 @Repository
 public interface DialogNodeResponseRepository extends CrudRepository<DialogNodeToResponse, Long> {
     
-
+    /**
+     * Finds all DialogNodeToResponse associations for a specified DialogNode.
+     *
+     * @param dialogNode The DialogNode to find associations for.
+     * @return List of DialogNodeToResponse instances associated with the specified DialogNode.
+     */
     List<DialogNodeToResponse> findByDialogNode(DialogNode dialogNode);
 }

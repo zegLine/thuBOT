@@ -88,6 +88,12 @@ public class DialogNode {
         return this;
     }
 
+    /**
+     * Adds multiple children to the current DialogNode.
+     *
+     * @param nodes A set of children DialogNodes to be added to the children list of the DialogNode.
+     * @return The updated DialogNode with the new children.
+     */
     public DialogNode addChildren(Set<DialogNode> nodes) {
         for (DialogNode n : nodes) {
             n.setParent(this);
@@ -96,22 +102,35 @@ public class DialogNode {
     }
 
     /**
-     * Converts DialogNode to a String
-     * @return <b>String</b> The Text that the node contains
+     * Returns a string representation of the DialogNode.
+     *
+     * @return String The dialog text that the node contains enclosed in "<Dialog> ".
      */
     public String toString() {
         return "<Dialog> " + dialogText;
     }
 
-
+    /**
+     * Sets the text for the DialogNode
+     * @param dialogText The text to be set
+     */
     public void setDialogText(String dialogText) {
         this.dialogText = dialogText;
     }
 
+    /**
+     * Sets the message text for the DialogNode
+     * @param msgText The message text to be set
+     */
     public void setMsgText(String msgText) {
         this.msgText = msgText;
     }
 
+    /**
+     * Checks if the current DialogNode is equal to another DialogNode
+     * @param obj Object to be compared for equality
+     * @return boolean representing the result of the equality check
+     */
     @Override
 public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -120,9 +139,12 @@ public boolean equals(Object obj) {
     return id != null && id.equals(other.getId());
 }
 
-@Override
-public int hashCode() {
-    return getClass().hashCode();
-}
-    
+    /**
+     * Calculates and returns the hash code for the DialogNode
+     * @return int representing the hash code of the DialogNode
+     */
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

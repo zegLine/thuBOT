@@ -47,6 +47,12 @@ public class UserInputController {
     @Autowired
     private DialogNodeMatch dialogNodeMatchService;
 
+    /**
+     * Endpoint to receive user input and retrieve a response node based on the provided input.
+     *
+     * @param userInput The user input received as a request parameter.
+     * @return The DialogNode instance that responds to the user input.
+     */
     @GetMapping("/ask")
     public DialogNode inputAsk(@RequestParam String userInput) {
         return dialogNodeMatchService.getResponseNode(userInput);

@@ -30,10 +30,10 @@ import com.zegline.thubot.core.repository.DialogNodeRepository;
 
 /**
  * @class DialogNodeController
- * @brief Controller class to manage DialogNode resources
+ * @brief Provides REST endpoints to manage DialogNodes
  *
- * Provides the REST endpoints for creating and retrieving DialogNode entities. DialogNodes
- * are the constructs used to hold dialog data for open conversations according to sessionId
+ * This controller class defines the routes for creating, modifying, deleting, and retrieving DialogNodes.
+ * All endpoints of this controller are under the "/api/dialognode" route.
  */
 @RestController
 @RequestMapping("/api/dialognode")
@@ -72,6 +72,13 @@ public class DialogNodeController {
         return d;
     }
 
+    /**
+     * Modifies an existing DialogNode based on the provided data in the request body.
+     *
+     * @param body A map containing dialogNodeId and the new dialogNodeText, msgText, and parentNodeId.
+     * @return The modified DialogNode.
+     * @throws ResponseStatusException if the specified DialogNode is not found.
+     */
     @PostMapping("/modify")
     public DialogNode dialog_node_modify(@RequestBody Map<String, String> body) {
         String id = body.get("dialogNodeId");
@@ -101,6 +108,14 @@ public class DialogNodeController {
         return node;
     }
 
+    /**
+     * Deletes a DialogNode based on the provided ID in the request body.
+     *
+     * @param body A map containing the ID of the DialogNode to delete.
+     * @return The parent of the deleted DialogNode.
+     * @throws ResponseStatusException if the specified DialogNode is not found,
+     * if it has children, or the specified DialogNode is the root.
+     */
     @PostMapping("/delete")
     public DialogNode dialog_node_delete(@RequestBody Map<String, String> body){
         String id = body.get("dialogNodeId");
