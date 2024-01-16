@@ -3,7 +3,7 @@
  * @brief Service Class for matching dialog nodes to user input
  *
  * This service class provides functionality to match user input with dialog nodes,
- * utilizing both local repository data and external OpenAI services
+ * utilizing both local repository data and external OpenAI services.
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
@@ -11,8 +11,6 @@ import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -48,7 +46,7 @@ public class DialogNodeMatch {
 
         int recurseLevel = 15;
 
-        // Get the root node
+// Get the root node
         DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
 
         // First match with one node in the database
@@ -84,7 +82,7 @@ public class DialogNodeMatch {
     * @return A list of answers, represented by the values of the msgText fields of the dialog nodes.
     */
     private List<String> getAnswers(List<DialogNode> nodes) {
-        // Implement your logic to extract answers from the list of DialogNodes
+// Implement your logic to extract answers from the list of DialogNodes
         // You can loop through the nodes and extract the msgText or other relevant data
         List<String> answers = new ArrayList<>();
         for (DialogNode node : nodes) {
@@ -120,7 +118,7 @@ public class DialogNodeMatch {
 
         result.add(node);
 
-        // Eagerly load children
+// Eagerly load children
         node.getChildren().size();
 
         if (recurseLevel > 0) {

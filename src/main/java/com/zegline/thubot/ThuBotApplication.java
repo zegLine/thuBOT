@@ -24,7 +24,9 @@ public class ThuBotApplication {
 	 /**
      * The main method that starts up the Spring Boot application
      *
-     * @param args An array of command-line arguments passed to the application
+     * @param args A string array containing command-line arguments that were passed to this application.
+     * The Spring Boot SpringApplication.run() method is called inside the main method, which initializes the framework and
+     * starts up the embedded web server (provided by Spring Boot) allowing the application to serve HTTP requests.
      */
 	public static void main(String[] args) {
 		SpringApplication.run(ThuBotApplication.class, args);

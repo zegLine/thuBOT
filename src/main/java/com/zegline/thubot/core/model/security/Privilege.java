@@ -7,6 +7,7 @@
 package com.zegline.thubot.core.model.security;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 
 import java.util.Collection;
