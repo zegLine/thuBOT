@@ -6,14 +6,26 @@
     <title>Dialog Map Display</title>
     <link rel="stylesheet" th:href="@{/css/explore_nodes_static.css}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script th:src="@{/js/databaseEntry.js}"></script>
     <script th:src="@{/js/d3VisStatic.js}"></script>
     <script th:src="@{/js/explore_nodes_static.js}"></script>
+    
 </head>
 <body>
 
     <div id="svg-container">
         <div id="tree-cont-static"></div>
     </div>
+
+    <div id="context-menu" style="display: none; position: absolute; z-index: 1000;">
+        <ul>
+            <li id="create-node">Create Node</li>
+        </ul>
+    </div>
+
+    <input type="hidden" id="parentID">
+    <input type="hidden" id="msgText">
+    <input type="hidden" id="dialogNodeText">
 
 </body>
 </html>
