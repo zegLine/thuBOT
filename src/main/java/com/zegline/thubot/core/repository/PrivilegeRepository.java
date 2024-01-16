@@ -18,7 +18,7 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, Long> {
 
     /**
      * Finds a Privilege by its name.
-     * 
+     *
      * @param name The name of the Privilege to find.
      * @return The Privilege instance with the specified name.
      */

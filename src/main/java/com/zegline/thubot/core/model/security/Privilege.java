@@ -1,13 +1,12 @@
 /**
  * @file Privilege.java
- * @brief Entity representing a user privilege in user management 
+ * @brief Entity representing a user privilege in user management
  *
  * This class is an entity that represents a specific privilege the user can have and is used as part of the role-based access control system.
  */
 package com.zegline.thubot.core.model.security;
 
 import jakarta.persistence.*;
-
 import lombok.Getter;
 
 import java.util.Collection;
@@ -15,8 +14,8 @@ import java.util.Collection;
 /**
  * @class Privilege
  * @brief Entity to represent a specific privilege
- * 
- * The Privilege class represents a specific grantable access or action privilege held by a User. 
+ *
+ * The Privilege class represents a specific grantable access or action privilege held by a User.
  * These privileges are grouped into Roles and can be used for role-based access control.
 */
 @Entity
@@ -54,5 +53,6 @@ public class Privilege {
      * Default constructor for a Privilege.
      */
     public Privilege() {
+
     }
 }

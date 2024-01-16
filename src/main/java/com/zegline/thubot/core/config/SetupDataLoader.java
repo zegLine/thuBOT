@@ -13,10 +13,10 @@ import com.zegline.thubot.core.model.security.User;
 import com.zegline.thubot.core.repository.PrivilegeRepository;
 import com.zegline.thubot.core.repository.RoleRepository;
 import com.zegline.thubot.core.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +101,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         }
         return privilege;
     }
-    
+
     /**
      * Creates a new role in the database if it does not exist.
      *

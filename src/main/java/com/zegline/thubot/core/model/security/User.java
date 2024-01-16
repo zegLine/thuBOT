@@ -8,10 +8,11 @@
 package com.zegline.thubot.core.model.security;
 
 import jakarta.persistence.*;
-
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @class User
@@ -20,13 +21,13 @@ import java.util.Collection;
  * The User class represents a specific user of the system.
  * The User's information includes a unique id, username, and password,
  * along with a set of roles that dictate access control for the user.
- * 
+ *
  */
 @Entity
 public class User {
 
-    /** 
-     * Unique identifier for the User. 
+    /**
+     * Unique identifier for the User.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,7 +62,7 @@ public class User {
     )
 
     private Collection<Role> roles;
-    
+
     /**
      * Method to set the User's username.
      *
@@ -88,4 +89,5 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
 }

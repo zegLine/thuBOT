@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @interface RoleRepository
  * @brief Repository interface providing CRUD operations and a method to find Role by name.
  *
- * By extending JpaRepository, this interface automatically inherits several methods for 
+ * By extending JpaRepository, this interface automatically inherits several methods for
  * working with Role data, such as saving, deleting, finding, and paging through Role entities.
  * Additionally, this interface provides a function to find a Role entity by its name.
  */

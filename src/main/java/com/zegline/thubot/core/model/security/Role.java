@@ -8,10 +8,10 @@
 package com.zegline.thubot.core.model.security;
 
 import jakarta.persistence.*;
-
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @class Role
@@ -57,7 +57,6 @@ public class Role {
                     name = "privilege_id", referencedColumnName = "id"
             )
     )
-
     private Collection<Privilege> privileges;
 
     /**
@@ -73,6 +72,7 @@ public class Role {
      * Default constructor for a Role.
      */
     public Role(){
+
     }
 
     /**

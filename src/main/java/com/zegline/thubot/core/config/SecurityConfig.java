@@ -7,14 +7,25 @@
  */
 package com.zegline.thubot.core.config;
 
+import com.zegline.thubot.core.service.user.ThuUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
+
+import javax.sql.DataSource;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * @class SecurityConfig
@@ -35,29 +46,24 @@ public class SecurityConfig {
      * @throws Exception if an error occurs during configuration
      */
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.disable())
-            .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "SAMEORIGIN")))
-            .authorizeHttpRequests(authz -> {
-                authz.requestMatchers("/database/display/**", "/database/display/static/**").permitAll();
-                authz.requestMatchers("/database/**").hasRole("SYS");
-                authz.requestMatchers("/api/input/**").permitAll();
-                authz.requestMatchers("/api/dialognode/get").permitAll();
-                authz.requestMatchers("/api/**").authenticated();
-                authz.anyRequest().permitAll();
-            })
-            .formLogin(form -> form
-                .loginPage("/login")
-                .permitAll())
-            .exceptionHandling(exceptionHandling -> exceptionHandling
-                .accessDeniedPage("/access-denied")
-            );
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .authorizeRequests(authorize -> authorize
+                        .requestMatchers("/database/**").hasRole("SYS")
+                        .requestMatchers("/api/input/**").permitAll()
+                        .requestMatchers("/api/dialognode/get").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/access-denied") // Specify the custom access denied page
+                );
         return http.build();
-
     }
-
 
     /**
      * Configures the password encoder to be used for encoding and matching passwords
@@ -65,7 +71,7 @@ public class SecurityConfig {
      * @return A PasswordEncoder that uses BCrypt hashing for securing passwords
      */
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
