@@ -14,7 +14,7 @@ function onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundne
     var newHeight = newContainerHeight - margin.top - margin.bottom;
 
     var nodes = root.descendants();
-    var newWidth = nodes.length * rectWidth; // rectWidth is the width of each node
+    var newWidth = nodes.length * rectWidth;
 
     svg.attr("viewBox", `0 0 ${newWidth + margin.left + margin.right} ${newHeight + margin.top + margin.bottom + 100}`);
     treemap.size([newWidth, newHeight]);
@@ -64,7 +64,7 @@ function visualizeTree(treeData) {
     
     
     
-    var width = nodes.length * rectWidth; // rectWidth is the width of each node
+    var width = nodes.length * rectWidth;
 
     root.x0 = width / 2;
     root.y0 = height / 2;
@@ -85,6 +85,7 @@ function visualizeTree(treeData) {
         });
 
     svgContainer.call(zoom);
+    zoom.scaleTo(svgContainer, 0.7);
 
     
 
