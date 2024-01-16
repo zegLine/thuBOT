@@ -41,7 +41,6 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.addHeaderWriter(new StaticHeadersWriter("X-Frame-Options", "SAMEORIGIN")))
             .authorizeHttpRequests(authz -> {
-                authz.requestMatchers("/database/display/**", "/database/display/static/**").permitAll();
                 authz.requestMatchers("/database/**").hasRole("SYS");
                 authz.requestMatchers("/api/input/**").permitAll();
                 authz.requestMatchers("/api/dialognode/get").permitAll();

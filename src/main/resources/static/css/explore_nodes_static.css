@@ -22,7 +22,7 @@ body {
     border: 1px solid #ccc; /* Light gray border */
     border-radius: 5px; /* Rounded corners */
     width: 100px; /* Fixed width */
-    height: 20px; /* Fixed height */
+    /*height: 20px; /* Fixed height */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* A little shadow */
     font-family: Arial, sans-serif; /* Change the font if you like */
     font-size: 12px; /* Adjust the font size */
@@ -44,3 +44,8 @@ body {
 #context-menu li:hover {
     background-color: #ddd; /* Change the background color when hovering over a list item */
 }
+
+.node-selected {
+    filter: drop-shadow(0 0 10px red);
+}
+
