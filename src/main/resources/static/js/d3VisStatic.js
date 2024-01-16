@@ -43,6 +43,8 @@ function diagonal(s, d) {
     }
 
 function updateMap() {
+    
+    console.log('About to fetch the latest data from the server');
     // Fetch the latest data from the server
     fetch('http://localhost:8080/api/dialognode', {
         method: 'GET',
@@ -348,15 +350,25 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
 
     linkEnter.merge(link).transition()
         .duration(750)
-        .attr('d', function(d) {
-            return diagonal(d, d.parent);
+        .attr('d', function (d) {
+            if (d.parent) {
+                return diagonal(d, d.parent);
+            } else {
+                return null;
+            }
         });
-
+    
     var linkUpdate = linkEnter.merge(link);
 
     linkUpdate.transition()
-    .duration(750)
-    .attr('d', function(d){ return diagonal(d, d.parent) });
+        .duration(750)
+        .attr('d', function (d) {
+            if (d.parent) {
+                return diagonal(d, d.parent);
+            } else {
+                return null;
+            }
+        });
 
     nodes.forEach(function(d){
         d.x0 = d.x;
