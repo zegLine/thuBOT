@@ -11,12 +11,9 @@ function setInitialDepths(root, depthIncrement) {
 }
 
 function onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundness, i, depthSize) {
-    var newContainerWidth = d3.select("#tree-cont-static").node().getBoundingClientRect().width;
-    var newContainerHeight = window.innerHeight * 2;
-    var newWidth = newContainerWidth - margin.left - margin.right;
-    var newHeight = newContainerHeight - margin.top - margin.bottom;
     var nodes = root.descendants();
     var newWidth = nodes.length * rectWidth;
+    var newHeight = nodes.length * rectHeight;
 
     svg.attr("viewBox", `0 0 ${newWidth + margin.left + margin.right} ${newHeight + margin.top + margin.bottom}`);
     treemap.size([newWidth, newHeight]);
@@ -391,6 +388,7 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
 
         .on('click', function (_, d) {
             if (isModifying) {
+
                 if (nodeToModify !== null) {
                     newParentNodeId = d.data.id;
                     modifyNode(nodeToModify, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, newParentNodeId);
@@ -400,9 +398,11 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
                     isModifying = false;
                     d3.selectAll('.node').classed('node-hover-enabled', false);
                 }
+
             } else {
                 nodeToModify = d;
             }
+            
         })
         
 
