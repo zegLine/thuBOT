@@ -21,7 +21,6 @@ body {
     border-radius: 50%;
     margin-right: 10px;
 }
-
 .chatbot-toggler {
     position: fixed;
     bottom: 30px;
@@ -117,7 +116,6 @@ header h2 {
     background: #ccc;
     border-radius: 25px;
 }
-
 .chatbox .chat p {
     display: inline-block;
     white-space: nowrap;

@@ -55,7 +55,7 @@ public class SecurityConfig {
             );
         return http.build();
     }
-
+    
     /**
      * Configures the password encoder to be used for encoding and matching passwords
      *

@@ -54,5 +54,4 @@ public class UserInputController {
     public DialogNode inputAsk(@RequestParam String userInput) {
         return dialogNodeMatchService.getResponseNode(userInput);
     }
-    
 }

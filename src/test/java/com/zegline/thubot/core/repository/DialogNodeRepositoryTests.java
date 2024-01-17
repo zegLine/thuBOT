@@ -76,13 +76,10 @@ public class DialogNodeRepositoryTests {
                 .msgText("Root")
                 .children(new HashSet<>(1))
                 .build();
+                
         rootNode.addChild(leafNode);
-
-        //Act
         DialogNode savedRoot = dnr.save(rootNode);
         DialogNode savedLeaf = dnr.save(leafNode);
-
-        //Assert
         Assertions.assertNotNull(savedRoot.getChildren());
     }
 }

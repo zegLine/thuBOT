@@ -43,11 +43,9 @@ secrets.yml
 application.properties
 thuBOT.code-workspace
 console-output.txt
-.gitignore
 Dataloader.java
 src/main/resources/node_modules/
 src/main/resources/package.json
 src/main/resources/package-lock.json
-
-
-
+console-output.txt
+src/test/resources/application-test.properties

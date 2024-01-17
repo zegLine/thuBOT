@@ -210,4 +210,3 @@ public class DialogNodeController {
                 .body(byteArrayOutputStream.toByteArray());
     }
 }
-
