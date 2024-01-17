@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialog Map Display</title>
+    <link rel="stylesheet" th:href="@{/css/databaseMap.css}">
+    <script th:src="@{/js/d3.v6.min.js}"></script>
+    <script th:src="@{/js/treeManipulation.js}" type="module"></script>
+    <script th:src="@{/js/nodeOperations.js}" type="module"></script>
+    <script th:src="@{/js/apiInteractions.js}" type="module"></script>
+    <script th:src="@{/js/main.js}" type="module"></script>
+    <script th:src="@{/js/databaseMap.js}" type="module"></script>
+</head>
+<body>
+
+    <div id="svg-container">
+        <div id="database-map"></div>
+    </div>
+
+    <div id="context-menu" style="display: none; position: absolute; z-index: 1000;">
+        <ul>
+            <li id="create-node">Create Node</li>
+            <li id="modify-node">Modify Node</li>
+            <li id="delete-node">Delete Node</li>
+        </ul>
+    </div>
+
+    <div id="resultBox"></div>
+
+    <input type="hidden" id="parentID">
+    <input type="hidden" id="msgText">
+    <input type="hidden" id="dialogNodeText">
+    <input type="hidden" id="newParentID">
+    <input type="hidden" id="deleteNodeID">
+
+</body>
+</html>
