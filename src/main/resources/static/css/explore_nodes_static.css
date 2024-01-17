@@ -49,7 +49,10 @@ body {
     filter: drop-shadow(0 0 10px red);
 }
 
-
 .node-hover-enabled:hover {
     filter: drop-shadow(0 0 10px blue);
+}
+
+.node-modifying {
+    fill: red !important;
 }
