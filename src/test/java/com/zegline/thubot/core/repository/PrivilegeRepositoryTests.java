@@ -20,18 +20,11 @@ public class PrivilegeRepositoryTests {
 
     @Test
     public void testFindByName() {
-        // Create a privilege
         Privilege privilege = new Privilege();
         privilege.setName("ADMIN");
         privilegeRepository.save(privilege);
-
-        // Find the privilege by name
         Privilege foundPrivilege = privilegeRepository.findByName("ADMIN");
-
-        // Assert that the privilege is not null
         assertNotNull(foundPrivilege);
-
-        // Assert that the found privilege has the correct name
         assertEquals("ADMIN", foundPrivilege.getName());
     }
 }

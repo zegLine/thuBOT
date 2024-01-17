@@ -20,20 +20,11 @@ public class RoleRepositoryTests {
 
     @Test
     public void testFindByName() {
-        // Create a test role
         Role role = new Role();
         role.setName("ROLE_ADMIN");
-
-        // Save the role to the repository
         roleRepository.save(role);
-
-        // Find the role by name
         Role foundRole = roleRepository.findByName("ROLE_ADMIN");
-
-        // Assert that the role is not null
         assertNotNull(foundRole);
-
-        // Assert that the found role has the correct name
         assertEquals("ROLE_ADMIN", foundRole.getName());
     }
 }

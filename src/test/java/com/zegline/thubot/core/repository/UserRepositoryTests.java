@@ -26,41 +26,28 @@ public class UserRepositoryTests {
 
     @Test
     public void testFindByUsername() {
-        // Arrange
         User user = new User();
         user.setUsername("mike.cox.oft");
         entityManager.persist(user);
         entityManager.flush();
-
-        // Act
         User foundUser = userRepository.findByUsername("mike.cox.oft");
-
-        // Assert
         assertNotNull(foundUser);
         assertEquals("mike.cox.oft", foundUser.getUsername());
     }
 
     @Test
     public void testExistsByUsername() {
-        // Arrange
         User user = new User();
         user.setUsername("mike.cox.long");
         entityManager.persist(user);
         entityManager.flush();
-
-        // Act
         boolean exists = userRepository.existsByUsername("mike.cox.long");
-
-        // Assert
         assertTrue(exists);
     }
 
     @Test
     public void testExistsByUsername_NotFound() {
-        // Act
         boolean exists = userRepository.existsByUsername("nonexistent");
-
-        // Assert
         assertFalse(exists);
     }
 }
