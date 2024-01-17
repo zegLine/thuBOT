@@ -77,7 +77,6 @@ public class DialogNodeMatchTests {
     */
     @Test
     public void testGetResponseNodeWithOpenAIFailure() {
-        
         when(openAIService.getQuestionMatch(anyString(), anyList())).thenReturn(Collections.emptyList());
         DialogNode resultNode = dialogNodeMatch.getResponseNode("SomeInputWithOpenAIFailure");
         assertNotNull(resultNode, "A DialogNode instance should be returned even if OpenAI provides no match.");
