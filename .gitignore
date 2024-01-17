@@ -45,5 +45,9 @@ thuBOT.code-workspace
 console-output.txt
 .gitignore
 Dataloader.java
-DialogNodeTest_Co.java
+src/main/resources/node_modules/
+src/main/resources/package.json
+src/main/resources/package-lock.json
+
+
 
