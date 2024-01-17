@@ -21,7 +21,8 @@ module.exports = {
         }
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
     "rules": {
         "no-unused-vars": "warn",
