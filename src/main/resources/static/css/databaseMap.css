@@ -2,7 +2,7 @@ body {
     background: linear-gradient(45deg, #171717, #0d0d0d);
 }
 
-#tree-cont-static {
+#database-map {
     display: flex;
     align-items: center;
     justify-content: center;

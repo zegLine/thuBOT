@@ -73,13 +73,13 @@ public class GUIController {
     }
 
     /**
-    * End point to serve the static database display page.
+    * End point to serve the database map page.
     *
-    * @return String representing name of the view for static database display page.
+    * @return String representing name of the view for database map page.
     */
-    @GetMapping("/database/display/static")
+    @GetMapping("/database/map")
     public String getDN1() {
-        return "explore_nodes_static";
+        return "databaseMap";
     }
 
     /**

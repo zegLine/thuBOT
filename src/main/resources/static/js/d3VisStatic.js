@@ -1,3 +1,6 @@
+import { fetchAndVisualizeTree } from './databaseMap.js';
+
+
 var nodeToModify = null;
 var isModifying = false;
 
@@ -284,28 +287,27 @@ function deleteNode(selectedNodeId) {
     window.doDelete();
 }
 
-function visualizeTree(treeData) {
+export function visualizeTree(treeData) {
 
     const rectWidth = 200;
     const rectHeight = 80;
     const rectRoundness = 5;
     var i = 0;
     var margin = { top: 50, right: 90, bottom: 30, left: 90 };
-    var containerHeight = window.innerHeight * 2;
-
+    
     var root = d3.hierarchy(treeData, function (d) {
         return d.children;
     });
 
     var nodes = root.descendants();
-    var height = containerHeight - margin.top - margin.bottom;
-    var depthSize = 180;
     var width = nodes.length * rectWidth;
+    var height = nodes.length * rectHeight;
+    var depthSize = 180;
     root.x0 = width / 2;
     root.y0 = height / 2;
     var treemap = d3.tree().size([width, height]);
-
-    var svgContainer = d3.select("#tree-cont-static").append("svg")
+    
+    var svgContainer = d3.select("#database-map").append("svg")
         .attr("width", '100%')
         .attr("height", '100%')
         .attr("viewBox", `0 0 ${width + margin.right + margin.left} ${height}`);

@@ -1,4 +1,6 @@
-function fetchAndVisualizeTree() {
+import { visualizeTree } from './d3VisStatic.js';
+
+export function fetchAndVisualizeTree() {
     fetch('/api/dialognode/get')
         .then(response => response.json())
         .then(treeData => {
@@ -7,7 +9,7 @@ function fetchAndVisualizeTree() {
                 throw new Error('No tree data');
             }
 
-            d3.select("#tree-cont-static").selectAll("*").remove();
+            d3.select("#database-map").selectAll("*").remove();
 
             visualizeTree(treeData[0]);
         })
