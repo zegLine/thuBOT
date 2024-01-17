@@ -229,7 +229,7 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
         })
 
         .on('mouseover', function (event, d) {
-
+            
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);

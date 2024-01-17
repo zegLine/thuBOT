@@ -56,3 +56,18 @@ body {
 .node-modifying {
     filter: drop-shadow(0 0 10px red);
 }
+
+.tooltip {
+    position: absolute;
+    text-align: left; /* align text to the left */
+    width: 300px; /* increase width */
+    padding: 10px; /* increase padding */
+    font: 14px 'Consolas', 'Courier New', monospace; /* increase font size and change font family */
+    background: rgba(30, 30, 30, 0.9); /* darker background color with slightly higher opacity */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* subtle border */
+    border-radius: 4px; /* smaller border radius */
+    pointer-events: none;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2); /* subtle shadow */
+    white-space: pre-wrap; /* preserve line breaks and spaces */
+}
