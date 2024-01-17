@@ -9,6 +9,7 @@ package com.zegline.thubot.core.model.security;
 import jakarta.persistence.*;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
@@ -20,6 +21,8 @@ import java.util.Collection;
  * These privileges are grouped into Roles and can be used for role-based access control.
 */
 @Entity
+@Getter
+@Setter
 public class Privilege {
 
     /**
