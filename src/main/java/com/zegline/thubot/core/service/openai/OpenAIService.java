@@ -105,7 +105,5 @@ public class OpenAIService {
             e.printStackTrace();
         }
         return responseList;
-
     }
-
 }

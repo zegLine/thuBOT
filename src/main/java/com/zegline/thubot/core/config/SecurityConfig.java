@@ -54,7 +54,6 @@ public class SecurityConfig {
                 .accessDeniedPage("/access-denied")
             );
         return http.build();
-
     }
 
     /**

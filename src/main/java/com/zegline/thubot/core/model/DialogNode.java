@@ -5,7 +5,6 @@
  * This class is used to model a node in a conversational dialog flow, where each node represents a point in the conversation.
  * Nodes have a hierarchical structure with parent and child relationships
  */
-
  package com.zegline.thubot.core.model;
 
  import java.util.HashSet;
@@ -36,6 +35,7 @@
  @Builder
  @Entity
  public class DialogNode {
+
      @Getter
      @Id
      @GeneratedValue(generator = "questionid-generator")
@@ -58,7 +58,7 @@
      @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
      @JsonIdentityReference(alwaysAsId = true)
      @ManyToOne
-     @JoinColumn(name = "parent_id") // This is the foreign key column in your database
+     @JoinColumn(name = "parent_id")
      private DialogNode parent;
  
      @Getter
@@ -132,10 +132,13 @@
       */
      @Override
      public boolean equals(Object obj) {
+
          if (this == obj)
              return true;
+
          if (obj == null || getClass() != obj.getClass())
              return false;
+             
          DialogNode other = (DialogNode) obj;
          return id != null && id.equals(other.getId());
      }

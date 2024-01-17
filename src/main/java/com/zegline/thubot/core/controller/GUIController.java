@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zegline.thubot.core.model.security.User;
 import com.zegline.thubot.core.repository.UserRepository;
-
 /**
  * @class GUIController
  * @brief Handles the requests related to GUI display and interactions
@@ -53,12 +52,8 @@ public class GUIController {
     */
     @GetMapping("/")
     public String getIndex(Model model) {
-        // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
-
-        // Add the JSON data to the model
         model.addAttribute("jsonData", jsonData);
-
         return "index";
     }
 
@@ -82,10 +77,8 @@ public class GUIController {
     @GetMapping("/database/form")
     public String getDBEntry(Model model, @AuthenticationPrincipal UserDetails userDetails){
         String jsonData = infoEndpoint.info().get("git").toString();
-
         model.addAttribute("commitid", jsonData);
         model.addAttribute("loggedInUser", userDetails.getUsername());
-
         return "databaseForm";
     }
 
@@ -97,9 +90,7 @@ public class GUIController {
     */
     @GetMapping("/login")
     public String login(Model model) {
-        // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
-
         model.addAttribute("commitid", jsonData);
         return "login";
     }
@@ -112,9 +103,7 @@ public class GUIController {
     */
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        // Fetch JSON data from /actuator/info
         String jsonData = infoEndpoint.info().get("git").toString();
-
         model.addAttribute("commitid", jsonData);
         return "register";
     }
@@ -139,38 +128,29 @@ public class GUIController {
     @PostMapping("/register")
     public String registerUser(Model model, @RequestParam Map<String, String> body) {
         List<String> errors = new ArrayList<>();
-
-        // Fetch JSON data from /actuator/info and add git info to frontend
         String jsonData = infoEndpoint.info().get("git").toString();
         model.addAttribute("commitid", jsonData);
-
         String submittedUsername = body.get("username");
         String submittedPassword = body.get("password");
         String submittedPasswordConfirmed = body.get("password_confirm");
 
-        // Check password with confirmed
         if (!submittedPassword.equals(submittedPasswordConfirmed)) {
             errors.add("Passwords do not match. Please try again.");
         }
 
-        // Check if user exists
         if (userRepository.existsByUsername(submittedUsername)) {
             errors.add("User with this username already exists");
         }
 
         if (!errors.isEmpty()) {
-            // There are errors, add them to the model and return to the registration page
             model.addAttribute("errors", errors);
         } else {
-            // Everything is OK (no errors) and we can add user in the db
             User u = new User();
             u.setUsername(submittedUsername);
             u.setPassword(passwordEncoder.encode(submittedPassword));
             userRepository.save(u);
             model.addAttribute("message", "Registration was successful. Please log in");
         }
-
         return "register";
     }
-
 }

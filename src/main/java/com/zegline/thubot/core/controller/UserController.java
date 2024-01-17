@@ -40,14 +40,9 @@ public class UserController {
     // TODO: REMOVE BEFORE DEPLOYING TO STAGING
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        // Hash the password
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-
-        // Save the user with the hashed password
         User createdUser = ur.save(user);
-
-        // Clear the password before returning the response for security reasons
         createdUser.setPassword(null);
         return ResponseEntity.ok(createdUser);
     }
