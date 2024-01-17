@@ -54,5 +54,5 @@ body {
 }
 
 .node-modifying {
-    fill: red !important;
+    filter: drop-shadow(0 0 10px red);
 }

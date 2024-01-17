@@ -215,12 +215,14 @@ function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rec
     var newNodeDialogText = prompt('Enter new dialog text for the node:');
 
     if (newNodeDialogText === null) {
+        d3.selectAll('.node-modifying').classed('node-modifying', false);
         return;
     }
 
     var newNodeMsgText = prompt('Enter new message text for the node:');
 
     if (newNodeMsgText === null) {
+        d3.selectAll('.node-modifying').classed('node-modifying', false);
         return;
     }
 
@@ -323,6 +325,7 @@ function visualizeTree(treeData) {
     svgContainer.call(zoom);
     zoom.scaleTo(svgContainer, 0.7);
     setInitialDepths(root, depthSize);
+
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
 
     window.addEventListener('resize', function () {
@@ -387,13 +390,11 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
         })
 
         .on('click', function (_, d) {
-
             if (isModifying) {
-
                 if (nodeToModify !== null) {
-
                     newParentNodeId = d.data.id;
                     modifyNode(nodeToModify, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, newParentNodeId);
+                    d3.select(this).classed('node-modifying', false);
                     nodeToModify = null;
                     newParentNodeId = null;
                     isModifying = false;
@@ -409,7 +410,7 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
             console.log('contextmenu event triggered');
             event.preventDefault();
             event.stopPropagation();
-            d3.select(this).classed('node-selected', true);
+            d3.select(this).classed('node-modifying', true);
             var coordinates = d3.pointer(event);
             var contextMenu = d3.select('#context-menu');
 
