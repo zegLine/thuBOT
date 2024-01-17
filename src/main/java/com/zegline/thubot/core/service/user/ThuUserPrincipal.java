@@ -10,6 +10,7 @@ package com.zegline.thubot.core.service.user;
 import com.zegline.thubot.core.model.security.Privilege;
 import com.zegline.thubot.core.model.security.Role;
 import com.zegline.thubot.core.model.security.User;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

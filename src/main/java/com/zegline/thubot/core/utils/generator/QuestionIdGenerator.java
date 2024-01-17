@@ -9,6 +9,7 @@
 package com.zegline.thubot.core.utils.generator;
 
 import java.io.Serializable;
+
 import java.util.Properties;
 import java.util.Random;
 

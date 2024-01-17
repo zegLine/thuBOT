@@ -64,10 +64,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         if (userRepository.existsByUsername("test_sys")) {
             return;
         }
-        Privilege readPrivilege
-                = createPrivilegeIfNotFound("READ_PRIVILEGE");
-        Privilege writePrivilege
-                = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
+
+        Privilege readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
+        Privilege writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
 
         List<Privilege> sysPrivileges = Arrays.asList(
                 readPrivilege, writePrivilege);
@@ -75,10 +74,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
 
         Role sysRole = roleRepository.findByName("ROLE_SYS");
-
         User user = new User();
         user.setUsername("test_sys");
-
         user.setPassword(passwordEncoder.encode("xenopower"));
         user.setRoles(Arrays.asList(sysRole));
         userRepository.save(user);
@@ -105,7 +102,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     /**
      * Creates a new role in the database if it does not exist.
      *
-     * @param name the name of the role
+     * @param name       the name of the role
      * @param privileges the privileges associated with the role
      * @return the existing or newly created role
      */

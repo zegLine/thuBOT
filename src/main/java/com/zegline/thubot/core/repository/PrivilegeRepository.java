@@ -8,6 +8,7 @@
 package com.zegline.thubot.core.repository;
 
 import com.zegline.thubot.core.model.security.Privilege;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
