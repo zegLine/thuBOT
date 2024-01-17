@@ -63,22 +63,12 @@ public class GUIController {
     }
 
     /**
-    * End point to serve the database display page.
-    *
-    * @return String representing name of the view for database display page.
-    */
-    @GetMapping("/database/display")
-    public String getDN() {
-        return "explore_nodes";
-    }
-
-    /**
     * End point to serve the database map page.
     *
     * @return String representing name of the view for database map page.
     */
     @GetMapping("/database/map")
-    public String getDN1() {
+    public String getDN() {
         return "databaseMap";
     }
 
