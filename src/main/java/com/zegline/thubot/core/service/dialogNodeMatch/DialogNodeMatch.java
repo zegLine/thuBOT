@@ -19,7 +19,6 @@ import com.zegline.thubot.core.service.openai.OpenAIService;
 
 import java.util.*;
 
-
 /**
  * @class DialogNodeMatch
  * @brief Service class for matching user input to dialog nodes
@@ -54,16 +53,10 @@ public class DialogNodeMatch {
     public DialogNode getResponseNode(String userInput){
 
         int recurseLevel = 15;
-
-// Get the root node
         DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
-
-        // First match with one node in the database
-        // if it is found, return it immediately
         DialogNode matchedNode = matchNodeToInput(userInput);
         if (matchedNode != null) return matchedNode;
 
-        // Not directly found, therefore call OpenAI service
         List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
         List<String> possibleResponses = getAnswers(possibleNodes);
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
@@ -91,8 +84,7 @@ public class DialogNodeMatch {
     * @return A list of answers, represented by the values of the msgText fields of the dialog nodes.
     */
     private List<String> getAnswers(List<DialogNode> nodes) {
-// Implement your logic to extract answers from the list of DialogNodes
-        // You can loop through the nodes and extract the msgText or other relevant data
+
         List<String> answers = new ArrayList<>();
         for (DialogNode node : nodes) {
             answers.add(node.getMsgText());
@@ -124,10 +116,7 @@ public class DialogNodeMatch {
         if (node == null || recurseLevel < 0) {
             return;
         }
-
         result.add(node);
-
-// Eagerly load children
         node.getChildren().size();
 
         if (recurseLevel > 0) {
@@ -189,7 +178,5 @@ public class DialogNodeMatch {
             return response;
         }
         return null;
-    }
-
-        
+    }      
 }

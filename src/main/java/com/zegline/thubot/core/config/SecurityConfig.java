@@ -57,7 +57,6 @@ public class SecurityConfig {
 
     }
 
-
     /**
      * Configures the password encoder to be used for encoding and matching passwords
      *
@@ -67,6 +66,4 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

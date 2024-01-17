@@ -138,17 +138,23 @@ body {
 
 .formAll{
     display: grid;
-    grid-template-areas: "buttons"
+    grid-template-areas: "upload"
+                         "buttons"
                          "form"
+                         "output"
                          "submit";
     grid-template-rows: auto 1fr auto auto;
-    min-height: 526px;
+    min-height: 580px;
+    position: relative;
 }
 
 .form {
     grid-area: form;
+    position: sticky;
+    top:0;
     padding: 20px;
     width: 450px;
+    min-height: 400px;
 }
 
 .input-field {
@@ -192,9 +198,10 @@ body {
 }
 
 .output-box {
-    position: absolute;
+    grid-area: output;
     right: 2%;
     top: 10%;
+    min-height: 60px;
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
@@ -204,4 +211,23 @@ body {
 
 .button-group{
     grid-area: buttons;
+    text-align: center;
+}
+
+.upload-field{
+    grid-area: upload;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #9631ee;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.upload-field:hover, .form-change-button:hover {
+    background-color: #631e91;
 }
