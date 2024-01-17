@@ -1,4 +1,4 @@
-
+var nodeToModify = null;
 function setInitialDepths(root, depthIncrement) {
     if (root.children) {
         root.children.forEach(function (child) {
@@ -222,10 +222,10 @@ window.doModify = function () {
         });
 }
 
-function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
+function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, newParentNodeId) {
     // Prompt the user for the new node's data
     var selectedNodeId = selectedNode.data.id;
-    var newParentNodeId = prompt('Enter the new parent node ID:');
+    //var newParentNodeId = prompt('Enter the new parent node ID:');
     if (newParentNodeId === null) {
         // User cancelled the dialog, stop the node modification process
         return;
@@ -259,10 +259,64 @@ function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rec
     // Call a function to send the updated node data to the server
     console.log('doModify  called in D3VisStatic.js');
     window.doModify();
+    return newParentNodeId;
+}
+
+window.doDelete = function () {
+    // Get the node ID from the hidden input field
+    const nodeId = document.getElementById('deleteNodeID').value;
+
+    // Prepare data for POST request
+    const data = {
+        dialogNodeId: nodeId
+    };
+
+    // Make POST request using Fetch API
+    fetch('http://localhost:8080/api/dialognode/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(apiResponse => {
+            // Log the API response.
+            console.log('API Response:', apiResponse);
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerText = `Request sent + ${apiResponse.id ? "delete successful" : "failure, see console for more details."}`;
+
+            if (apiResponse.id) {
+                updateMap();
+            }
+        })
+        .catch(error => {
+            // Log errors
+            console.error('Error:', error);
+        });
+}
+
+function deleteNode(selectedNodeId) {
+    console.log('deleteNode called with ID:', selectedNodeId);
+
+    // Get the element by its ID
+    var element = document.getElementById('deleteNodeID');
+
+    // Check if the element exists before trying to set its value
+    if (element !== null) {
+        element.value = selectedNodeId;
+    } else {
+        console.log('Element with ID deleteNodeID not found');
+    }
+
+    // Call a function to send the delete request to the server
+    console.log('doDelete called in D3VisStatic.js');
+    window.doDelete();
 }
 
 function visualizeTree(treeData) {
 
+    var newParentNodeId = null;
     const rectWidth = 200;
     const rectHeight = 80;
     const rectRoundness = 5;
@@ -371,7 +425,18 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
             return (!d.children && !d._children) ? "lightgreen" : (d._children ? "lightsteelblue" : "#fff");
         })
         .on('click', function (event, d) {
-            console.log('click event triggered');
+            if (nodeToModify !== null) {
+                // A node is selected for modification, set this node as the new parent
+                newParentNodeId = d.data.id;
+                modifyNode(nodeToModify, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, newParentNodeId);
+                // Reset nodeToModify and newParentNodeId
+                nodeToModify = null;
+                newParentNodeId = null;
+                d3.selectAll('.node').classed('node-hover-enabled', false);
+            } else {
+                // No node is selected for modification, select this node
+                nodeToModify = d;
+            }
         })
         .on('contextmenu', function (event, d) {
             console.log('contextmenu event triggered');
@@ -397,7 +462,23 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
                     event.stopPropagation();
                     contextMenu.style('display', 'none');
                     d3.selectAll('.node-selected').classed('node-selected', false);
-                    modifyNode(d, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
+                   
+                    nodeToModify = d;
+                    d3.selectAll('.node').classed('node-hover-enabled', true);
+                });
+                d3.select('#delete-node').on('click', function (event) {
+                    console.log('Delete Node clicked. nodeToModify:', nodeToModify);
+                    event.stopPropagation();
+                    contextMenu.style('display', 'none');
+                    d3.selectAll('.node-selected').classed('node-selected', false);
+                   
+                    // Set nodeToModify to the selected node
+                    nodeToModify = d;
+                
+                    if (nodeToModify !== null) {
+                        // Call the delete node function with the ID of the selected node
+                        deleteNode(nodeToModify.data.id);
+                    }
                 });
 
             // Set node ID in form
