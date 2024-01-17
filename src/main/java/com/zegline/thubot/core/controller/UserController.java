@@ -1,3 +1,10 @@
+/**
+ * @file UserController.java
+ * @brief Controller for handling User-related requests
+ *
+ * This controller handles the creation of User entities. However, it is meant only for testing
+ * and should not be included in a staging or production deployment.
+ */
 package com.zegline.thubot.core.controller;
 
 import com.zegline.thubot.core.model.security.User;
@@ -10,6 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * @class UserController
+ * @brief Controller class for User-related actions
+ *
+ * Provides the REST endpoints for manipulating User entities. This class is only intended for
+ * testing purposes and should not be used in a staging or production environment.
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {

@@ -41,6 +41,7 @@ secrets.yml
 .sts4-cache
 .idea/
 application.properties
+application-test.properties
 thuBOT.code-workspace
 console-output.txt
 Dataloader.java
@@ -48,3 +49,4 @@ src/main/resources/node_modules/
 src/main/resources/package.json
 src/main/resources/package-lock.json
 console-output.txt
+
