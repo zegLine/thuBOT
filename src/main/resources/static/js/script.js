@@ -1,10 +1,23 @@
 const chatbox = document.querySelector(".chatbox");
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const chatbotCloseBtn = document.querySelector(".close-btn");
+const maximizeBtn = document.createElement("button");
 const messageInput = document.querySelector('.message-input');
+const chatbotHeader = document.querySelector(".chatbot header");
 
 const maxMessageLength = 50;
 
+maximizeBtn.innerText = "Maximize";
+maximizeBtn.innerHTML = "&#x26F6;";
+chatbotHeader.appendChild(maximizeBtn);
+
+// Function to toggle the maximize state of the chatbot
+const toggleMaximize = () => {
+    const isMaximized = document.body.classList.toggle("chatbot-maximized");
+    maximizeBtn.innerHTML = isMaximized ? "&#x1f5d7;" : "&#x1f5d6;"; // Toggle the icons accordingly
+    maximizeBtn.setAttribute("title", isMaximized ? "Restore Down" : "Maximize");
+    chatbox.scrollTop = chatbox.scrollHeight; // Adjust chatbox scrolling
+};
 const createChatBubble = (text, isBot = true) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", isBot ? "incoming" : "outgoing");
@@ -29,7 +42,7 @@ const createChatBubble = (text, isBot = true) => {
     // Append the paragraph to the chat list item
     chatLi.appendChild(p);
 
-    if(isBot) {
+    if (isBot) {
         const img = document.createElement("img");
         img.src = "https://i.imgur.com/0N92vb3.png";
         img.alt = "Logo";
@@ -53,7 +66,9 @@ const toggleText = (button, fullText) => {
 const showTypingIndicator = () => {
     const typingBubble = createChatBubble("THUBot is typing...", true);
     chatbox.appendChild(typingBubble);
-    setTimeout(() => { typingBubble.remove(); }, 2000);
+    setTimeout(() => {
+        typingBubble.remove();
+    }, 2000);
 };
 
 // Function to handle the sending of messages and receiving of responses
@@ -66,10 +81,9 @@ const sendMessage = async (message) => {
         showTypingIndicator(); // Show typing indicator
 
         try {
-            const params = { userInput: message };
+            const params = {userInput: message};
             const response = await fetch('../api/input/ask?' + new URLSearchParams(params).toString(), {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
+                method: 'GET', headers: {'Content-Type': 'application/json'}
             });
             const responseData = await response.json();
             chatbox.querySelector('.chat:last-child').remove(); // Remove typing indicator immediately after getting the response
@@ -141,11 +155,18 @@ chatbotCloseBtn.addEventListener("click", () => {
 
 let isChatbotOpenedBefore = false;
 
+// Add event listener to the maximize button
+maximizeBtn.addEventListener("click", toggleMaximize);
 
 // Updated chatbotToggler event listener
 chatbotToggler.addEventListener("click", () => {
     // Toggle the chatbot visibility
     document.body.classList.toggle("show-chatbot");
+
+    // If the chatbot is maximized and the user is trying to minimize it, toggle maximize off
+    if (!document.body.classList.contains("show-chatbot") && document.body.classList.contains("chatbot-maximized")) {
+        toggleMaximize();
+    }
 
     // Check if the chatbot is being opened
     if (document.body.classList.contains("show-chatbot")) {
