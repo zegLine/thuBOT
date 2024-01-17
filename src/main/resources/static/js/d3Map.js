@@ -1,6 +1,5 @@
 import { fetchAndVisualizeTree } from './databaseMap.js';
 
-
 var nodeToModify = null;
 var isModifying = false;
 
@@ -236,7 +235,7 @@ function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rec
     document.getElementById('msgText').value = newNodeMsgText;
     document.getElementById('dialogNodeText').value = newNodeDialogText;
 
-    console.log('doModify  called in D3VisStatic.js');
+    console.log('doModify  called in d3Map.js');
     window.doModify();
 
     return newParentNodeId;
@@ -283,7 +282,7 @@ function deleteNode(selectedNodeId) {
         console.log('Element with ID deleteNodeID not found');
     }
 
-    console.log('doDelete called in D3VisStatic.js');
+    console.log('doDelete called in d3Map.js');
     window.doDelete();
 }
 
@@ -346,6 +345,8 @@ export function visualizeTree(treeData) {
 }
 
 function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
+
+    let newParentNodeId;
 
     var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
@@ -475,7 +476,7 @@ function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, dep
                 .style("top", (event.pageY - 28) + "px");
         })
 
-        .on('mouseout', function (d) {
+        .on('mouseout', function () {
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);

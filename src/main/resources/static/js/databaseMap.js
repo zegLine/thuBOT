@@ -1,4 +1,4 @@
-import { visualizeTree } from './d3VisStatic.js';
+import { visualizeTree } from './d3Map.js';
 
 export function fetchAndVisualizeTree() {
     fetch('/api/dialognode/get')
