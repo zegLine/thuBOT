@@ -128,6 +128,18 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
         .attr("class", "tooltip")
         .style("opacity", 0);
 
+    d3.select('body').on('contextmenu', function (event) {
+        event.preventDefault();
+        // Check if we are in the node modification process
+        if (isModifying) {
+            // Reset the modification process
+            isModifying = false;
+            nodeToModify = null;
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+            d3.selectAll('.node').classed('node-hover-enabled', false);
+        }
+    });
+
     var treeData = treemap(root);
     var nodes = treeData.descendants();
     var links = treeData.descendants().slice(1);
