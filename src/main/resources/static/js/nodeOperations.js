@@ -1,3 +1,4 @@
+import { doCreate, doModify, doDelete } from './apiInteractions.js';
 import { update } from './treeManipulation.js';
 
 export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, selectedNode) {
@@ -39,7 +40,7 @@ export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeigh
     document.getElementById('msgText').value = newNodeData.msgText;
     document.getElementById('dialogNodeText').value = newNodeData.dialogText;
 
-    window.doCreate();
+    doCreate();
 }
 
 export function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, newParentNodeId) {
@@ -75,7 +76,7 @@ export function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeig
     document.getElementById('dialogNodeText').value = newNodeDialogText;
 
     console.log('doModify  called in d3Map.js');
-    window.doModify();
+    doModify();
 
     return newParentNodeId;
 }
@@ -92,5 +93,5 @@ export function deleteNode(selectedNodeId) {
     }
 
     console.log('doDelete called in d3Map.js');
-    window.doDelete();
+    doDelete();
 }
