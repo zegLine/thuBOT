@@ -3,6 +3,7 @@ import { createNode, deleteNode, modifyNode } from './nodeOperations.js';
 
 var nodeToModify = null;
 var isModifying = false;
+let modifyingNodeElement = null;
 
 
 export function setInitialDepths(root, depthIncrement) {
@@ -107,17 +108,13 @@ export function visualizeTree(treeData) {
     });
 
     d3.select('body').on('click', function (event) {
-        
         if (!d3.select(event.target).classed('node-selected') && !d3.select(event.target).classed('context-menu')) {
             d3.selectAll('.node-selected').classed('node-selected', false);
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
             d3.select('#context-menu').style('display', 'none');
         }
-
     });
 
-    d3.select('svg').on('contextmenu', function (event) {
-        event.preventDefault();
-    });
 }
 
 export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
@@ -137,6 +134,23 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
             nodeToModify = null;
             d3.selectAll('.node-modifying').classed('node-modifying', false);
             d3.selectAll('.node').classed('node-hover-enabled', false);
+        }
+        // If the context menu is not opened on a node, remove the 'node-modifying' class from all nodes
+        if (!d3.select(event.target).classed('node')) {
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+        }
+        // If the event target is not a node or a descendant of the context menu, hide the context menu
+        var contextMenuNode = d3.select('#context-menu').node();
+        if (!d3.select(event.target).classed('node') && !(contextMenuNode.contains(event.target) || contextMenuNode === event.target)) {
+            d3.select('#context-menu').style('display', 'none');
+        }
+    });
+
+    d3.select('body').on('click', function (event) {
+        if (!d3.select(event.target).classed('node-selected') && !d3.select(event.target).classed('context-menu')) {
+            d3.selectAll('.node-selected').classed('node-selected', false);
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+            d3.select('#context-menu').style('display', 'none');
         }
     });
 
@@ -201,6 +215,7 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
             console.log('contextmenu event triggered');
             event.preventDefault();
             event.stopPropagation();
+            modifyingNodeElement = this;
             d3.select(this).classed('node-modifying', true);
             var coordinates = d3.pointer(event);
             var contextMenu = d3.select('#context-menu');
@@ -213,7 +228,7 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
                 event.stopPropagation();
                 contextMenu.style('display', 'none');
                 d3.selectAll('.node-selected').classed('node-selected', false);
-                createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, d);
+                createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, d, modifyingNodeElement);
             });
 
             d3.select('#modify-node').on('click', function (event) {
@@ -242,9 +257,11 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
 
         .on('mouseover', function (event, d) {
             
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
+            var contextMenu = d3.select('#context-menu');
+            if (contextMenu.style('display') === 'none') {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
 
             tooltip.html(function () {
                 var tooltipText = 'ID: ' + d.data.id;
@@ -260,8 +277,9 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
 
                 return tooltipText;
             })
-                .style("left", (event.pageX) + "px")
-                .style("top", (event.pageY - 28) + "px");
+                .style("left", (event.pageX + rectWidth) + "px")
+                .style("top", (event.pageY - rectHeight - 28) + "px");
+            }
         })
 
         .on('mouseout', function () {

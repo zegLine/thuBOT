@@ -1,18 +1,20 @@
 import { doCreate, doModify, doDelete } from './apiInteractions.js';
 import { update } from './treeManipulation.js';
 
-export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, selectedNode) {
+export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, selectedNode, modifyingNodeElement) {
 
     var selectedNodeId = selectedNode.data.id;
     var newNodeDialogText = prompt('Enter dialog text for the new node:');
 
     if (newNodeDialogText === null) {
+        d3.select(modifyingNodeElement).classed('node-modifying', false);
         return;
     }
 
     var newNodeMsgText = prompt('Enter message text for the new node:');
 
     if (newNodeMsgText === null) {
+        d3.select(modifyingNodeElement).classed('node-modifying', false);
         return;
     }
 
