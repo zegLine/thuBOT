@@ -5,7 +5,7 @@
  * This service class provides functionality to match user input with dialog nodes,
  * utilizing both local repository data and external OpenAI services
  */
-package com.zegline.thubot.core.service.dialogNodeMatch;
+package com.zegline.thubot.core.service.DialogNode;
 
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
@@ -31,6 +31,9 @@ public class DialogNodeMatch {
     private DialogNodeRepository dialogNodeRepository;
 
     @Autowired
+    private DialogNodeService dialogNodeService;
+
+    @Autowired
     private DialogNodeResponseRepository dialogNodeResponseRepository;
 
     @Autowired
@@ -47,7 +50,7 @@ public class DialogNodeMatch {
         int recurseLevel = 15;
 
         // Get the root node
-        DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
+        DialogNode root = dialogNodeService.getRootNode();
 
         // First match with one node in the database
         // if it is found, return it immediately
@@ -137,7 +140,7 @@ public class DialogNodeMatch {
             words.add(tokenizer.nextToken());
         }
         words.removeAll(stopWords);
-        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeRepository.findDialogNodesByParentIsNull().get(0), 15);
+        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeService.getRootNode(), 15);
         DialogNode response = new DialogNode();
         int dialogMatches = 0;
 
