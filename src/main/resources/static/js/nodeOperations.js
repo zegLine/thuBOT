@@ -94,6 +94,12 @@ export function deleteNode(selectedNodeId) {
         console.log('Element with ID deleteNodeID not found');
     }
 
-    console.log('doDelete called in d3Map.js');
-    doDelete();
+    var confirmation = confirm("Are you sure you want to delete this node?");
+    
+    if (confirmation) {
+        console.log('doDelete called in d3Map.js');
+        doDelete();
+    } else {
+        console.log('Node deletion cancelled');
+    }
 }

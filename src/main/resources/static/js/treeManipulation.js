@@ -3,7 +3,7 @@ import { createNode, deleteNode, modifyNode } from './nodeOperations.js';
 
 var nodeToModify = null;
 var isModifying = false;
-let modifyingNodeElement = null;
+
 
 
 export function setInitialDepths(root, depthIncrement) {
@@ -215,7 +215,6 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
             console.log('contextmenu event triggered');
             event.preventDefault();
             event.stopPropagation();
-            modifyingNodeElement = this;
             d3.select(this).classed('node-modifying', true);
             var coordinates = d3.pointer(event);
             var contextMenu = d3.select('#context-menu');
@@ -228,7 +227,7 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
                 event.stopPropagation();
                 contextMenu.style('display', 'none');
                 d3.selectAll('.node-selected').classed('node-selected', false);
-                createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, d, modifyingNodeElement);
+                createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, d);
             });
 
             d3.select('#modify-node').on('click', function (event) {
