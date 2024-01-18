@@ -67,9 +67,14 @@ export function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeig
         return;
     }
 
-    selectedNode.data.dialogText = newNodeDialogText;
-    selectedNode.data.msgText = newNodeMsgText;
+    if (newNodeDialogText == "") {
+        newNodeDialogText = selectedNode.data.dialogText;
+    }
+    if (newNodeMsgText == "") {
+        newNodeMsgText = selectedNode.data.msgText;
+    }
 
+    
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
 
     document.getElementById('parentID').value = selectedNodeId;

@@ -92,7 +92,7 @@ export function visualizeTree(treeData) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var zoom = d3.zoom()
-        .scaleExtent([0.1, 10])
+        .scaleExtent([0.7, 100])
         .on("zoom", function (event) {
             svg.attr("transform", event.transform);
         });
@@ -152,6 +152,20 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
             d3.selectAll('.node-modifying').classed('node-modifying', false);
             d3.select('#context-menu').style('display', 'none');
         }
+    });
+
+    d3.select('body').on('mousemove', function(event) {
+        // Check if the mouse is over a node
+        if (!d3.select(event.target).classed('node')) {
+            // If the mouse is not over a node, hide the tooltip
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        }
+    });
+
+    window.addEventListener('beforeunload', function() {
+        tooltip.style("opacity", 0);
     });
 
     var treeData = treemap(root);
