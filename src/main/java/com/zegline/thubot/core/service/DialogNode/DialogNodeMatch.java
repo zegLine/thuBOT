@@ -5,7 +5,12 @@
  * This service class provides functionality to match user input with dialog nodes,
  * utilizing both local repository data and external OpenAI services
  */
-package com.zegline.thubot.core.service.DialogNode;
+package com.zegline.thubot.core.service.dialogNodeMatch;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
@@ -40,11 +45,13 @@ public class DialogNodeMatch {
     private OpenAIService openAIService;
     
     /**
-     * Matches user input with responses in the databases.
-     *
-     * @param userInput The input string the user provided, could be the prompt or natural language.
-     * @return The fetched answer or a default message if no suitable response is found.
-     */
+    * Matches user input with responses in the databases.
+    *
+    * @param userInput User input string, could be the prompt or natural language.
+    * @return The fetched answer or a default message if no suitable response is found.
+    *
+    * @throws Exception If there's an error parsing the matched question number returned by OpenAI.
+    */
     public DialogNode getResponseNode(String userInput){
 
         int recurseLevel = 15;
@@ -63,7 +70,7 @@ public class DialogNodeMatch {
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
         if(responseList.isEmpty())
-            return new DialogNode();
+            return DialogNode.builder().msgText("PROMPT GOES AGAINST OUR AULA").build();
 
         String unsafeNum = responseList.get(0).replace("QUESTION", "");
         unsafeNum = unsafeNum.replace("\"", "");
@@ -78,9 +85,14 @@ public class DialogNodeMatch {
 
     }
 
+    /**
+    * This method retrieves all answers from a list of dialog nodes.
+    *
+    * @param nodes A list of dialog nodes from which to extract responses
+    * @return A list of answers, represented by the values of the msgText fields of the dialog nodes.
+    */
     private List<String> getAnswers(List<DialogNode> nodes) {
-        // Implement your logic to extract answers from the list of DialogNodes
-        // You can loop through the nodes and extract the msgText or other relevant data
+
         List<String> answers = new ArrayList<>();
         for (DialogNode node : nodes) {
             answers.add(node.getMsgText());
@@ -88,12 +100,26 @@ public class DialogNodeMatch {
         return answers;
     }
 
+    /**
+    * This method recursively retrieves all dialog nodes starting from a root node.
+    *
+    * @param root The root dialog node from which to start the search.
+    * @param recurseLevel The maximum depth of the search.
+    * @return A list of all dialog nodes reachable from the root node, up to the specified search depth.
+    */
     public static List<DialogNode> getNodesRecursively(DialogNode root, int recurseLevel) {
         List<DialogNode> result = new ArrayList<>();
         getNodesRecursivelyHelper(root, recurseLevel, result);
         return result;
     }
 
+    /**
+    * This method is a helper for the getNodesRecursively method, executing the actual recursion.
+    *
+    * @param node The node from which to start the search.
+    * @param recurseLevel The remaining search depth.
+    * @param result A running list of dialog nodes found so far.
+    */
     private static void getNodesRecursivelyHelper(DialogNode node, int recurseLevel, List<DialogNode> result) {
         if (node == null || recurseLevel < 0) {
             return;

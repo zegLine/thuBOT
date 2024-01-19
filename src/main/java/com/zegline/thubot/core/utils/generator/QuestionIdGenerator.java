@@ -9,6 +9,7 @@
 package com.zegline.thubot.core.utils.generator;
 
 import java.io.Serializable;
+
 import java.util.Properties;
 import java.util.Random;
 
@@ -43,12 +44,10 @@ public class QuestionIdGenerator implements IdentifierGenerator {
     public Serializable generate(SharedSessionContractImplementor session, Object object) {
         String generatedId;
 
-        // Keep generating IDs until a unique one is found
         do {
             int randomNum = new Random().nextInt(9000) + 1000;
             generatedId = prefix + randomNum;
         } while (isIdExists(session, generatedId));
-
         return generatedId;
     }
 
@@ -76,7 +75,7 @@ public class QuestionIdGenerator implements IdentifierGenerator {
      * @param type The type of the entity for which the ID will be generated
      * @param params The parameters required for configuration, including the prefix
      * @param serviceRegistry The service registry
-     * @throws MappingException If there is an issue with the configuration
+     * @throws MappingException If there is an issue with the configuration such as missing or invalid parameters
      */
     @Override
     public void configure(Type type, Properties params, ServiceRegistry serviceRegistry) throws MappingException {

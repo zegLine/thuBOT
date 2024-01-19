@@ -15,19 +15,25 @@ import com.zegline.thubot.core.model.DialogNode;
 import java.util.List;
 
 /**
- * Repository interface for DialogNode entities, providing CRUD operations and custom queries.
+ * @interface DialogNodeRepository
+ * @brief Interface providing CRUD operations and custom queries for DialogNode entities.
  */
 @Repository
 public interface DialogNodeRepository extends CrudRepository<DialogNode, String> {
 
     /**
-     * Finds a DialogNode that has the specified child.
+     * Finds a parent DialogNode of the specified child node.
      * 
-     * @param child The DialogNode to search for in the children relation.
+     * @param child The DialogNode to search for in the parent's children.
      * @return The parent DialogNode of the specified child, or null if no parent is found.
      */
     DialogNode findByChildren(DialogNode child);
 
+    /**
+    * Finds all DialogNodes which have no parent node (root nodes).
+    *
+    * @return List of DialogNode instances without a parent node.
+    */
     List<DialogNode> findDialogNodesByParentIsNull();
 
 }

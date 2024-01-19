@@ -1,0 +1,58 @@
+body {
+    background: linear-gradient(45deg, #171717, #0d0d0d);
+}
+
+#database-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; 
+    height: 100%; /* Add this line */
+}
+
+#svg-container {
+    width: 100%;
+    height: 100vh; /* Adjust this value as needed */
+    overflow: hidden;
+}
+
+#context-menu {
+    background-color: #f0f0f0; /* Light gray background */
+    z-index: 1000;
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    width: 100px; /* Fixed width */
+    /*height: 20px; /* Fixed height */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* A little shadow */
+    font-family: Arial, sans-serif; /* Change the font if you like */
+    font-size: 12px; /* Adjust the font size */
+}
+
+#context-menu ul {
+    list-style: none; /* Remove bullet points */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+#context-menu li {
+    padding: 1px 5px; /* Adjust the padding to fit the new height */
+    cursor: pointer; /* Change the cursor when hovering over a list item */
+    line-height: 18px; /* Center the text vertically */
+    text-align: center; /* Center the text horizontally */
+}
+
+#context-menu li:hover {
+    background-color: #ddd; /* Change the background color when hovering over a list item */
+}
+
+.node-selected {
+    filter: drop-shadow(0 0 10px red);
+}
+
+.node-hover-enabled:hover {
+    filter: drop-shadow(0 0 10px blue);
+}
+
+.node-modifying {
+    filter: drop-shadow(0 0 10px red);
+}
