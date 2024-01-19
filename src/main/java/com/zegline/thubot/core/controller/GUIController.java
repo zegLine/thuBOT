@@ -57,6 +57,24 @@ public class GUIController {
        return "index";
    }
 
+    @GetMapping("/impressum")
+    public String getImpressum(Model model) {
+
+        return "impressum";
+    }
+
+    @GetMapping("/gdpr")
+    public String getGdpr(Model model) {
+
+        return "dataPolicy";
+    }
+
+    @GetMapping("/contact")
+    public String getContact(Model model) {
+
+        return "contact";
+    }
+
    /**
    * End point to serve the database map page.
    *
