@@ -5,7 +5,7 @@
  * This service class provides functionality to match user input with dialog nodes,
  * utilizing both local repository data and external OpenAI services
  */
-package com.zegline.thubot.core.service.dialogNodeMatch;
+package com.zegline.thubot.core.service.DialogNode;
 
 import lombok.Getter;
 import lombok.Setter;
