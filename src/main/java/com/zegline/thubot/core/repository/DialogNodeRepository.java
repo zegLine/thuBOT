@@ -1,7 +1,6 @@
 /**
  * @file DialogNodeRepository.java
  * @brief Interface for CRUD operations on DialogNode entities.
- *
  * This interface extends the CrudRepository to provide CRUD operations for DialogNode entities.
  * It includes additional query methods for specific search criteria related to DialogNodes, such as
  * fetching nodes without children or finding leaf nodes within the dialog tree structure.

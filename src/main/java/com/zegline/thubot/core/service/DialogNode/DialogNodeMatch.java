@@ -3,7 +3,7 @@
  * @brief Service Class for matching dialog nodes to user input
  *
  * This service class provides functionality to match user input with dialog nodes,
- * utilizing both local repository data and external OpenAI services.
+ * utilizing both local repository data and external OpenAI services
  */
 package com.zegline.thubot.core.service.dialogNodeMatch;
 
@@ -16,6 +16,8 @@ import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -27,14 +29,14 @@ import java.util.*;
  * or generate responses using OpenAI's services. It encapsulates the logic for the
  * dialog node matching process.
  */
-
-@Setter
-@Getter
 @Service
 public class DialogNodeMatch {
 
     @Autowired
     private DialogNodeRepository dialogNodeRepository;
+
+    @Autowired
+    private DialogNodeService dialogNodeService;
 
     @Autowired
     private DialogNodeResponseRepository dialogNodeResponseRepository;
@@ -53,10 +55,16 @@ public class DialogNodeMatch {
     public DialogNode getResponseNode(String userInput){
 
         int recurseLevel = 15;
-        DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
+
+        // Get the root node
+        DialogNode root = dialogNodeService.getRootNode();
+
+        // First match with one node in the database
+        // if it is found, return it immediately
         DialogNode matchedNode = matchNodeToInput(userInput);
         if (matchedNode != null) return matchedNode;
 
+        // Not directly found, therefore call OpenAI service
         List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
         List<String> possibleResponses = getAnswers(possibleNodes);
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
@@ -116,7 +124,10 @@ public class DialogNodeMatch {
         if (node == null || recurseLevel < 0) {
             return;
         }
+
         result.add(node);
+
+        // Eagerly load children
         node.getChildren().size();
 
         if (recurseLevel > 0) {
@@ -129,7 +140,7 @@ public class DialogNodeMatch {
     /**
      * Placeholder method to implement database matching logic.
      *
-     * @param input input string to match
+     * @param input The String to match
      * @return Matched node if found, otherwise null.
      */
     private DialogNode matchNodeToInput(String input) {
@@ -155,7 +166,7 @@ public class DialogNodeMatch {
             words.add(tokenizer.nextToken());
         }
         words.removeAll(stopWords);
-        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeRepository.findDialogNodesByParentIsNull().get(0), 15);
+        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeService.getRootNode(), 15);
         DialogNode response = new DialogNode();
         int dialogMatches = 0;
 
@@ -178,5 +189,7 @@ public class DialogNodeMatch {
             return response;
         }
         return null;
-    }      
+    }
+
+        
 }
