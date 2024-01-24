@@ -10,6 +10,7 @@ package com.zegline.thubot.core.service.dialogNodeMatch;
 import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
+import com.zegline.thubot.core.service.DialogNode.DialogNodeMatch;
 import com.zegline.thubot.core.service.openai.OpenAIService;
 
 import org.junit.jupiter.api.BeforeEach;
