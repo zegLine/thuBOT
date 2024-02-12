@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.zegline.thubot.core.repository.DialogNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +36,9 @@ import com.zegline.thubot.core.repository.UserRepository;
 */
 @Controller
 public class GUIController {
+
+    @Autowired
+    private DialogNodeRepository dnr;
 
    @Autowired
    private UserRepository userRepository;
@@ -170,5 +175,10 @@ public class GUIController {
            model.addAttribute("message", "Registration was successful. Please log in");
        }
        return "register";
+   }
+
+   @GetMapping("/test")
+    public void test() {
+       dnr.findAll();
    }
 }

@@ -52,7 +52,7 @@ public class DialogNodeMatch {
     *
     * @throws Exception If there's an error parsing the matched question number returned by OpenAI.
     */
-    public DialogNode getResponseNode(String userInput){
+    public DialogNode getResponseNode(String userInput, DialogNode currentNode){
 
         int recurseLevel = 15;
 
@@ -65,8 +65,9 @@ public class DialogNodeMatch {
         if (matchedNode != null) return matchedNode;
 
         // Not directly found, therefore call OpenAI service
-        List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
-        List<String> possibleResponses = getAnswers(possibleNodes);
+        //List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
+        List<DialogNode> possibleNodes = (List<DialogNode>) dialogNodeRepository.findAll();
+        List<String> possibleResponses = getAnswers(possibleNodes, Optional.ofNullable(currentNode));
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
         if(responseList.isEmpty())
@@ -91,11 +92,17 @@ public class DialogNodeMatch {
     * @param nodes A list of dialog nodes from which to extract responses
     * @return A list of answers, represented by the values of the msgText fields of the dialog nodes.
     */
-    private List<String> getAnswers(List<DialogNode> nodes) {
+    private List<String> getAnswers(List<DialogNode> nodes, Optional<DialogNode> currentNode) {
 
         List<String> answers = new ArrayList<>();
         for (DialogNode node : nodes) {
-            answers.add(node.getMsgText());
+            String textToAdd = "";
+            if (currentNode.isPresent() && currentNode.get() == node) {
+                textToAdd += "(CHKFRST)";
+                System.out.println("Ceck first" + node.getId());
+            }
+            textToAdd += node.getDialogText() + " " + node.getMsgText();
+            answers.add(textToAdd);
         }
         return answers;
     }
@@ -166,7 +173,8 @@ public class DialogNodeMatch {
             words.add(tokenizer.nextToken());
         }
         words.removeAll(stopWords);
-        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeService.getRootNode(), 15);
+        List<DialogNode> possibleNodes = (List<DialogNode>) dialogNodeRepository.findAll();
+        //List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeService.getRootNode(), 15);
         DialogNode response = new DialogNode();
         int dialogMatches = 0;
 

@@ -97,7 +97,7 @@ const sendMessage = async (message) => {
 
 
         try {
-            const params = { userInput: message };
+            const params = { userInput: message, currentNodeId: currentDialogNodeId };
             startBotTyping();
             const response = await fetch('../api/input/ask?' + new URLSearchParams(params).toString(), {
                 method: 'GET',
