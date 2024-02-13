@@ -11,6 +11,7 @@ import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.DialogNode.DialogNodeMatch;
+import com.zegline.thubot.core.service.DialogNode.DialogNodeService;
 import com.zegline.thubot.core.service.openai.OpenAIService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,9 @@ public class DialogNodeMatchTests {
     @Mock
     private OpenAIService openAIService;
 
+    @Mock
+    private DialogNodeService dialogNodeService;
+
     @InjectMocks
     private DialogNodeMatch dialogNodeMatch;
 
@@ -68,7 +72,7 @@ public class DialogNodeMatchTests {
         
         List<String> openAIResponses = Collections.singletonList("0");
         when(openAIService.getQuestionMatch(anyString(), anyList())).thenReturn(openAIResponses);
-        DialogNode resultNode = dialogNodeMatch.getResponseNode("SomeInput");
+        DialogNode resultNode = dialogNodeMatch.getResponseNode("SomeInput", dialogNodeService.getRootNode());
         assertEquals(rootNode, resultNode, "The returned node should match the root node.");
     }
 
@@ -82,7 +86,7 @@ public class DialogNodeMatchTests {
     public void testGetResponseNodeWithOpenAIFailure() {
         
         when(openAIService.getQuestionMatch(anyString(), anyList())).thenReturn(Collections.emptyList());
-        DialogNode resultNode = dialogNodeMatch.getResponseNode("SomeInputWithOpenAIFailure");
+        DialogNode resultNode = dialogNodeMatch.getResponseNode("SomeInputWithOpenAIFailure", dialogNodeService.getRootNode());
         assertNotNull(resultNode, "A DialogNode instance should be returned even if OpenAI provides no match.");
         assertEquals("PROMPT GOES AGAINST OUR AULA", resultNode.getMsgText(), "The returned DialogNode should have the fallback msgText.");
     }
