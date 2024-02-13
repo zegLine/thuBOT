@@ -48,7 +48,7 @@ export function diagonal(s, d) {
 
 export function updateMap() {
     
-    fetch('http://localhost:8080/api/dialognode/get', {
+    fetch('../api/dialognode/get', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
