@@ -1,18 +1,20 @@
 import { doCreate, doModify, doDelete } from './apiInteractions.js';
 import { update } from './treeManipulation.js';
 
-export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, selectedNode) {
+export function createNode(coordinates, root, svg, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin, selectedNode, modifyingNodeElement) {
 
     var selectedNodeId = selectedNode.data.id;
     var newNodeDialogText = prompt('Enter dialog text for the new node:');
 
     if (newNodeDialogText === null) {
+        d3.select(modifyingNodeElement).classed('node-modifying', false);
         return;
     }
 
     var newNodeMsgText = prompt('Enter message text for the new node:');
 
     if (newNodeMsgText === null) {
+        d3.select(modifyingNodeElement).classed('node-modifying', false);
         return;
     }
 
@@ -65,9 +67,14 @@ export function modifyNode(selectedNode, root, svg, treemap, rectWidth, rectHeig
         return;
     }
 
-    selectedNode.data.dialogText = newNodeDialogText;
-    selectedNode.data.msgText = newNodeMsgText;
+    if (newNodeDialogText == "") {
+        newNodeDialogText = selectedNode.data.dialogText;
+    }
+    if (newNodeMsgText == "") {
+        newNodeMsgText = selectedNode.data.msgText;
+    }
 
+    
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
 
     document.getElementById('parentID').value = selectedNodeId;
@@ -92,6 +99,12 @@ export function deleteNode(selectedNodeId) {
         console.log('Element with ID deleteNodeID not found');
     }
 
-    console.log('doDelete called in d3Map.js');
-    doDelete();
+    var confirmation = confirm("Are you sure you want to delete this node?");
+    
+    if (confirmation) {
+        console.log('doDelete called in d3Map.js');
+        doDelete();
+    } else {
+        console.log('Node deletion cancelled');
+    }
 }
