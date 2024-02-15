@@ -10,7 +10,8 @@ export function doCreate() {
         msgText: msgText,
         dialogNodeText: dialogNodeText,
     };
-    const serverURL = 'http://localhost:8080/api/dialognode/createChild';
+    const serverURL = '../api/dialognode/createChild';
+    
     
     console.log('Request Details:', {
         method: 'POST',
@@ -72,14 +73,14 @@ export function doModify() {
 
     console.log('Request Details:', {
         method: 'POST',
-        url: 'http://localhost:8080/api/dialognode/modify',
+        url: '../api/dialognode/modify',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
     });
 
-    fetch('http://localhost:8080/api/dialognode/modify', {
+    fetch('../api/dialognode/modify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ export function doDelete() {
         dialogNodeId: nodeId
     };
 
-    fetch('http://localhost:8080/api/dialognode/delete', {
+    fetch('../api/dialognode/delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
