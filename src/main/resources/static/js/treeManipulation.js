@@ -5,6 +5,7 @@ var nodeToModify = null;
 var isModifying = false;
 
 
+
 export function setInitialDepths(root, depthIncrement) {
     if (root.children) {
         root.children.forEach(function (child) {
@@ -47,7 +48,7 @@ export function diagonal(s, d) {
 
 export function updateMap() {
     
-    fetch('http://localhost:8080/api/dialognode/get', {
+    fetch('../api/dialognode/get', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -61,6 +62,7 @@ export function updateMap() {
             console.error('Error:', error);
         });
 }
+
 
 export function visualizeTree(treeData) {
 
@@ -91,7 +93,7 @@ export function visualizeTree(treeData) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var zoom = d3.zoom()
-        .scaleExtent([0.1, 10])
+        .scaleExtent([0.7, 100])
         .on("zoom", function (event) {
             svg.attr("transform", event.transform);
         });
@@ -107,17 +109,13 @@ export function visualizeTree(treeData) {
     });
 
     d3.select('body').on('click', function (event) {
-        
         if (!d3.select(event.target).classed('node-selected') && !d3.select(event.target).classed('context-menu')) {
             d3.selectAll('.node-selected').classed('node-selected', false);
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
             d3.select('#context-menu').style('display', 'none');
         }
-
     });
 
-    d3.select('svg').on('contextmenu', function (event) {
-        event.preventDefault();
-    });
 }
 
 export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin) {
@@ -127,6 +125,45 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
     var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+
+    d3.select('body').on('contextmenu', function (event) {
+        event.preventDefault();
+        
+        if (isModifying) {
+            isModifying = false;
+            nodeToModify = null;
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+            d3.selectAll('.node').classed('node-hover-enabled', false);
+        }
+        if (!d3.select(event.target).classed('node')) {
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+        }
+        var contextMenuNode = d3.select('#context-menu').node();
+        if (!d3.select(event.target).classed('node') && !(contextMenuNode.contains(event.target) || contextMenuNode === event.target)) {
+            d3.select('#context-menu').style('display', 'none');
+        }
+    });
+
+    d3.select('body').on('click', function (event) {
+        if (!d3.select(event.target).classed('node-selected') && !d3.select(event.target).classed('context-menu')) {
+            d3.selectAll('.node-selected').classed('node-selected', false);
+            d3.selectAll('.node-modifying').classed('node-modifying', false);
+            d3.select('#context-menu').style('display', 'none');
+        }
+    });
+
+    d3.select('body').on('mousemove', function(event) {
+
+        if (!d3.select(event.target).classed('node')) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        }
+    });
+
+    window.addEventListener('beforeunload', function() {
+        tooltip.style("opacity", 0);
+    });
 
     var treeData = treemap(root);
     var nodes = treeData.descendants();
@@ -229,10 +266,12 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
         })
 
         .on('mouseover', function (event, d) {
-
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
+            
+            var contextMenu = d3.select('#context-menu');
+            if (contextMenu.style('display') === 'none') {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
 
             tooltip.html(function () {
                 var tooltipText = 'ID: ' + d.data.id;
@@ -248,8 +287,9 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
 
                 return tooltipText;
             })
-                .style("left", (event.pageX) + "px")
-                .style("top", (event.pageY - 28) + "px");
+                .style("left", (event.pageX + rectWidth) + "px")
+                .style("top", (event.pageY - rectHeight - 28) + "px");
+            }
         })
 
         .on('mouseout', function () {
