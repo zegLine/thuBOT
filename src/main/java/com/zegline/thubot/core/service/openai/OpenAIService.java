@@ -53,7 +53,7 @@ public class OpenAIService {
             openaiInput.append("QUESTION").append(list_nodes.indexOf(node)).append(":").append(node).append(";");
         }
 
-        openaiInput.append("You will ONLY respond with the Question NUMBER that you think MAKES SENSE to match to the input. DO NOT RESPOND WITH ANYTHING ELSE THAN QUESTIONX (where X is the number)");
+        openaiInput.append("You will ONLY respond with the Question NUMBER that you think MAKES SENSE to match to the input. DO NOT RESPOND WITH ANYTHING ELSE THAN QUESTIONX (where X is the number). Check those marked with CHKFRST first");
 
         try {
             

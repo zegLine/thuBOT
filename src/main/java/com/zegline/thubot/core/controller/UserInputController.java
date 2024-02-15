@@ -7,15 +7,16 @@
  */
 package com.zegline.thubot.core.controller;
 
+import com.zegline.thubot.core.repository.DialogNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.zegline.thubot.core.model.DialogNode;
-import com.zegline.thubot.core.service.dialogNodeMatch.DialogNodeMatch;
+import com.zegline.thubot.core.service.DialogNode.DialogNodeMatch;
+
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @class UserInputController
@@ -44,6 +45,9 @@ public class UserInputController {
     @Autowired
     private DialogNodeMatch dialogNodeMatchService;
 
+    @Autowired
+    private DialogNodeRepository dnr;
+
     /**
      * Endpoint to receive user input and retrieve a response node based on the provided input.
      *
@@ -51,7 +55,12 @@ public class UserInputController {
      * @return The DialogNode instance that responds to the user input.
      */
     @GetMapping("/ask")
-    public DialogNode inputAsk(@RequestParam String userInput) {
-        return dialogNodeMatchService.getResponseNode(userInput);
+    public DialogNode inputAsk(@RequestParam String userInput, @RequestParam String currentNodeId) {
+        DialogNode currentNode = null;
+        if (!Objects.equals(currentNodeId, "")) {
+            Optional<DialogNode> currentNodeOpt = dnr.findById(currentNodeId);
+            if (currentNodeOpt.isPresent()) currentNode =currentNodeOpt.get();
+        }
+        return dialogNodeMatchService.getResponseNode(userInput, currentNode);
     }
 }

@@ -3,9 +3,9 @@
  * @brief Service Class for matching dialog nodes to user input
  *
  * This service class provides functionality to match user input with dialog nodes,
- * utilizing both local repository data and external OpenAI services.
+ * utilizing both local repository data and external OpenAI services
  */
-package com.zegline.thubot.core.service.dialogNodeMatch;
+package com.zegline.thubot.core.service.DialogNode;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,8 @@ import com.zegline.thubot.core.model.DialogNode;
 import com.zegline.thubot.core.repository.DialogNodeRepository;
 import com.zegline.thubot.core.repository.DialogNodeResponseRepository;
 import com.zegline.thubot.core.service.openai.OpenAIService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -27,14 +29,14 @@ import java.util.*;
  * or generate responses using OpenAI's services. It encapsulates the logic for the
  * dialog node matching process.
  */
-
-@Setter
-@Getter
 @Service
 public class DialogNodeMatch {
 
     @Autowired
     private DialogNodeRepository dialogNodeRepository;
+
+    @Autowired
+    private DialogNodeService dialogNodeService;
 
     @Autowired
     private DialogNodeResponseRepository dialogNodeResponseRepository;
@@ -50,15 +52,22 @@ public class DialogNodeMatch {
     *
     * @throws Exception If there's an error parsing the matched question number returned by OpenAI.
     */
-    public DialogNode getResponseNode(String userInput){
+    public DialogNode getResponseNode(String userInput, DialogNode currentNode){
 
         int recurseLevel = 15;
-        DialogNode root = dialogNodeRepository.findDialogNodesByParentIsNull().get(0);
+
+        // Get the root node
+        DialogNode root = dialogNodeService.getRootNode();
+
+        // First match with one node in the database
+        // if it is found, return it immediately
         DialogNode matchedNode = matchNodeToInput(userInput);
         if (matchedNode != null) return matchedNode;
 
-        List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
-        List<String> possibleResponses = getAnswers(possibleNodes);
+        // Not directly found, therefore call OpenAI service
+        //List<DialogNode> possibleNodes = getNodesRecursively(root, recurseLevel);
+        List<DialogNode> possibleNodes = (List<DialogNode>) dialogNodeRepository.findAll();
+        List<String> possibleResponses = getAnswers(possibleNodes, Optional.ofNullable(currentNode));
         List<String> responseList = openAIService.getQuestionMatch(userInput, possibleResponses);
 
         if(responseList.isEmpty())
@@ -83,11 +92,17 @@ public class DialogNodeMatch {
     * @param nodes A list of dialog nodes from which to extract responses
     * @return A list of answers, represented by the values of the msgText fields of the dialog nodes.
     */
-    private List<String> getAnswers(List<DialogNode> nodes) {
+    private List<String> getAnswers(List<DialogNode> nodes, Optional<DialogNode> currentNode) {
 
         List<String> answers = new ArrayList<>();
         for (DialogNode node : nodes) {
-            answers.add(node.getMsgText());
+            String textToAdd = "";
+            if (currentNode.isPresent() && currentNode.get() == node) {
+                textToAdd += "(CHKFRST)";
+                System.out.println("Ceck first" + node.getId());
+            }
+            textToAdd += node.getDialogText() + " " + node.getMsgText();
+            answers.add(textToAdd);
         }
         return answers;
     }
@@ -116,7 +131,10 @@ public class DialogNodeMatch {
         if (node == null || recurseLevel < 0) {
             return;
         }
+
         result.add(node);
+
+        // Eagerly load children
         node.getChildren().size();
 
         if (recurseLevel > 0) {
@@ -129,7 +147,7 @@ public class DialogNodeMatch {
     /**
      * Placeholder method to implement database matching logic.
      *
-     * @param input input string to match
+     * @param input The String to match
      * @return Matched node if found, otherwise null.
      */
     private DialogNode matchNodeToInput(String input) {
@@ -155,7 +173,8 @@ public class DialogNodeMatch {
             words.add(tokenizer.nextToken());
         }
         words.removeAll(stopWords);
-        List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeRepository.findDialogNodesByParentIsNull().get(0), 15);
+        List<DialogNode> possibleNodes = (List<DialogNode>) dialogNodeRepository.findAll();
+        //List<DialogNode> possibleNodes = getNodesRecursively(dialogNodeService.getRootNode(), 15);
         DialogNode response = new DialogNode();
         int dialogMatches = 0;
 
@@ -178,5 +197,7 @@ public class DialogNodeMatch {
             return response;
         }
         return null;
-    }      
+    }
+
+        
 }

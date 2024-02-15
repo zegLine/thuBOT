@@ -2,39 +2,71 @@ const chatbox = document.querySelector(".chatbox");
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const chatbotCloseBtn = document.querySelector(".close-btn");
 const messageInput = document.querySelector('.message-input');
-
+const sendIcon = document.querySelector('#send-btn');
 const maxMessageLength = 50;
+
+let isBotTyping = false;
+let currentDialogNodeId = "QN0000";
+
+const startBotTyping = () => {
+    isBotTyping = true;
+    showTypingIndicator();
+
+    messageInput.disabled = true;
+    messageInput.placeholder = "Thinking...";
+
+    console.log("Bot Started Typing");
+};
+
+const endBotTyping = () => {
+    isBotTyping = false;
+    document.getElementById('typing-indicator').remove();
+
+    messageInput.disabled = false;
+    messageInput.placeholder = "Enter your message here";
+    console.log("Bot Stopped Typing");
+};
 
 const createChatBubble = (text, isBot = true) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", isBot ? "incoming" : "outgoing");
 
-    // Create a paragraph element for text
-    const p = document.createElement("p");
-    p.innerText = text.length > maxMessageLength ? text.slice(0, maxMessageLength) + '...' : text;
+    let chatElement;
+    chatElement = document.createElement("p");
+    // Handle URLS differently
+    if (isValidHttpUrl(text)) {
+        const aelem = document.createElement("a");
+        aelem.href = text;
+        aelem.innerText = "Here's what I found on the THU website";
+        chatElement.appendChild(aelem);
+    } else {
+        // Create a paragraph element for text
+        chatElement.innerText = text.length > maxMessageLength ? text.slice(0, maxMessageLength) + '...' : text;
 
-    // If the text is too long, add a "Read more" button
-    if (text.length > maxMessageLength) {
-        const readMoreBtn = document.createElement("button");
-        readMoreBtn.classList.add("read-more-btn");
-        readMoreBtn.innerText = "Read more";
-        // Function to toggle the message text
-        readMoreBtn.onclick = () => {
-            p.innerText = text;
-            readMoreBtn.remove();
-        };
-        p.appendChild(readMoreBtn);
+        // If the text is too long, add a "Read more" button
+        if (text.length > maxMessageLength) {
+            const readMoreBtn = document.createElement("button");
+            readMoreBtn.classList.add("read-more-btn");
+            readMoreBtn.innerText = "Read more";
+            // Function to toggle the message text
+            readMoreBtn.onclick = () => {
+                chatElement.innerText = text;
+                readMoreBtn.remove();
+            };
+            chatElement.appendChild(readMoreBtn);
+        }
+        // Append the paragraph to the chat list item
+
     }
 
-    // Append the paragraph to the chat list item
-    chatLi.appendChild(p);
+    chatLi.appendChild(chatElement);
 
     if(isBot) {
         const img = document.createElement("img");
         img.src = "https://i.imgur.com/0N92vb3.png";
         img.alt = "Logo";
         img.classList.add("chat-logo");
-        chatLi.insertBefore(img, p);
+        chatLi.insertBefore(img, chatElement);
     }
 
     return chatLi;
@@ -49,11 +81,10 @@ const toggleText = (button, fullText) => {
     button.remove(); // Remove the button after expanding the text
 };
 
-
 const showTypingIndicator = () => {
     const typingBubble = createChatBubble("THUBot is typing...", true);
+    typingBubble.id = 'typing-indicator';
     chatbox.appendChild(typingBubble);
-    setTimeout(() => { typingBubble.remove(); }, 2000);
 };
 
 // Function to handle the sending of messages and receiving of responses
@@ -63,22 +94,19 @@ const sendMessage = async (message) => {
         chatbox.appendChild(createChatBubble(message, false));
         messageInput.value = '';
         chatbox.scrollTop = chatbox.scrollHeight;
-        showTypingIndicator(); // Show typing indicator
+
 
         try {
-            const params = { userInput: message };
+            const params = { userInput: message, currentNodeId: currentDialogNodeId };
+            startBotTyping();
             const response = await fetch('../api/input/ask?' + new URLSearchParams(params).toString(), {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });
             const responseData = await response.json();
-            chatbox.querySelector('.chat:last-child').remove(); // Remove typing indicator immediately after getting the response
-
+            endBotTyping();
             if (responseData && responseData.msgText) {
-                chatbox.appendChild(createChatBubble(responseData.msgText));
-                if (responseData.children) {
-                    chatbox.appendChild(createResponseButtons(responseData.children));
-                }
+                handleNodeSelection(responseData);
             } else {
                 chatbox.appendChild(createChatBubble("Sorry, I didn't understand that."));
             }
@@ -89,7 +117,6 @@ const sendMessage = async (message) => {
         chatbox.scrollTop = chatbox.scrollHeight;
     }
 };
-
 
 const createResponseButtons = (children) => {
     const buttonsDiv = document.createElement("div");
@@ -105,20 +132,34 @@ const createResponseButtons = (children) => {
 };
 
 const handleNodeSelection = (node) => {
-    showTypingIndicator();
-    setTimeout(() => {
-        chatbox.appendChild(createChatBubble(node.msgText));
-        if (node.children) {
-            chatbox.appendChild(createResponseButtons(node.children));
-        }
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }, 2000);
+    currentDialogNodeId = node.id;
+    console.log('Current Node Id: ' + currentDialogNodeId);
+    chatbox.appendChild(createChatBubble(node.msgText));
+    if (node.children && node.children.length !== 0) {
+        chatbox.appendChild(createResponseButtons(node.children));
+    } else {
+        chatbox.appendChild(createEndNode());
+    }
+    chatbox.scrollTop = chatbox.scrollHeight;
 };
+
+const createEndNode = () => {
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("response-buttons");
+    const button = document.createElement("button");
+    button.classList.add("btn-response");
+    button.textContent = "Start Again";
+    button.onclick = () => fetchAndDisplayRootNodes();
+    buttonsDiv.appendChild(button);
+    return buttonsDiv;
+}
 
 const fetchAndDisplayRootNodes = async () => {
     try {
+        startBotTyping();
         const response = await fetch('../api/dialognode/get');
         const data = await response.json();
+        endBotTyping();
         if (data && data.length > 0) {
             handleNodeSelection(data[0]);
         }
@@ -134,13 +175,11 @@ messageInput.addEventListener('keypress', (event) => {
     }
 });
 
-chatbotCloseBtn.addEventListener("click", () => {
-    clearChat();
-    document.body.classList.remove("show-chatbot");
+sendIcon.addEventListener("click", () => {
+   sendMessage(messageInput.value.trim());
 });
 
 let isChatbotOpenedBefore = false;
-
 
 // Updated chatbotToggler event listener
 chatbotToggler.addEventListener("click", () => {
@@ -156,3 +195,35 @@ chatbotToggler.addEventListener("click", () => {
         }
     }
 });
+
+//Button full size and closing
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbot = document.querySelector('.chatbot');
+    chatbotCloseBtn.style.display = "none";
+    // Toggle full screen function
+    function toggleFullScreen() {
+        if (chatbot.classList.toggle('open-in-full')) {
+            chatbotCloseBtn.style.display = "inline-block";
+            console.log("fullscreen");
+        } else {
+            chatbotCloseBtn.style.display = "none";
+            console.log("small screen");
+
+        }
+    }
+    
+    document.querySelector('.open-in-full').addEventListener('click', toggleFullScreen);
+    document.querySelector('.close-btn').addEventListener('click', toggleFullScreen);
+});
+
+function isValidHttpUrl(string) {
+    let url;
+
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
+}

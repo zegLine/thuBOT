@@ -1,13 +1,13 @@
 /**
  * @file DialogNodeRepository.java
  * @brief Interface for CRUD operations on DialogNode entities.
- *
  * This interface extends the CrudRepository to provide CRUD operations for DialogNode entities.
  * It includes additional query methods for specific search criteria related to DialogNodes, such as
  * fetching nodes without children or finding leaf nodes within the dialog tree structure.
  */
 package com.zegline.thubot.core.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +35,10 @@ public interface DialogNodeRepository extends CrudRepository<DialogNode, String>
     *
     * @return List of DialogNode instances without a parent node.
     */
+    @Query(nativeQuery = true, value = "SELECT dn.id, dn.dialog_text, dn.msg_text, dn.parent_id FROM dialog_node dn WHERE dn.parent_id IS NULL")
     List<DialogNode> findDialogNodesByParentIsNull();
 
+    @Query(nativeQuery = true, value = "SELECT dn.id, dn.dialog_text, dn.msg_text, dn.parent_id FROM dialog_node dn")
+    @Override
+    List<DialogNode> findAll();
 }
