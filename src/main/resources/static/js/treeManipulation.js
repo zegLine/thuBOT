@@ -92,21 +92,35 @@ export function visualizeTree(treeData) {
     var svg = svgContainer.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    var currentZoomTransform = d3.zoomIdentity;
+
     var zoom = d3.zoom()
         .scaleExtent([0.7, 100])
         .on("zoom", function (event) {
             svg.attr("transform", event.transform);
+            localStorage.setItem('zoomTransform', JSON.stringify(event.transform));
         });
 
     svgContainer.call(zoom);
-    zoom.scaleTo(svgContainer, 0.7);
+    var storedZoomTransform = localStorage.getItem('zoomTransform');
+    if (storedZoomTransform) {
+        var { k, x, y } = JSON.parse(storedZoomTransform);
+        svgContainer.call(zoom.transform, d3.zoomIdentity.translate(x, y).scale(k));
+    } else {
+        zoom.scaleTo(svgContainer, 0.7);
+    }
     setInitialDepths(root, depthSize);
 
     update(svg, root, treemap, rectWidth, rectHeight, rectRoundness, i, depthSize, margin);
 
     window.addEventListener('resize', function () {
         onResize(svg, treemap, margin, root, rectWidth, rectHeight, rectRoundness, i, depthSize);
+        setTimeout(function() {
+            var { k, x, y } = JSON.parse(localStorage.getItem('zoomTransform')); // Get the stored zoom transform from localStorage
+            svgContainer.call(zoom.transform, d3.zoomIdentity.translate(x, y).scale(k));
+        }, 100); // Delay of 100 milliseconds
     });
+
 
     d3.select('body').on('click', function (event) {
         if (!d3.select(event.target).classed('node-selected') && !d3.select(event.target).classed('context-menu')) {
