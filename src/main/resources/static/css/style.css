@@ -220,10 +220,10 @@ header h2 {
 .chatbot.open-in-full .chatbox {
     display: flex;
     position:absolute;
-    height:100%;
+    height: calc(100% - 15vh - 105px);
     width:100%;
     top:15vh;
-    bottom:55px;
+    bottom:105px;
     left:0;
     right:0;
     margin:0;
@@ -234,6 +234,7 @@ header h2 {
     background-size: 40%;
     background-color: #ffffff;
     transition: all 0.1s ease;
+    overflow-y: auto;
 }
 
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
