@@ -63,6 +63,7 @@ export function updateMap() {
         });
 }
 
+
 export function visualizeTree(treeData) {
 
     const rectWidth = 200;
@@ -127,19 +128,16 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
 
     d3.select('body').on('contextmenu', function (event) {
         event.preventDefault();
-        // Check if we are in the node modification process
+        
         if (isModifying) {
-            // Reset the modification process
             isModifying = false;
             nodeToModify = null;
             d3.selectAll('.node-modifying').classed('node-modifying', false);
             d3.selectAll('.node').classed('node-hover-enabled', false);
         }
-        // If the context menu is not opened on a node, remove the 'node-modifying' class from all nodes
         if (!d3.select(event.target).classed('node')) {
             d3.selectAll('.node-modifying').classed('node-modifying', false);
         }
-        // If the event target is not a node or a descendant of the context menu, hide the context menu
         var contextMenuNode = d3.select('#context-menu').node();
         if (!d3.select(event.target).classed('node') && !(contextMenuNode.contains(event.target) || contextMenuNode === event.target)) {
             d3.select('#context-menu').style('display', 'none');
@@ -155,9 +153,8 @@ export function update(svg, root, treemap, rectWidth, rectHeight, rectRoundness,
     });
 
     d3.select('body').on('mousemove', function(event) {
-        // Check if the mouse is over a node
+
         if (!d3.select(event.target).classed('node')) {
-            // If the mouse is not over a node, hide the tooltip
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
