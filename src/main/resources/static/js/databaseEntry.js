@@ -229,5 +229,3 @@ async function processCSV(contents) {
     }
 
 }
-
-
